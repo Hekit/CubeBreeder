@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CubeBreeder", "CubeBreeder\CubeBreeder.csproj", "{8C57E512-5DCB-4EB5-9228-F5AAEC431962}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CubeBreederTests", "CubeBreederTests\CubeBreederTests.csproj", "{5081CB60-58A4-4C02-8D63-D2060E1D7D9A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{8C57E512-5DCB-4EB5-9228-F5AAEC431962}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C57E512-5DCB-4EB5-9228-F5AAEC431962}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C57E512-5DCB-4EB5-9228-F5AAEC431962}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5081CB60-58A4-4C02-8D63-D2060E1D7D9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5081CB60-58A4-4C02-8D63-D2060E1D7D9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5081CB60-58A4-4C02-8D63-D2060E1D7D9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5081CB60-58A4-4C02-8D63-D2060E1D7D9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
