@@ -24,7 +24,7 @@ namespace CubeBreeder
         public static int localDetourSpanners = 0;
 
         static Tools tools;
-
+        
         static void Main(string[] args)
         {
             /////////////////////////////////
@@ -54,6 +54,8 @@ namespace CubeBreeder
             subcubeSize = Properties.Settings.Default._SubcubeSize;
             // Size of the elite
             eliteSize = Properties.Settings.Default.EliteSize;
+
+            GraphInfo graph = new GraphInfo(cubeDimension);
 
             /////////////////////////////////
             //                             //

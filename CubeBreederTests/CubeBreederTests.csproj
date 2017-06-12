@@ -48,8 +48,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CubeBreederTests.cs" />
+    <Compile Include="IndividualTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ToolsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

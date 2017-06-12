@@ -1,10 +1,11 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CubeBreeder;
 
 namespace CubeBreederTests
 {
     [TestClass]
-    public class CubeBreederTests
+    public class IndividualTest
     {
         [TestMethod]
         public void TestMethod1()
@@ -14,7 +15,7 @@ namespace CubeBreederTests
         [TestMethod]
         public void TestMethod2()
         {
-             
+            Individual ind = new Individual(null);
         }
     }
 }
