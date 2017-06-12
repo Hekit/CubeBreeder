@@ -7,20 +7,24 @@ using System.Threading.Tasks;
 
 namespace CubeBreeder
 {
-    class GraphInfo
+    [Serializable]
+    public class GraphInfo
     {
         private Edge[][] graph;
         private int dimension;
+        private int vertexCount;
+        private int edgeCount;
         private Edge[] edges;
         int edgeID = 0;
 
         public GraphInfo(int dim)
         {
-            int edgeCount = (int)Math.Pow(2, dim - 1) * dim;
-            int vertexCount = (int)Math.Pow(2, dim);
+            dimension = dim;
+            edgeCount = (int)Math.Pow(2, dim - 1) * dim;
+            vertexCount = (int)Math.Pow(2, dim);
 
             graph = new Edge[vertexCount][];
-            for (int i = 0; i < edgeCount; i++)
+            for (int i = 0; i < vertexCount; i++)
             {
                 graph[i] = new Edge[dim];
             }
@@ -73,9 +77,9 @@ namespace CubeBreeder
 
         private void CreateFullCube()
         {
-            for (int i = 0; i < dimension; i++)
+            for (int i = 0; i < vertexCount; i++)
             {
-                for (int j = i + 1; j < dimension; j++)
+                for (int j = i + 1; j < vertexCount; j++)
                 {
                     if (Tools.Distance(i, j) == 1)
                     {
@@ -108,12 +112,6 @@ namespace CubeBreeder
             return null;
         }
 
-        private void LoadFullCube()
-        {
-            string filePath = "../../Resources/fullcube_" + dimension;
-            ReadFromBinaryFile<GraphInfo>(filePath);
-        }
-
         private void SaveFullCube()
         {
             string filePath = "../../Resources/fullcube_" + dimension;
@@ -129,7 +127,13 @@ namespace CubeBreeder
             }
         }
 
-        private T ReadFromBinaryFile<T>(string filePath)
+        public static GraphInfo LoadFullCube(int dimension)
+        {
+            string filePath = "../../Resources/fullcube_" + dimension;
+            return ReadFromBinaryFile<GraphInfo>(filePath);
+        }
+
+        private static T ReadFromBinaryFile<T>(string filePath)
         {
             using (Stream stream = File.Open(filePath, FileMode.Open))
             {
@@ -137,6 +141,5 @@ namespace CubeBreeder
                 return (T)binaryFormatter.Deserialize(stream);
             }
         }
-
     }
 }

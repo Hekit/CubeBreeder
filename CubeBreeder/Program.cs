@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CubeBreeder;
+using System.IO;
 
 namespace CubeBreeder
 {
@@ -24,7 +25,7 @@ namespace CubeBreeder
         public static int localDetourSpanners = 0;
 
         static Tools tools;
-        
+
         static void Main(string[] args)
         {
             /////////////////////////////////
@@ -55,26 +56,37 @@ namespace CubeBreeder
             // Size of the elite
             eliteSize = Properties.Settings.Default.EliteSize;
 
-            GraphInfo graph = new GraphInfo(cubeDimension);
+            tools = Tools.GetInstance(cubeDimension);
+
+            GraphInfo graph;
+            try
+            {
+                graph = GraphInfo.LoadFullCube(cubeDimension);
+            }
+            catch
+            {
+                graph = new GraphInfo(cubeDimension);
+            }
 
             /////////////////////////////////
             //                             //
             //      Run the algorithm      //
             //                             //
             /////////////////////////////////
-            /*
-            List<CubeIndividual> bestInds = new List<CubeIndividual>();
-
+            
+            List<Individual> bestInds = new List<Individual>();
+            
             for (int i = 0; i < repeats; i++)
             {
-                CubeIndividual best = Run(i);
-                if (best != null) bestInds.Add(best);
-            }
+                //CubeIndividual best = Run(i);
+                //if (best != null) bestInds.Add(best);
+            }/*
             for (int i = 0; i < bestInds.Count; i++)
             {
                 Console.WriteLine("Run " + (i + 1) + ": best objective=" + bestInds[i].GetObjectiveValue());
                 Tools.WriteIndividual(bestInds[i]);
             }*/
         }
+
     }
 }

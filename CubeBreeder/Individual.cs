@@ -13,7 +13,6 @@ namespace CubeBreeder
         double objectiveValue;
 
         static int best = Int32.MaxValue;
-        int length = 0;
         int cubeDimension = 0;
         int vertexCount;
         public static long knownSize = 0;
@@ -24,11 +23,19 @@ namespace CubeBreeder
 
         public Individual(Individual daddy)
         {
-            this.length = daddy.length;
             this.cubeDimension = daddy.cubeDimension;
             this.vertexCount = daddy.vertexCount;
             this.graph = daddy.graph;
             this.edgeActivity = new bool[daddy.edgeActivity.Length];
+        }
+
+        public Individual(GraphInfo graph, int dimension)
+        {
+            int edgeCount = (int)Math.Pow(2, dimension - 1) * dimension;
+            this.graph = graph;
+            this.cubeDimension = dimension;
+            this.edgeActivity = new bool[edgeCount];
+            this.vertexCount = (int)Math.Pow(2, dimension);
         }
 
         /**
@@ -229,12 +236,12 @@ namespace CubeBreeder
         private int CountComponents()
         {
             //Stavy jednotlivych uzlu
-            int[] state = new int[length];
+            int[] state = new int[vertexCount];
 
-            for (int i = 0; i < length; i++) state[i] = 0;
+            for (int i = 0; i < vertexCount; i++) state[i] = 0;
             int counter = 0;
             //zajisti pruchod vsemi komponentami souvislosti
-            for (int i = 0; i < length; i++)
+            for (int i = 0; i < vertexCount; i++)
             {
                 if (state[i] == 0)
                 {

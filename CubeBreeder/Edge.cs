@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace CubeBreeder
 {
+    [Serializable]
     public class Edge
     {
         public int Vertex1 { get; set; }

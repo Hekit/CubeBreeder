@@ -50,7 +50,7 @@ namespace CubeBreederTests
         {
             Tools tools = Tools.GetInstance(3);
 
-            for (int k = 0; k < 500000; k++)
+            for (int k = 0; k < 50000; k++)
             {
                 byte[] e4 = { 0, 0, 1 };
                 byte[] a4 = Tools.ToBinary(4);
@@ -75,7 +75,7 @@ namespace CubeBreederTests
         {
             Tools tools = Tools.GetInstance(3);
 
-            for (int k = 0; k < 500000; k++)
+            for (int k = 0; k < 50000; k++)
             {
                 bool[] e4 = { false, false, true };
                 bool[] a4 = Tools.ToBinaryNew(4);
@@ -93,6 +93,14 @@ namespace CubeBreederTests
                     Assert.AreEqual(e6[i], a6[i], "Index " + i);
                 }
             }
+        }
+
+        [TestMethod]
+        public void DifferenceIndex()
+        {
+            Assert.AreEqual(0, Tools.DifferenceIndex(0, 1));
+            Assert.AreEqual(1, Tools.DifferenceIndex(0, 2));
+            Assert.AreEqual(2, Tools.DifferenceIndex(0, 4));
         }
 
         [TestMethod]
