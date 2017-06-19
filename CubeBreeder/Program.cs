@@ -128,8 +128,7 @@ namespace CubeBreeder
             //ea.AddOperator(new SubcubeSwapXOver(xoverProb, 1));
             ea.AddOperator(new FlipEdgeMutation(mutProb, mutProbPerBit));
             //ea.AddOperator(new SimpleRepairEdgeMutation(mutProb, mutRepair));
-            //ea.AddOperator(new CleverRepairEdgeMutation(mutProb / 18, mutRepair));
-
+            ea.AddOperator(new CleverRepairEdgeMutation(mutProb / 18, mutRepair));
             ea.AddEnvironmentalSelector(new RouletteWheelSelector());
             //ea.addEnvironmentalSelector(new selectors.TournamentSelector());
 
@@ -153,9 +152,13 @@ namespace CubeBreeder
                     //Log the best individual to console.
                     //if ((i + 1) % 10 == 0)
                     {
+                        int idx = 0;
+                        while (idx < popSize && sorted[idx].Is_3_Spanner(false) < 1) idx++;
+                        if (idx >= popSize) idx = 0;
+
                         //Console.WriteLine("Generation: " + (i + 1) + " fitness: " + sorted[0].GetFitnessValue());
                         Console.WriteLine("Generation: " + (i + 1)
-                            + " objective: " + sorted[0].GetObjectiveValue()
+                            + " objective: " + sorted[idx].GetObjectiveValue() + " at " + idx
                             + " fitness: " + sorted[0].GetFitnessValue()
                             + " 3-spanners: {0:f2} %", (float)(localDetourSpanners * 100.0 / popSize));
                         //if (sorted[0].GetFitnessValue() == edgeCount) i = maxGen; // stopka pro tvoreni plne krychle
@@ -181,9 +184,10 @@ namespace CubeBreeder
                 Individual bestInd;
                 for (int j = 0; j < pop.GetPopulationSize(); j++)
                 {
-                    if ((pop.GetSortedIndividuals()[j]).Is_3_Spanner(false) < 1)
+                    if ((pop.GetSortedIndividuals()[j]).Is_3_Spanner(false) == 1)
                         return bestInd = pop.GetSortedIndividuals()[j];
                 }
+                return bestInd = pop.GetSortedIndividuals()[0];
                 //return bestInd;
             }
             catch (Exception e)

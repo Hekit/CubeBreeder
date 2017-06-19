@@ -271,16 +271,12 @@ namespace CubeBreeder
         {
             state[vertexNr] = 1;
 
-            for (int i = 0; i < vertexCount; i++)
+            foreach (var e in graph.GetEdgesInVertex(vertexNr))
             {
-                for (int j = 0; j < cubeDimension; j++)
+                if (edgeActivity[e.ID])
                 {
-                    Edge e = graph.GetEdge(i, j);
-                    if (edgeActivity[e.ID])
-                    {
-                        int k = e.Vertex1 != vertexNr ? e.Vertex1 : e.Vertex2;
-                        if (state[k] == 0) DFS(k, state);
-                    }
+                    int k = e.Vertex1 != vertexNr ? e.Vertex1 : e.Vertex2;
+                    if (state[k] == 0) DFS(k, state);
                 }
             }
             state[vertexNr] = 2;

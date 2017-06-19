@@ -38,7 +38,13 @@ namespace CubeBreeder
 
         public int GetID(int i1, int i2)
         {
-            return graph[i1][i2].ID;
+            foreach (var edge in graph[i1])
+            {
+                if (((edge.Vertex1 == i1 && edge.Vertex2 == i2)
+                    || (edge.Vertex1 == i2 && edge.Vertex2 == i1)))
+                    return edge.ID;
+            }
+            return -1;
         }
 
         public Edge GetEdge(int ID)
@@ -114,6 +120,11 @@ namespace CubeBreeder
                 if (graph[v1][i].Vertex2 == v2) return graph[v1][i];
             }
             return null;
+        }
+
+        public List<Edge> GetEdgesInVertex(int v)
+        {
+            return graph[v].ToList();
         }
 
         private void SaveFullCube()

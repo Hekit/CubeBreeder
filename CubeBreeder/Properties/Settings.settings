@@ -3,13 +3,13 @@
   <Profiles />
   <Settings>
     <Setting Name="_Dimension" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">15</Value>
+      <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="_MaxGenerations" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">100</Value>
     </Setting>
     <Setting Name="_PopulationSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">100</Value>
+      <Value Profile="(Default)">1000</Value>
     </Setting>
     <Setting Name="P_CrossoverProbability" Type="System.Single" Scope="User">
       <Value Profile="(Default)">0.5</Value>
@@ -30,7 +30,7 @@
       <Value Profile="(Default)">80</Value>
     </Setting>
     <Setting Name="File_Initialization" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Task" Type="System.String" Scope="User">
       <Value Profile="(Default)">spanner</Value>

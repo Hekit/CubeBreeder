@@ -68,43 +68,36 @@ namespace CubeBreeder.Operators.Crossovers
                     // vymena podkrychle
                     int testValue;
                     int length = p1.Length();
-                    for (int j = 0; j < length; j++)
+                    foreach (var e in Program.graph.GetEdges())
                     {
-                        for (int k = j + 1; k < length; k++)
+                        //testValue = TestSubcube(fix, vals, j, k);
+                        bool parent1Value = p1.IsActiveOnEdge(e.ID);
+                        bool parent2Value = p2.IsActiveOnEdge(e.ID);
+
+                        if (parent1Value != parent2Value)
                         {
-                            if (Tools.Distance(j, k) == 1)
+                            testValue = TestSubcube(fix, vals, e); // snad to funguje :))
+
+                            if (testValue == -1) // vne, proto nechavame
                             {
-                                //testValue = TestSubcube(fix, vals, j, k);
-                                Edge e = Program.graph.GetEdge(j, k);
-                                bool parent1Value = p1.IsActiveBetweenVertices(j, k);
-                                bool parent2Value = p2.IsActiveBetweenVertices(j, k);
-
-                                if (parent1Value != parent2Value)
+                                //o1.SetActivityBetweenVertices(j, k, parent1Value);
+                                //o2.SetActivityBetweenVertices(j, k, parent2Value);
+                            }
+                            else if (testValue == 0) // je na hrane, nic
+                            {
+                                bool value = parent1Value == true ? parent1Value : parent2Value;
+                                o1.SetActivityOnEdge(e.ID, value);
+                                o2.SetActivityOnEdge(e.ID, value);
+                            }
+                            else // je uvnitr, proto prohazujem
+                            {
+                                /*if (subCubeSize == 1)
                                 {
-                                    testValue = TestSubcube(fix, vals, e); // snad to funguje :))
-
-                                    if (testValue == -1) // vne, proto nechavame
-                                    {
-                                        //o1.SetActivityBetweenVertices(j, k, parent1Value);
-                                        //o2.SetActivityBetweenVertices(j, k, parent2Value);
-                                    }
-                                    else if (testValue == 0) // je na hrane, nic
-                                    {
-                                        bool value = parent1Value == true ? parent1Value : parent2Value;
-                                        o1.SetActivityBetweenVertices(j, k, value);
-                                        o2.SetActivityBetweenVertices(j, k, value);
-                                    }
-                                    else // je uvnitr, proto prohazujem
-                                    {
-                                        /*if (subCubeSize == 1)
-                                        {
-                                            e1.Active = e1.Active == true ? false : true;
-                                            e2.Active = e2.Active == true ? false : true;
-                                        }*/
-                                        o1.SetActivityBetweenVertices(j, k, parent2Value);
-                                        o2.SetActivityBetweenVertices(j, k, parent1Value);
-                                    }
-                                }
+                                    e1.Active = e1.Active == true ? false : true;
+                                    e2.Active = e2.Active == true ? false : true;
+                                }*/
+                                o1.SetActivityOnEdge(e.ID, parent2Value);
+                                o2.SetActivityOnEdge(e.ID, parent1Value);
                             }
                         }
                     }
