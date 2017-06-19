@@ -19,7 +19,7 @@ namespace CubeBreederTests
         [TestMethod]
         public void TestMethod2()
         {
-            Individual ind = new Individual(gi, 5);
+            Individual ind = new Individual(gi);
         }
     }
 }

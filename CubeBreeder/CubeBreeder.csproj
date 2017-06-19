@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Edge.cs" />
+    <Compile Include="Population.cs" />
     <Compile Include="RandomNumberGenerator.cs" />
     <Compile Include="GraphInfo.cs" />
     <Compile Include="Individual.cs" />
@@ -61,6 +62,12 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Fitness\" />
+    <Folder Include="Operators\Crossovers\" />
+    <Folder Include="Operators\Mutations\" />
+    <Folder Include="Selectors\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

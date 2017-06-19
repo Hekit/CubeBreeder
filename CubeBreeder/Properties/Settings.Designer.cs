@@ -25,7 +25,7 @@ namespace CubeBreeder.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        [global::System.Configuration.DefaultSettingValueAttribute("15")]
         public int _Dimension {
             get {
                 return ((int)(this["_Dimension"]));
@@ -170,12 +170,12 @@ namespace CubeBreeder.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0.2")]
-        public float FilieInitRatio {
+        public float FileInitRatio {
             get {
-                return ((float)(this["FilieInitRatio"]));
+                return ((float)(this["FileInitRatio"]));
             }
             set {
-                this["FilieInitRatio"] = value;
+                this["FileInitRatio"] = value;
             }
         }
         

@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="_Dimension" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">3</Value>
+      <Value Profile="(Default)">15</Value>
     </Setting>
     <Setting Name="_MaxGenerations" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">100</Value>
@@ -38,7 +38,7 @@
     <Setting Name="P_MutationRepairProbability" Type="System.Single" Scope="User">
       <Value Profile="(Default)">0.05</Value>
     </Setting>
-    <Setting Name="FilieInitRatio" Type="System.Single" Scope="User">
+    <Setting Name="FileInitRatio" Type="System.Single" Scope="User">
       <Value Profile="(Default)">0.2</Value>
     </Setting>
     <Setting Name="EliteSize" Type="System.Single" Scope="User">

@@ -32,6 +32,8 @@ namespace CubeBreeder
             CreateFullCube();
         }
 
+        public int GetDimension() { return dimension; }
+
         public int GetID(int i1, int i2)
         {
             return graph[i1][i2].ID;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CubeBreeder
 {
-    public class Individual
+    public class Individual : ICloneable
     {
         double fitnessValue;
         double objectiveValue;
@@ -29,13 +29,13 @@ namespace CubeBreeder
             this.edgeActivity = new bool[daddy.edgeActivity.Length];
         }
 
-        public Individual(GraphInfo graph, int dimension)
+        public Individual(GraphInfo graph)
         {
-            int edgeCount = (int)Math.Pow(2, dimension - 1) * dimension;
+            this.cubeDimension = graph.GetDimension();
+            int edgeCount = (int)Math.Pow(2, this.cubeDimension - 1) * this.cubeDimension;
             this.graph = graph;
-            this.cubeDimension = dimension;
             this.edgeActivity = new bool[edgeCount];
-            this.vertexCount = (int)Math.Pow(2, dimension);
+            this.vertexCount = (int)Math.Pow(2, this.cubeDimension);
         }
 
         /**
@@ -103,12 +103,12 @@ namespace CubeBreeder
         }
 
         public static System.IO.StreamReader file = null;
-        /*
+
         public void FileInitialization()
         {
             //if (file == null) 
             file = new System.IO.StreamReader(
-            "D:\\Development\\hypercubes\\initialization\\" + cubeDimension + "_init.txt");
+                "D:\\Development\\hypercubes\\initialization\\" + cubeDimension + "_init.txt");
             file.ReadLine();
             string s = file.ReadLine();
             int v1 = -1;
@@ -118,15 +118,14 @@ namespace CubeBreeder
                 v1 = Int32.Parse(s.Substring(0, s.IndexOf("\t")));
                 s = s.Substring(s.IndexOf("\t") + 1);
                 v2 = Int32.Parse(s.Substring(0, s.IndexOf("\t")));
-                for (int i = 0; i < graph[v1].edges.Count; i++)
+                for (int i = 0; i < edgeActivity.Length; i++)
                 {
-                    if (graph[v1].edges[i].Vertex2.name == v2)
-                        ActivateAtIndices(v1, i);
+                    ActivateBetweenVertices(v1, v2);
                 }
                 s = file.ReadLine();
             }
             file.Close();
-        }*/
+        }
 
         public void RandomInitialization()
         {
@@ -142,17 +141,17 @@ namespace CubeBreeder
             }
         }
 
-        private void ActivateAtIndices(int i1, int i2)
+        private void ActivateBetweenVertices(int i1, int i2)
         {
             edgeActivity[graph.GetID(i1, i2)] = true;
         }
 
-        private bool ActiveAtIndices(int i1, int i2)
+        private bool isActiveBetweenVertices(int i1, int i2)
         {
             return edgeActivity[graph.GetID(i1, i2)];
         }
 
-        public int GetEdgeCount()
+        public int GetActiveEdgeCount()
         {
             return edgeActivity.Count(x => x == true);
         }
@@ -274,7 +273,7 @@ namespace CubeBreeder
 
         public override string ToString()
         {
-            string str = "Total of " + GetEdgeCount() + " edges\n";
+            string str = "Total of " + GetActiveEdgeCount() + " edges\n";
             for (int i = 0; i < edgeActivity.Length; i++)
             {
                 if (edgeActivity[i])
