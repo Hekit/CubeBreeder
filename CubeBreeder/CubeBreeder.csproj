@@ -59,6 +59,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Selectors\RouletteWheelSelector.cs" />
+    <Compile Include="Selectors\Selector.cs" />
+    <Compile Include="Selectors\TournamentSelector.cs" />
     <Compile Include="Tools.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -71,7 +74,6 @@
   <ItemGroup>
     <Folder Include="Operators\Crossovers\" />
     <Folder Include="Operators\Mutations\" />
-    <Folder Include="Selectors\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
