@@ -88,7 +88,13 @@ namespace CubeBreeder
          */
         public Object Clone()
         {
-            return MemberwiseClone();
+            Individual n = new Individual(this);
+            for (int i = 0; i < edgeActivity.Length; i++)
+            {
+                n.edgeActivity[i] = this.edgeActivity[i];
+            }
+            return n;
+            //return MemberwiseClone();
         }
 
 
@@ -120,7 +126,7 @@ namespace CubeBreeder
                 v2 = Int32.Parse(s.Substring(0, s.IndexOf("\t")));
                 for (int i = 0; i < edgeActivity.Length; i++)
                 {
-                    ActivateBetweenVertices(v1, v2);
+                    SetActivityBetweenVertices(v1, v2, true);
                 }
                 s = file.ReadLine();
             }
@@ -141,14 +147,19 @@ namespace CubeBreeder
             }
         }
 
-        private void ActivateBetweenVertices(int i1, int i2)
+        public void SetActivityBetweenVertices(int i1, int i2, bool value)
         {
-            edgeActivity[graph.GetID(i1, i2)] = true;
+            edgeActivity[graph.GetID(i1, i2)] = value;
         }
 
-        private bool isActiveBetweenVertices(int i1, int i2)
+        public bool IsActiveBetweenVertices(int i1, int i2)
         {
             return edgeActivity[graph.GetID(i1, i2)];
+        }
+
+        public bool IsActiveOnEdge(int edgeID)
+        {
+            return edgeActivity[edgeID];
         }
 
         public int GetActiveEdgeCount()

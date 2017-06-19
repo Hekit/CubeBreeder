@@ -27,7 +27,7 @@
       <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="P_ActiveProbability" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">90</Value>
+      <Value Profile="(Default)">80</Value>
     </Setting>
     <Setting Name="File_Initialization" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

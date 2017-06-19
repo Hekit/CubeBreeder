@@ -5,6 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using CubeBreeder;
 using System.IO;
+using System.Diagnostics;
+using CubeBreeder.Selectors;
+using CubeBreeder.Fitness;
+using CubeBreeder.Operators.Crossovers;
+using CubeBreeder.Operators;
+using CubeBreeder.Replacements;
 
 namespace CubeBreeder
 {
@@ -25,6 +31,7 @@ namespace CubeBreeder
         public static int localDetourSpanners = 0;
 
         static Tools tools;
+        public static GraphInfo graph;
 
         static void Main(string[] args)
         {
@@ -58,7 +65,7 @@ namespace CubeBreeder
 
             tools = Tools.GetInstance(cubeDimension);
 
-            GraphInfo graph;
+            //GraphInfo graph;
             try
             {
                 graph = GraphInfo.LoadFullCube(cubeDimension);
@@ -78,15 +85,112 @@ namespace CubeBreeder
             
             for (int i = 0; i < repeats; i++)
             {
-                //CubeIndividual best = Run(i);
-                //if (best != null) bestInds.Add(best);
-            }/*
+                Individual best = Run(i);
+                if (best != null) bestInds.Add(best);
+            }
             for (int i = 0; i < bestInds.Count; i++)
             {
                 Console.WriteLine("Run " + (i + 1) + ": best objective=" + bestInds[i].GetObjectiveValue());
                 Tools.WriteIndividual(bestInds[i]);
-            }*/
+            }
         }
 
+        public static Individual Run(int number)
+        {
+
+            Console.WriteLine("Initializing");
+            Stopwatch sw = Stopwatch.StartNew();
+            //Set the rng seed
+            RandomNumberGenerator.GetInstance().ReSeed(number);
+
+            tools = Tools.GetInstance(cubeDimension);
+
+            //Create new population
+            Population pop = new Population();
+            pop.SetPopulationSize(popSize);
+            pop.SetSampleIndividual(graph);
+            Console.WriteLine("Detours are computed");
+            pop.CreateRandomInitialPopulation();
+
+            //Set the options for the evolutionary algorithm
+            EvolutionaryAlgorithm ea = new EvolutionaryAlgorithm();
+            // Fitness function
+            if (Properties.Settings.Default.Task == "spanner")
+                ea.SetFitnessFunction(new SpannerFitness(edgeCount));
+            else if (Properties.Settings.Default.Task == "degree")
+                ea.SetFitnessFunction(new MaxDegreeFitness(cubeDimension));
+            else throw new NotImplementedException();
+            // Selectors
+            //ea.addMatingSelector(new selectors.RouletteWheelSelector());
+            ea.AddMatingSelector(new TournamentSelector());
+            // Operators
+            ea.AddOperator(new SubcubeSwapXOver(xoverProb, subcubeSize));
+            //ea.AddOperator(new SubcubeSwapXOver(xoverProb, 1));
+            //ea.AddOperator(new FlipEdgeMutation(mutProb, mutProbPerBit));
+            //ea.AddOperator(new SimpleRepairEdgeMutation(mutProb, mutRepair));
+            //ea.AddOperator(new CleverRepairEdgeMutation(mutProb / 18, mutRepair));
+
+            ea.AddEnvironmentalSelector(new RouletteWheelSelector());
+            //ea.addEnvironmentalSelector(new selectors.TournamentSelector());
+
+            ea.SetElite(eliteSize);
+
+            Console.WriteLine("Finished in {0:f2} seconds", sw.Elapsed.TotalSeconds);
+
+            //Run the algorithm
+
+            Console.WriteLine("Running");
+
+            try
+            {
+                for (int i = 0; i < maxGen; i++)
+                {
+                    sw.Restart();
+                    localDetourSpanners = 0;
+                    //Make one generation
+                    ea.Evolve(pop);
+                    List<Individual> sorted = pop.GetSortedIndividuals();
+                    //Log the best individual to console.
+                    //if ((i + 1) % 10 == 0)
+                    {
+                        //Console.WriteLine("Generation: " + (i + 1) + " fitness: " + sorted[0].GetFitnessValue());
+                        Console.WriteLine("Generation: " + (i + 1)
+                            + " objective: " + sorted[0].GetObjectiveValue()
+                            + " fitness: " + sorted[0].GetFitnessValue()
+                            + " 3-spanners: {0:f2} %", (float)(localDetourSpanners * 100.0 / popSize));
+                        //if (sorted[0].GetFitnessValue() == edgeCount) i = maxGen; // stopka pro tvoreni plne krychle
+                    }
+
+                    for (int j = 0; j < sorted.Count; j++)
+                    {
+                        if (j < popSize * eliteSize) sorted[j].elite = true;
+                        else sorted[j].elite = false;
+                    }
+
+                    //Console.WriteLine("{0:f2} s", sw.Elapsed.TotalSeconds);
+                    if (i + 1 == maxGen)
+                    {
+                        Console.WriteLine("Continue?");
+                        int extra = 0;
+                        if (Int32.TryParse(Console.ReadLine(), out extra))
+                        {
+                            maxGen += extra;
+                        }
+                    }
+                }
+                Individual bestInd;
+                for (int j = 0; j < pop.GetPopulationSize(); j++)
+                {
+                    if ((pop.GetSortedIndividuals()[j]).Is_3_Spanner(false) < 1)
+                        return bestInd = pop.GetSortedIndividuals()[j];
+                }
+                //return bestInd;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+            }
+            return null;
+        }
     }
 }
