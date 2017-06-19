@@ -43,6 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Edge.cs" />
+    <Compile Include="Fitness\BasicEvaluator.cs" />
+    <Compile Include="Fitness\FitnessEvaluator.cs" />
+    <Compile Include="Fitness\FitnessFunction.cs" />
+    <Compile Include="Fitness\MaxDegreeFitness.cs" />
+    <Compile Include="Fitness\SpannerFitness.cs" />
     <Compile Include="Population.cs" />
     <Compile Include="RandomNumberGenerator.cs" />
     <Compile Include="GraphInfo.cs" />
@@ -64,7 +69,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Fitness\" />
     <Folder Include="Operators\Crossovers\" />
     <Folder Include="Operators\Mutations\" />
     <Folder Include="Selectors\" />
