@@ -34,6 +34,8 @@ namespace CubeBreeder
 
         public int GetDimension() { return dimension; }
 
+        public Edge[] GetEdges() { return edges; }
+
         public int GetID(int i1, int i2)
         {
             return graph[i1][i2].ID;

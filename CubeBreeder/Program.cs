@@ -9,7 +9,7 @@ using System.Diagnostics;
 using CubeBreeder.Selectors;
 using CubeBreeder.Fitness;
 using CubeBreeder.Operators.Crossovers;
-using CubeBreeder.Operators;
+using CubeBreeder.Operators.Mutations;
 using CubeBreeder.Replacements;
 
 namespace CubeBreeder
@@ -126,7 +126,7 @@ namespace CubeBreeder
             // Operators
             ea.AddOperator(new SubcubeSwapXOver(xoverProb, subcubeSize));
             //ea.AddOperator(new SubcubeSwapXOver(xoverProb, 1));
-            //ea.AddOperator(new FlipEdgeMutation(mutProb, mutProbPerBit));
+            ea.AddOperator(new FlipEdgeMutation(mutProb, mutProbPerBit));
             //ea.AddOperator(new SimpleRepairEdgeMutation(mutProb, mutRepair));
             //ea.AddOperator(new CleverRepairEdgeMutation(mutProb / 18, mutRepair));
 

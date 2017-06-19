@@ -152,6 +152,11 @@ namespace CubeBreeder
             edgeActivity[graph.GetID(i1, i2)] = value;
         }
 
+        public void SetActivityOnEdge(int edgeID, bool value)
+        {
+            edgeActivity[edgeID] = value;
+        }
+
         public bool IsActiveBetweenVertices(int i1, int i2)
         {
             return edgeActivity[graph.GetID(i1, i2)];
