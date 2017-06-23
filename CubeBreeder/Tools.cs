@@ -110,4 +110,9 @@ namespace CubeBreeder
             file.Close();
         }
     }
+
+    public static class Extensions
+    {
+        public static bool IsTrue(this byte val) => val != 0;
+    }
 }

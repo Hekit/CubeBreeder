@@ -29,6 +29,7 @@ namespace CubeBreeder
         static int subcubeSize;
         static double eliteSize;
         public static int localDetourSpanners = 0;
+        public static int maxColours;
 
         static Tools tools;
         public static GraphInfo graph;
@@ -64,6 +65,16 @@ namespace CubeBreeder
             eliteSize = Properties.Settings.Default.EliteSize;
 
             tools = Tools.GetInstance(cubeDimension);
+
+            if (Properties.Settings.Default.Task == "spanner")
+            {
+                maxColours = 1;
+            }
+            else if (Properties.Settings.Default.Task == "degree")
+            {
+                maxColours = 1;
+            }
+            else maxColours = cubeDimension / 2;
 
             //GraphInfo graph;
             try
@@ -116,9 +127,13 @@ namespace CubeBreeder
             EvolutionaryAlgorithm ea = new EvolutionaryAlgorithm();
             // Fitness function
             if (Properties.Settings.Default.Task == "spanner")
+            {
                 ea.SetFitnessFunction(new SpannerFitness(edgeCount));
+            }
             else if (Properties.Settings.Default.Task == "degree")
+            {
                 ea.SetFitnessFunction(new MaxDegreeFitness(cubeDimension));
+            }
             else throw new NotImplementedException();
             // Selectors
             //ea.addMatingSelector(new selectors.RouletteWheelSelector());
@@ -157,10 +172,10 @@ namespace CubeBreeder
                         if (idx >= popSize) idx = 0;
 
                         //Console.WriteLine("Generation: " + (i + 1) + " fitness: " + sorted[0].GetFitnessValue());
-                        Console.WriteLine("Generation: " + (i + 1)
-                            + " objective: " + sorted[idx].GetObjectiveValue() + " at " + idx
-                            + " fitness: " + sorted[0].GetFitnessValue()
-                            + " 3-spanners: {0:f2} %", (float)(localDetourSpanners * 100.0 / popSize));
+                        Console.WriteLine("Gen: " + (i + 1)
+                            + " obj: " + sorted[idx].GetObjectiveValue() + " at " + idx
+                            + " fit: " + sorted[0].GetFitnessValue()
+                            + " 3-s: {0:f2} %", (float)(localDetourSpanners * 100.0 / popSize));
                         //if (sorted[0].GetFitnessValue() == edgeCount) i = maxGen; // stopka pro tvoreni plne krychle
                     }
 

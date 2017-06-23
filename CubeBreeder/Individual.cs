@@ -19,14 +19,14 @@ namespace CubeBreeder
         public bool elite = false;
 
         GraphInfo graph;
-        bool[] edgeActivity;
+        byte[] edgeActivity;
 
         public Individual(Individual daddy)
         {
             this.cubeDimension = daddy.cubeDimension;
             this.vertexCount = daddy.vertexCount;
             this.graph = daddy.graph;
-            this.edgeActivity = new bool[daddy.edgeActivity.Length];
+            this.edgeActivity = new byte[daddy.edgeActivity.Length];
         }
 
         public Individual(GraphInfo graph)
@@ -34,7 +34,7 @@ namespace CubeBreeder
             this.cubeDimension = graph.GetDimension();
             int edgeCount = (int)Math.Pow(2, this.cubeDimension - 1) * this.cubeDimension;
             this.graph = graph;
-            this.edgeActivity = new bool[edgeCount];
+            this.edgeActivity = new byte[edgeCount];
             this.vertexCount = (int)Math.Pow(2, this.cubeDimension);
         }
 
@@ -126,14 +126,14 @@ namespace CubeBreeder
                 v2 = Int32.Parse(s.Substring(0, s.IndexOf("\t")));
                 for (int i = 0; i < edgeActivity.Length; i++)
                 {
-                    SetActivityBetweenVertices(v1, v2, true);
+                    SetActivityBetweenVertices(v1, v2, 1);
                 }
                 s = file.ReadLine();
             }
             file.Close();
         }
 
-        public void RandomInitialization()
+        public void RandomInitialization(int maxColours)
         {
             RandomNumberGenerator rnd = RandomNumberGenerator.GetInstance();
             int probability = Properties.Settings.Default.P_ActiveProbability - 1;
@@ -141,35 +141,47 @@ namespace CubeBreeder
             for (int i = 0; i < edgeActivity.Length; i++)
             {
                 if (rnd.NextInt(0, 100) < probability)
-                    edgeActivity[i] = true;
+                {
+                    edgeActivity[i] = (byte)(rnd.NextInt(1,maxColours+1));
+                }
                 else
-                    edgeActivity[i] = false;
+                    edgeActivity[i] = 0;
             }
         }
 
-        public void SetActivityBetweenVertices(int i1, int i2, bool value)
+        public void SetActivityBetweenVertices(int i1, int i2, byte value)
         {
             edgeActivity[graph.GetID(i1, i2)] = value;
         }
 
-        public void SetActivityOnEdge(int edgeID, bool value)
+        public void SetActivityOnEdge(int edgeID, byte value)
         {
             edgeActivity[edgeID] = value;
         }
 
         public bool IsActiveBetweenVertices(int i1, int i2)
         {
-            return edgeActivity[graph.GetID(i1, i2)];
+            return edgeActivity[graph.GetID(i1, i2)].IsTrue();
         }
 
-        public bool IsActiveOnEdge(int edgeID)
+        public byte IsActiveOnEdge(int edgeID)
         {
             return edgeActivity[edgeID];
         }
 
         public int GetActiveEdgeCount()
         {
-            return edgeActivity.Count(x => x == true);
+            return GetActiveEdgeCount(1);
+        }
+
+        public int GetActiveEdgeCount(byte c)
+        {
+            return edgeActivity.Count(x => x == c);
+        }
+
+        public double Is_Good_Enough(byte colour)
+        {
+            return 1;
         }
 
         public double Is_3_Spanner(bool counting)
@@ -177,17 +189,16 @@ namespace CubeBreeder
             int detouredCount = 0;
             int nonDetouredCount = 0;
             int activeCount = 0;
-            if (IsSpanner() == 1) return 0;
+            if (IsSpanner(1) == 1) return 0;
 
             for (int i = 0; i < edgeActivity.Length; i++)
             {
-                if (edgeActivity[i])
+                if (edgeActivity[i].IsTrue())
                 {
                     activeCount++;
                     continue;
                 }
-                //else if (edge.IsDetoured()) continue;
-                else if (IsDetoured(graph.GetEdge(i)))
+                else if (IsDetoured(graph.GetEdge(i), 1))
                 {
                     detouredCount++;
                     continue;
@@ -213,11 +224,15 @@ namespace CubeBreeder
             else return (double)detouredCount / (detouredCount + nonDetouredCount);
         }
 
-        private bool IsDetoured(Edge e)
+        private bool IsDetoured(Edge e, byte colour)
         {
             foreach (var tuple in e.GetDetours())
             {
-                if (edgeActivity[tuple.Item1] && edgeActivity[tuple.Item2] && edgeActivity[tuple.Item3])
+                if (edgeActivity[tuple.Item1].IsTrue() && edgeActivity[tuple.Item2].IsTrue() 
+                    && edgeActivity[tuple.Item3].IsTrue()
+                    && edgeActivity[tuple.Item1] == colour 
+                    && edgeActivity[tuple.Item2] == colour
+                    && edgeActivity[tuple.Item3] == colour)
                     return true;
             }
             return false;
@@ -225,13 +240,18 @@ namespace CubeBreeder
 
         public List<Edge> GetUndetoured()
         {
+            return GetUndetoured(1);
+        }
+
+        public List<Edge> GetUndetoured(byte colour)
+        {
             List<Edge> list = new List<Edge>();
 
-            if (IsSpanner() == 1) return list;
+            if (IsSpanner(colour) == 1) return list;
 
             for (int i = 0; i < edgeActivity.Length; i++)
             {
-                if (!edgeActivity[i] && !IsDetoured(graph.GetEdge(i)))
+                if (!edgeActivity[i].IsTrue() && !IsDetoured(graph.GetEdge(i), colour))
                 {
                     list.Add(graph.GetEdge(i));
                 }
@@ -242,13 +262,13 @@ namespace CubeBreeder
 
         // returns 1 when the graph is not connected
         // it is then used in the fitness function as a multiplier
-        public int IsSpanner()
+        public int IsSpanner(byte colour)
         {
-            if (CountComponents() > 1) return 1;
+            if (CountComponents(colour) > 1) return 1;
             else return 0;
         }
 
-        private int CountComponents()
+        private int CountComponents(byte colour)
         {
             //Stavy jednotlivych uzlu
             int[] state = new int[vertexCount];
@@ -261,22 +281,22 @@ namespace CubeBreeder
                 if (state[i] == 0)
                 {
                     counter++;
-                    DFS(i, state);
+                    DFS(i, state, colour);
                 }
             }
             return counter;
         }
 
-        private void DFS(int vertexNr, int[] state)
+        private void DFS(int vertexNr, int[] state, byte colour)
         {
             state[vertexNr] = 1;
 
             foreach (var e in graph.GetEdgesInVertex(vertexNr))
             {
-                if (edgeActivity[e.ID])
+                if (edgeActivity[e.ID].IsTrue() && edgeActivity[e.ID] == colour)
                 {
                     int k = e.Vertex1 != vertexNr ? e.Vertex1 : e.Vertex2;
-                    if (state[k] == 0) DFS(k, state);
+                    if (state[k] == 0) DFS(k, state, colour);
                 }
             }
             state[vertexNr] = 2;
@@ -288,7 +308,7 @@ namespace CubeBreeder
             string str = "Total of " + GetActiveEdgeCount() + " edges\n";
             for (int i = 0; i < edgeActivity.Length; i++)
             {
-                if (edgeActivity[i])
+                if (edgeActivity[i].IsTrue())
                 {
                     Edge edge = graph.GetEdge(i);
                     str += edge.Vertex1 + "\t" + edge.Vertex2 + "\t";
@@ -318,7 +338,7 @@ namespace CubeBreeder
                 int count = 0;
                 for (int j = 0; j < cubeDimension; j++)
                 {
-                    if (edgeActivity[graph.GetEdge(i,j).ID]) count++;
+                    if (edgeActivity[graph.GetEdge(i,j).ID].IsTrue()) count++;
                 }
                 if (maxDegree < count) maxDegree = count;
             }
@@ -335,7 +355,7 @@ namespace CubeBreeder
                 count = 0;
                 for (int j = 0; j < cubeDimension; j++)
                 {
-                    if (edgeActivity[graph.GetEdge(i, j).ID]) count++;
+                    if (edgeActivity[graph.GetEdge(i, j).ID].IsTrue()) count++;
                 }
                 degrees.Add(count);
             }

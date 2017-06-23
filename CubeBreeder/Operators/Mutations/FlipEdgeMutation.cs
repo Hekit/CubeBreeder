@@ -41,7 +41,7 @@ namespace CubeBreeder.Operators.Mutations
                 {
                     int length = p1.Length();
 
-                    bool activity;
+                    byte activity;
 
                     foreach (Edge edge in Program.graph.GetEdges())
                     {
@@ -49,7 +49,7 @@ namespace CubeBreeder.Operators.Mutations
                         {
                             activity = p1.IsActiveOnEdge(edge.ID);
                             // swap values
-                            activity = activity == true ? false : true;
+                            activity = (byte)(activity > 0 ? 0 : 1);
                             o1.SetActivityOnEdge(edge.ID, activity);
                         }
                     }

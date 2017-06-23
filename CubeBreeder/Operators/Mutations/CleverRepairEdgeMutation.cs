@@ -45,18 +45,18 @@ namespace CubeBreeder.Operators.Mutations
                     {
                         foreach (var edge in nondetouredEdges)
                         {
-                            p1.SetActivityOnEdge(edge.ID, true);
+                            p1.SetActivityOnEdge(edge.ID, 1);
                             int count = p1.GetUndetoured().Count();
                             repairs.Add(edge, count);
                             if (count > max) max = count;
-                            p1.SetActivityOnEdge(edge.ID, false);
+                            p1.SetActivityOnEdge(edge.ID, 0);
                         }
                         foreach (var edge in nondetouredEdges)
                         {
                             if (/*rng.NextDouble() < bitFlipProbability 
                                 &&*/ repairs[edge] == max)
                             {
-                                o1.SetActivityOnEdge(edge.ID, true);
+                                o1.SetActivityOnEdge(edge.ID, 1);
                             }
                         }
                     }

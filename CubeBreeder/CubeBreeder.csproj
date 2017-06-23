@@ -45,6 +45,7 @@
     <Compile Include="Edge.cs" />
     <Compile Include="EvolutionaryAlgorithm.cs" />
     <Compile Include="Fitness\BasicEvaluator.cs" />
+    <Compile Include="Fitness\EdgeDisjointSpanner.cs" />
     <Compile Include="Fitness\FitnessEvaluator.cs" />
     <Compile Include="Fitness\FitnessFunction.cs" />
     <Compile Include="Fitness\MaxDegreeFitness.cs" />

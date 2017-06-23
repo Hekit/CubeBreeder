@@ -71,8 +71,8 @@ namespace CubeBreeder.Operators.Crossovers
                     foreach (var e in Program.graph.GetEdges())
                     {
                         //testValue = TestSubcube(fix, vals, j, k);
-                        bool parent1Value = p1.IsActiveOnEdge(e.ID);
-                        bool parent2Value = p2.IsActiveOnEdge(e.ID);
+                        byte parent1Value = p1.IsActiveOnEdge(e.ID);
+                        byte parent2Value = p2.IsActiveOnEdge(e.ID);
 
                         if (parent1Value != parent2Value)
                         {
@@ -85,7 +85,7 @@ namespace CubeBreeder.Operators.Crossovers
                             }
                             else if (testValue == 0) // je na hrane, nic
                             {
-                                bool value = parent1Value == true ? parent1Value : parent2Value;
+                                byte value = parent1Value >= 1 ? parent1Value : parent2Value;
                                 o1.SetActivityOnEdge(e.ID, value);
                                 o2.SetActivityOnEdge(e.ID, value);
                             }

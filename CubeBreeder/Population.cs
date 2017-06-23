@@ -128,7 +128,7 @@ namespace CubeBreeder
                     n.FileInitialization();
                 else
                 {
-                    n.RandomInitialization();
+                    n.RandomInitialization(Program.maxColours);
                 }
                 individuals.Add(n);
                 if (i % (size / 5) == 0) Console.WriteLine((i * 20 / (size / 5)) + " %");
@@ -144,7 +144,7 @@ namespace CubeBreeder
             Parallel.For(0, size, i =>
             {
                 Individual n = new Individual(sampleIndividual);
-                n.RandomInitialization();
+                n.RandomInitialization(Program.maxColours);
                 individuals.Add(n);
             });
 

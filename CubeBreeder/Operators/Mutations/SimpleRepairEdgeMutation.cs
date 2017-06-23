@@ -46,7 +46,7 @@ namespace CubeBreeder.Operators.Mutations
                             if (rng.NextDouble() < bitFlipProbability
                                 && nondetouredEdges.Contains(edge))
                             {
-                                o1.SetActivityOnEdge(edge.ID, true);
+                                o1.SetActivityOnEdge(edge.ID, 1);
                             }
                         }
                     }
