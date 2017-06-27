@@ -109,6 +109,41 @@ namespace CubeBreeder
 
             file.Close();
         }
+
+        // -1 both out, 0 one and one, 1 both in
+        public static int TestSubcube(bool[] fix, byte[] vals, Edge e)
+        {
+            byte[] v1 = Tools.ToBinary(e.Vertex1);
+            byte[] v2 = Tools.ToBinary(e.Vertex2);
+            return TestSubcube(fix, vals, v1, v2);
+        }
+
+        private static int TestSubcube(bool[] fix, byte[] vals, int x, int y)
+        {
+            byte[] v1 = Tools.ToBinary(x);
+            byte[] v2 = Tools.ToBinary(y);
+            return TestSubcube(fix, vals, v1, v2);
+        }
+
+        private static int TestSubcube(bool[] fix, byte[] vals, byte[] v1, byte[] v2)
+        {
+            string status = "bothIn";
+
+            for (int i = 0; i < fix.Length; i++)
+            {
+                if (fix[i])
+                {
+                    if (v1[i] != vals[i])
+                        if (status == "bothIn") status = "v1out";
+                        else if (status == "v2out") return -1;
+                    if (v2[i] != vals[i])
+                        if (status == "bothIn") status = "v2out";
+                        else if (status == "v1out") return -1;
+                }
+            }
+            if (status == "bothIn") return 1;
+            else return 0;
+        }
     }
 
     public static class Extensions

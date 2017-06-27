@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -133,12 +134,13 @@ namespace CubeBreeder
             WriteToBinaryFile<GraphInfo>(filePath, this);
         }
 
-        private void WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false)
+        private void WriteToBinaryFile<T>(string filePath, T objectToWrite)
         {
-            using (Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create))
+            using (FileStream stream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+            using (GZipStream gzs = new GZipStream(stream, CompressionMode.Compress))
             {
                 var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                binaryFormatter.Serialize(stream, objectToWrite);
+                binaryFormatter.Serialize(gzs, objectToWrite);
             }
         }
 
@@ -150,10 +152,11 @@ namespace CubeBreeder
 
         private static T ReadFromBinaryFile<T>(string filePath)
         {
-            using (Stream stream = File.Open(filePath, FileMode.Open))
+            using (FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            using (GZipStream gzs = new GZipStream(stream, CompressionMode.Decompress))
             {
                 var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                return (T)binaryFormatter.Deserialize(stream);
+                return (T)binaryFormatter.Deserialize(gzs);
             }
         }
     }
