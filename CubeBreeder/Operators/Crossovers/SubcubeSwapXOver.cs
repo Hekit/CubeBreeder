@@ -49,7 +49,7 @@ namespace CubeBreeder.Operators.Crossovers
                 if (rng.NextDouble() < xOverProb)
                 {
                     // vypocet indexu k fixaci a hodnot pro ne
-                    bool[] fix = new bool[o1.GetCubeDimension()];
+                    bool[] fix = new bool[p1.GetCubeDimension()];
                     byte[] vals = new byte[fix.Length];
 
                     for (int j = 0; j < fix.Length; j++)
@@ -57,7 +57,7 @@ namespace CubeBreeder.Operators.Crossovers
                         fix[j] = false;
                     }
 
-                    for (int j = 0; j < 3; j++)
+                    for (int j = 0; j < p1.GetCubeDimension() - subCubeSize; j++)
                     {
                         int val = rng.NextInt(fix.Length);
                         while (fix[val] == true) val = rng.NextInt(fix.Length);
@@ -76,7 +76,7 @@ namespace CubeBreeder.Operators.Crossovers
 
                         if (parent1Value != parent2Value)
                         {
-                            testValue = TestSubcube(fix, vals, e); // snad to funguje :))
+                            testValue = Tools.TestSubcube(fix, vals, e); // snad to funguje :))
 
                             if (testValue == -1) // vne, proto nechavame
                             {
@@ -114,39 +114,6 @@ namespace CubeBreeder.Operators.Crossovers
             }
         }
 
-        // -1 both out, 0 one and one, 1 both in
-        private int TestSubcube(bool[] fix, byte[] vals, Edge e)
-        {
-            byte[] v1 = Tools.ToBinary(e.Vertex1);
-            byte[] v2 = Tools.ToBinary(e.Vertex2);
-            return TestSubcube(fix, vals, v1, v2);
-        }
-
-        private int TestSubcube(bool[] fix, byte[] vals, int x, int y)
-        {
-            byte[] v1 = Tools.ToBinary(x);
-            byte[] v2 = Tools.ToBinary(y);
-            return TestSubcube(fix, vals, v1, v2);
-        }
-
-        private int TestSubcube(bool[] fix, byte[] vals,  byte[] v1,  byte[] v2)
-        {
-            string status = "bothIn";
-
-            for (int i = 0; i < fix.Length; i++)
-            {
-                if (fix[i])
-                {
-                    if (v1[i] != vals[i])
-                        if (status == "bothIn") status = "v1out";
-                        else if (status == "v2out") return -1;
-                    if (v2[i] != vals[i])
-                        if (status == "bothIn") status = "v2out";
-                        else if (status == "v1out") return -1;
-                }
-            }
-            if (status == "bothIn") return 1;
-            else return 0;
-        }
+        
     }
 }

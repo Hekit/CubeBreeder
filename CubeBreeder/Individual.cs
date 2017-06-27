@@ -181,6 +181,7 @@ namespace CubeBreeder
 
         public double Is_Good_Enough(byte colour)
         {
+            if (IsSpanner(colour) == 1) return 0;
             return 1;
         }
 

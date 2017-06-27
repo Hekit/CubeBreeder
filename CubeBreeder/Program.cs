@@ -141,9 +141,9 @@ namespace CubeBreeder
             // Operators
             ea.AddOperator(new SubcubeSwapXOver(xoverProb, subcubeSize));
             //ea.AddOperator(new SubcubeSwapXOver(xoverProb, 1));
-            ea.AddOperator(new FlipEdgeMutation(mutProb, mutProbPerBit));
             //ea.AddOperator(new SimpleRepairEdgeMutation(mutProb, mutRepair));
             ea.AddOperator(new CleverRepairEdgeMutation(mutProb / 18, mutRepair));
+            ea.AddOperator(new FlipEdgeMutation(mutProb, mutProbPerBit));
             ea.AddEnvironmentalSelector(new RouletteWheelSelector());
             //ea.addEnvironmentalSelector(new selectors.TournamentSelector());
 
