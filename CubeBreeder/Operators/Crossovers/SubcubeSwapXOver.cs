@@ -30,9 +30,10 @@ namespace CubeBreeder.Operators.Crossovers
             //subCubeSize = rng.NextInt(1, Properties.Settings.Default.Dimension);
         }
 
+        public void Update() { }
+
         public void Operate(Population parents, Population offspring)
         {
-
             int size = parents.GetPopulationSize();
 
             //subCubeSize = rng.NextInt(1, ((CubeIndividual)parents.Get(0)).GetCubeDimension());
@@ -101,6 +102,8 @@ namespace CubeBreeder.Operators.Crossovers
                             }
                         }
                     }
+                    o1.changed = true;
+                    o2.changed = true;
                 }
                 else
                 {

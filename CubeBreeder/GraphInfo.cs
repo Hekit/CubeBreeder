@@ -123,9 +123,9 @@ namespace CubeBreeder
             return null;
         }
 
-        public List<Edge> GetEdgesInVertex(int v)
+        public Edge[] GetEdgesInVertex(int v)
         {
-            return graph[v].ToList();
+            return graph[v];
         }
 
         private void SaveFullCube()

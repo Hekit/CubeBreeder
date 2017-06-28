@@ -19,6 +19,8 @@ namespace CubeBreeder.Operators.Mutations
             this.subCubeSize = subCube;
         }
 
+        public void Update() { }
+
         public void Operate(Population parents, Population offspring)
         {
             int size = parents.GetPopulationSize();
@@ -68,6 +70,7 @@ namespace CubeBreeder.Operators.Mutations
                         {
                         }
                     }
+                    o1.changed = true;
                 }
             }
         }

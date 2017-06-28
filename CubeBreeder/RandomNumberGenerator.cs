@@ -12,11 +12,18 @@ namespace CubeBreeder
     public class RandomNumberGenerator
     {
         private static Random rnd;
+        private static Random[] randoms;
         private static RandomNumberGenerator theInstance = null;
 
         private RandomNumberGenerator()
         {
             rnd = new Random();
+            int dim = Properties.Settings.Default._Dimension;
+            randoms = new Random[dim];
+            for (int i = 0; i < dim; i++)
+            {
+                randoms[i] = new Random();
+            }
         }
 
         /**
@@ -26,13 +33,11 @@ namespace CubeBreeder
          */
         public static RandomNumberGenerator GetInstance()
         {
-
             if (theInstance == null)
             {
                 theInstance = new RandomNumberGenerator();
             }
             return theInstance;
-
         }
 
         /**
@@ -81,9 +86,19 @@ namespace CubeBreeder
             rnd = new Random(seed);
         }
 
+        public void ReSeed(int seed, int idx)
+        {
+            randoms[idx] = new Random(seed);
+        }
+
         public Random getRandom()
         {
             return rnd;
+        }
+
+        public Random getRandom(int i)
+        {
+            return randoms[i];
         }
 
         internal byte NextByte(int p)

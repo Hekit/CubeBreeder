@@ -25,6 +25,11 @@ namespace CubeBreeder.Operators.Mutations
             this.bitFlipProbability = bitFlipProbability;
         }
 
+        public void Update()
+        {
+            //mutationProbability -= 0.001;
+        }
+
         public void Operate(Population parents, Population offspring)
         {
 
@@ -60,6 +65,7 @@ namespace CubeBreeder.Operators.Mutations
                             }
                         }
                     }
+                    o1.changed = true;
                 }
                 offspring.Add(o1);
             }

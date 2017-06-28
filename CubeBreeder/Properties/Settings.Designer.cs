@@ -25,7 +25,7 @@ namespace CubeBreeder.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("15")]
+        [global::System.Configuration.DefaultSettingValueAttribute("7")]
         public int _Dimension {
             get {
                 return ((int)(this["_Dimension"]));
@@ -37,7 +37,7 @@ namespace CubeBreeder.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
         public int _MaxGenerations {
             get {
                 return ((int)(this["_MaxGenerations"]));
@@ -188,6 +188,30 @@ namespace CubeBreeder.Properties {
             }
             set {
                 this["EliteSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Extendable {
+            get {
+                return ((bool)(this["Extendable"]));
+            }
+            set {
+                this["Extendable"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Paralell {
+            get {
+                return ((bool)(this["Paralell"]));
+            }
+            set {
+                this["Paralell"] = value;
             }
         }
     }

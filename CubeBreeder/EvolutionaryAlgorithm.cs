@@ -174,6 +174,7 @@ namespace CubeBreeder
             }
 
             Population offspring = null;
+            foreach (Operator o in operators) o.Update();
             foreach (Operator o in operators)
             {
                 offspring = new Population();

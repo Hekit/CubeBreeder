@@ -9,5 +9,7 @@ namespace CubeBreeder.Operators
     interface Operator
     {
         void Operate(Population parents, Population offspring);
+
+        void Update();
     }
 }

@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="_Dimension" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">15</Value>
+      <Value Profile="(Default)">7</Value>
     </Setting>
     <Setting Name="_MaxGenerations" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">100</Value>
+      <Value Profile="(Default)">1000</Value>
     </Setting>
     <Setting Name="_PopulationSize" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1000</Value>
@@ -43,6 +43,12 @@
     </Setting>
     <Setting Name="EliteSize" Type="System.Single" Scope="User">
       <Value Profile="(Default)">0.1</Value>
+    </Setting>
+    <Setting Name="Extendable" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Paralell" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

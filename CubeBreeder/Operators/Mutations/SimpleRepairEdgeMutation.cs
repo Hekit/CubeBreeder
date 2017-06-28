@@ -25,6 +25,8 @@ namespace CubeBreeder.Operators.Mutations
             this.bitFlipProbability = bitFlipProbability;
         }
 
+        public void Update() { }
+
         public void Operate(Population parents, Population offspring)
         {
 
@@ -47,6 +49,7 @@ namespace CubeBreeder.Operators.Mutations
                                 && nondetouredEdges.Contains(edge))
                             {
                                 o1.SetActivityOnEdge(edge.ID, 1);
+                                o1.changed = true;
                             }
                         }
                     }

@@ -30,6 +30,7 @@ namespace CubeBreeder
         static double eliteSize;
         public static int localDetourSpanners = 0;
         public static int maxColours;
+        static bool paralell;
 
         static Tools tools;
         public static GraphInfo graph;
@@ -64,6 +65,8 @@ namespace CubeBreeder
             // Size of the elite
             eliteSize = Properties.Settings.Default.EliteSize;
 
+            paralell = Properties.Settings.Default.Paralell;
+
             tools = Tools.GetInstance(cubeDimension);
 
             if (Properties.Settings.Default.Task == "spanner")
@@ -86,19 +89,28 @@ namespace CubeBreeder
                 graph = new GraphInfo(cubeDimension);
             }
 
+            popSize = edgeCount * 10;
+
+            //Console.WriteLine(Environment.ProcessorCount);
+
             /////////////////////////////////
             //                             //
             //      Run the algorithm      //
             //                             //
             /////////////////////////////////
-            
+
+            Console.WriteLine("Dimension: " + cubeDimension);
+            Console.WriteLine("Population: " + (edgeCount * 10));
+            Console.WriteLine();
+
             List<Individual> bestInds = new List<Individual>();
-            
+
             for (int i = 0; i < repeats; i++)
+            //Parallel.For(0, repeats, i =>
             {
                 Individual best = Run(i);
                 if (best != null) bestInds.Add(best);
-            }
+            }//);
             for (int i = 0; i < bestInds.Count; i++)
             {
                 Console.WriteLine("Run " + (i + 1) + ": best objective=" + bestInds[i].GetObjectiveValue());
@@ -108,7 +120,7 @@ namespace CubeBreeder
 
         public static Individual Run(int number)
         {
-
+            Console.WriteLine("Starting run no. " + (number + 1));
             Console.WriteLine("Initializing");
             Stopwatch sw = Stopwatch.StartNew();
             //Set the rng seed
@@ -136,7 +148,7 @@ namespace CubeBreeder
             }
             else throw new NotImplementedException();
             // Selectors
-            //ea.addMatingSelector(new selectors.RouletteWheelSelector());
+            //ea.AddMatingSelector(new RouletteWheelSelector());
             ea.AddMatingSelector(new TournamentSelector());
             // Operators
             ea.AddOperator(new SubcubeSwapXOver(xoverProb, subcubeSize));
@@ -144,8 +156,8 @@ namespace CubeBreeder
             //ea.AddOperator(new SimpleRepairEdgeMutation(mutProb, mutRepair));
             ea.AddOperator(new CleverRepairEdgeMutation(mutProb / 18, mutRepair));
             ea.AddOperator(new FlipEdgeMutation(mutProb, mutProbPerBit));
-            ea.AddEnvironmentalSelector(new RouletteWheelSelector());
-            //ea.addEnvironmentalSelector(new selectors.TournamentSelector());
+            //ea.AddEnvironmentalSelector(new RouletteWheelSelector());
+            ea.AddEnvironmentalSelector(new TournamentSelector());
 
             ea.SetElite(eliteSize);
 
@@ -165,14 +177,16 @@ namespace CubeBreeder
                     ea.Evolve(pop);
                     List<Individual> sorted = pop.GetSortedIndividuals();
                     //Log the best individual to console.
-                    //if ((i + 1) % 10 == 0)
+                    if ((i + 1) % 100 == 0)
                     {
                         int idx = 0;
                         while (idx < popSize && sorted[idx].Is_3_Spanner(false) < 1) idx++;
                         if (idx >= popSize) idx = 0;
 
+                        if (paralell) Console.Write("Thread " + number + ": ");
                         //Console.WriteLine("Generation: " + (i + 1) + " fitness: " + sorted[0].GetFitnessValue());
-                        Console.WriteLine("Gen: " + (i + 1)
+                        Console.WriteLine(
+                            "Gen: " + (i + 1)
                             + " obj: " + sorted[idx].GetObjectiveValue() + " at " + idx
                             + " fit: " + sorted[0].GetFitnessValue()
                             + " 3-s: {0:f2} %", (float)(localDetourSpanners * 100.0 / popSize));
@@ -186,7 +200,7 @@ namespace CubeBreeder
                     }
 
                     //Console.WriteLine("{0:f2} s", sw.Elapsed.TotalSeconds);
-                    if (i + 1 == maxGen)
+                    if (Properties.Settings.Default.Extendable && i + 1 == maxGen)
                     {
                         Console.WriteLine("Continue?");
                         int extra = 0;
@@ -196,6 +210,7 @@ namespace CubeBreeder
                         }
                     }
                 }
+                Console.WriteLine();
                 Individual bestInd;
                 for (int j = 0; j < pop.GetPopulationSize(); j++)
                 {

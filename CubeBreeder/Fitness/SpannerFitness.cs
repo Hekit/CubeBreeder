@@ -17,11 +17,19 @@ namespace CubeBreeder.Fitness
 
         public double Evaluate(Individual ind, bool count)
         {
+            if (!ind.changed)
+            {
+                if (count && ind.spanner == 1)
+                    Program.localDetourSpanners++; 
+                return ind.GetFitnessValue();
+            }
+            else ind.changed = false;
+            
             int fitness = edgeCount - ind.GetActiveEdgeCount();
-            double spanner = ind.Is_3_Spanner(count);
+            ind.spanner = ind.Is_3_Spanner(count);
 
             //this sets the objective value, can be different from the fitness function
-            if (spanner == 1.0) ind.SetObjectiveValue(edgeCount - fitness);
+            if (ind.spanner == 1.0) ind.SetObjectiveValue(edgeCount - fitness);
             else ind.SetObjectiveValue(0);
 
             // pro pocitani co nejmene hran
@@ -37,7 +45,7 @@ namespace CubeBreeder.Fitness
             //return fitness - fitness * ((CubeIndividual)ind).Is_3_Spanner(count);
 
             // pro pocitani 3 spanneru
-            return fitness * spanner;
+            return fitness * ind.spanner;
         }
     }
 }

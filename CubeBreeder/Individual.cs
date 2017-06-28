@@ -17,6 +17,8 @@ namespace CubeBreeder
         int vertexCount;
         public static long knownSize = 0;
         public bool elite = false;
+        public bool changed = false;
+        public double spanner = 0;
 
         GraphInfo graph;
         byte[] edgeActivity;
@@ -26,6 +28,10 @@ namespace CubeBreeder
             this.cubeDimension = daddy.cubeDimension;
             this.vertexCount = daddy.vertexCount;
             this.graph = daddy.graph;
+            this.changed = daddy.changed;
+            this.spanner = daddy.spanner;
+            this.fitnessValue = daddy.fitnessValue;
+            this.objectiveValue = daddy.objectiveValue;
             this.edgeActivity = new byte[daddy.edgeActivity.Length];
         }
 
@@ -93,6 +99,7 @@ namespace CubeBreeder
             {
                 n.edgeActivity[i] = this.edgeActivity[i];
             }
+            //changed = true;
             return n;
             //return MemberwiseClone();
         }
@@ -152,11 +159,13 @@ namespace CubeBreeder
         public void SetActivityBetweenVertices(int i1, int i2, byte value)
         {
             edgeActivity[graph.GetID(i1, i2)] = value;
+            //changed = true;
         }
 
         public void SetActivityOnEdge(int edgeID, byte value)
         {
             edgeActivity[edgeID] = value;
+            //changed = true;
         }
 
         public bool IsActiveBetweenVertices(int i1, int i2)

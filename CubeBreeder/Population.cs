@@ -130,6 +130,8 @@ namespace CubeBreeder
                 {
                     n.RandomInitialization(Program.maxColours);
                 }
+                n.changed = true;
+                n.spanner = n.Is_3_Spanner(true);
                 individuals.Add(n);
                 if (i % (size / 5) == 0) Console.WriteLine((i * 20 / (size / 5)) + " %");
                 //});
