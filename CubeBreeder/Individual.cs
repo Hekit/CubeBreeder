@@ -23,6 +23,8 @@ namespace CubeBreeder
         GraphInfo graph;
         byte[] edgeActivity;
 
+        RandomNumberGenerator rnd = RandomNumberGenerator.GetInstance();
+
         public Individual(Individual daddy)
         {
             this.cubeDimension = daddy.cubeDimension;
@@ -142,7 +144,6 @@ namespace CubeBreeder
 
         public void RandomInitialization(int maxColours)
         {
-            RandomNumberGenerator rnd = RandomNumberGenerator.GetInstance();
             int probability = Properties.Settings.Default.P_ActiveProbability - 1;
 
             for (int i = 0; i < edgeActivity.Length; i++)

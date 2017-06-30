@@ -9,7 +9,8 @@ namespace CubeBreederTests
     {
         static int dimension = 3;
         Tools tools = Tools.GetInstance(dimension);
-        GraphInfo gi = new GraphInfo(dimension);
+        GraphInfo gi = GraphInfo.GetInstance(dimension);
+        Random r = new Random();
 
         [TestMethod]
         public void TestMethod1()

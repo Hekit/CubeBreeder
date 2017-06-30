@@ -11,6 +11,8 @@ namespace CubeBreeder
     [Serializable]
     public class GraphInfo
     {
+        private static GraphInfo theInstance = null;
+
         private Edge[][] graph;
         private int dimension;
         private int vertexCount;
@@ -18,7 +20,25 @@ namespace CubeBreeder
         private Edge[] edges;
         int edgeID = 0;
 
-        public GraphInfo(int dim)
+        public static GraphInfo GetInstance(int dim)
+        {
+            if (theInstance == null)
+            {
+                try
+                {
+                    theInstance = LoadFullCube(dim);
+                }
+                catch
+                {
+                    theInstance = new GraphInfo(dim);
+                }
+
+
+            }
+            return theInstance;
+        }
+
+        private GraphInfo(int dim)
         {
             dimension = dim;
             edgeCount = (int)Math.Pow(2, dim - 1) * dim;

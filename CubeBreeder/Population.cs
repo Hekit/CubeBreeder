@@ -11,7 +11,7 @@ namespace CubeBreeder
         int size = 0;
         GraphInfo sampleIndividual;
         List<Individual> individuals;
-        
+
         Random rnd = new Random();
 
         /**
@@ -115,7 +115,7 @@ namespace CubeBreeder
          */
         public void CreateRandomInitialPopulation()
         {
-            Console.Write("Population Initialization ");
+            if (!Settings.paralell) Console.Write("Population Initialization ");
             individuals = new List<Individual>(size);
 
             for (int i = 0; i < size; i++)
@@ -128,17 +128,17 @@ namespace CubeBreeder
                     n.FileInitialization();
                 else
                 {
-                    n.RandomInitialization(Program.maxColours);
+                    n.RandomInitialization(Settings.maxColours);
                 }
                 n.changed = true;
                 n.spanner = n.Is_3_Spanner(true);
                 individuals.Add(n);
                 if (i % (size / 5) == 0)
-                    Console.Write("|");
+                    if (!Settings.paralell) Console.Write("|");
                     //Console.WriteLine((i * 20 / (size / 5)) + " %");
                 //});
             }
-            Console.WriteLine(" Done");
+            if (!Settings.paralell) Console.WriteLine(" Done");
             //Console.WriteLine("100 %");
         }
 
@@ -149,7 +149,7 @@ namespace CubeBreeder
             Parallel.For(0, size, i =>
             {
                 Individual n = new Individual(sampleIndividual);
-                n.RandomInitialization(Program.maxColours);
+                n.RandomInitialization(Settings.maxColours);
                 individuals.Add(n);
             });
 

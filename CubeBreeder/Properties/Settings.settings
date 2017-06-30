@@ -6,7 +6,7 @@
       <Value Profile="(Default)">5</Value>
     </Setting>
     <Setting Name="_MaxGenerations" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1000</Value>
+      <Value Profile="(Default)">100</Value>
     </Setting>
     <Setting Name="_PopulationSize" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1000</Value>
@@ -24,7 +24,7 @@
       <Value Profile="(Default)">3</Value>
     </Setting>
     <Setting Name="Repeats" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1</Value>
+      <Value Profile="(Default)">3</Value>
     </Setting>
     <Setting Name="P_ActiveProbability" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">80</Value>

@@ -159,5 +159,26 @@ namespace CubeBreeder
     public static class Extensions
     {
         public static bool IsTrue(this byte val) => val != 0;
+
+        /*
+        public static int NextInt(this Random rnd, int max)
+        {
+            return rnd.Next(max);
+        }
+
+        public static int NextInt(this Random rnd, int start, int end)
+        {
+            return rnd.Next(start, end);
+        }
+
+        public static double NextDouble(this Random rnd)
+        {
+            return rnd.NextDouble();
+        }
+
+        public static byte NextByte(this Random rnd, int p)
+        {
+            return (byte)rnd.Next(0, Byte.MaxValue + 1);
+        }*/
     }
 }

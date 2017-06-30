@@ -10,7 +10,6 @@ namespace CubeBreeder.Operators.Crossovers
     {
         double xOverProb = 0;
         int subCubeSize = 3;
-
         RandomNumberGenerator rng = RandomNumberGenerator.GetInstance();
 
         /**
@@ -44,8 +43,8 @@ namespace CubeBreeder.Operators.Crossovers
                 Individual p1 = parents.Get(2 * i);
                 Individual p2 = parents.Get(2 * i + 1);
 
-                Individual o1 = new Individual(p1);
-                Individual o2 = new Individual(p2);
+                Individual o1 = (Individual)p1.Clone();
+                Individual o2 = (Individual)p2.Clone();
 
                 if (rng.NextDouble() < xOverProb)
                 {
@@ -60,18 +59,21 @@ namespace CubeBreeder.Operators.Crossovers
 
                     for (int j = 0; j < p1.GetCubeDimension() - subCubeSize; j++)
                     {
-                        int val = rng.NextInt(fix.Length);
-                        while (fix[val] == true) val = rng.NextInt(fix.Length);
+                        int val = rng.NextInt(fix.Length); //rng.NextInt(fix.Length);
+                        while (fix[val] == true)
+                        {
+                            val = rng.NextInt(fix.Length);
+                            //val = r.Next(fix.Length);//rng.NextInt(fix.Length);
+                        }
                         fix[val] = true;
                         vals[val] = rng.NextByte(2); // 0 or 1
                     }
-
+                    
                     // vymena podkrychle
                     int testValue;
                     int length = p1.Length();
                     foreach (var e in Program.graph.GetEdges())
                     {
-                        //testValue = TestSubcube(fix, vals, j, k);
                         byte parent1Value = p1.IsActiveOnEdge(e.ID);
                         byte parent2Value = p2.IsActiveOnEdge(e.ID);
 
@@ -105,12 +107,6 @@ namespace CubeBreeder.Operators.Crossovers
                     o1.changed = true;
                     o2.changed = true;
                 }
-                else
-                {
-                    o1 = p1;
-                    o2 = p2;
-                }
-
                 offspring.Add(o1);
                 offspring.Add(o2);
             //});

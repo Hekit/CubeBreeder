@@ -72,6 +72,7 @@
     <Compile Include="Replacements\MergingReplacement.cs" />
     <Compile Include="Replacements\PercentageReplacement.cs" />
     <Compile Include="Replacements\Replacement.cs" />
+    <Compile Include="Run.cs" />
     <Compile Include="Selectors\RouletteWheelSelector.cs" />
     <Compile Include="Selectors\Selector.cs" />
     <Compile Include="Selectors\TournamentSelector.cs" />

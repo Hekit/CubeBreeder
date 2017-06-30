@@ -17,7 +17,7 @@ namespace CubeBreeder
         List<Selector> environmentalSelectors;
         double eliteSize = 0.0;
         FitnessEvaluator fitness;
-        Replacements.Replacement replacement;
+        Replacement replacement;
         int generationNo = 0;
 
         /**
@@ -141,14 +141,17 @@ namespace CubeBreeder
                 throw new Exception("No fitness function defined");
 
             generationNo++;
-            if ((generationNo + 1) % (Program.showGap / 5) == 0) Console.Write("|");
-
+            if ((generationNo + 1) % (Settings.showGap / 5) == 0)
+            {
+                Console.Write("|");
+            }
+            
             fitness.Evaluate(pop, false);
-
+            
             Population parents = pop;
 
             Population matingPool = new Population();
-
+            
             if (matingSelectors.Count() > 0)
             {
                 int mateSel = matingSelectors.Count;
@@ -173,7 +176,7 @@ namespace CubeBreeder
                 matingPool = (Population)parents.Clone();
                 matingPool.Shuffle();
             }
-
+            
             Population offspring = null;
             foreach (Operator o in operators) o.Update();
             foreach (Operator o in operators)
@@ -182,13 +185,13 @@ namespace CubeBreeder
                 o.Operate(matingPool, offspring);
                 matingPool = offspring;
             }
-
+            
             fitness.Evaluate(offspring, false);
 
             Population selected = new Population();
 
             Population combined = replacement.Replace(parents, offspring);
-
+            
             if (environmentalSelectors.Count < 1)
             {
                 selected = (Population)combined.Clone();

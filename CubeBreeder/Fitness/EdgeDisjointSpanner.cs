@@ -17,9 +17,9 @@ namespace CubeBreeder.Fitness
 
         public double Evaluate(Individual ind, bool count)
         {
-            int[] fitness = new int[Program.maxColours];
-            int[] objective = new int[Program.maxColours];
-            double[] spanner = new double[Program.maxColours];
+            int[] fitness = new int[Settings.maxColours];
+            int[] objective = new int[Settings.maxColours];
+            double[] spanner = new double[Settings.maxColours];
 
             for (int i = 0; i < fitness.Length; i++)
             {
