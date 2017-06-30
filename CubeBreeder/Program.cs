@@ -32,6 +32,8 @@ namespace CubeBreeder
         public static int maxColours;
         static bool paralell;
 
+        public static int showGap = 25;
+
         static Tools tools;
         public static GraphInfo graph;
 
@@ -132,7 +134,6 @@ namespace CubeBreeder
             Population pop = new Population();
             pop.SetPopulationSize(popSize);
             pop.SetSampleIndividual(graph);
-            Console.WriteLine("Detours are computed");
             pop.CreateRandomInitialPopulation();
 
             //Set the options for the evolutionary algorithm
@@ -154,8 +155,10 @@ namespace CubeBreeder
             ea.AddOperator(new SubcubeSwapXOver(xoverProb, subcubeSize));
             //ea.AddOperator(new SubcubeSwapXOver(xoverProb, 1));
             //ea.AddOperator(new SimpleRepairEdgeMutation(mutProb, mutRepair));
-            ea.AddOperator(new CleverRepairEdgeMutation(mutProb / 18, mutRepair));
+            ea.AddOperator(new CleverRepairEdgeMutation(mutProb / 100, mutRepair));
             ea.AddOperator(new FlipEdgeMutation(mutProb, mutProbPerBit));
+            ea.AddOperator(new SubcubeTranslationMutation(mutProb, 3));
+            ea.AddOperator(new SubcubeRotationMutation(mutProb, 3));
             //ea.AddEnvironmentalSelector(new RouletteWheelSelector());
             ea.AddEnvironmentalSelector(new TournamentSelector());
 
@@ -177,19 +180,20 @@ namespace CubeBreeder
                     ea.Evolve(pop);
                     List<Individual> sorted = pop.GetSortedIndividuals();
                     //Log the best individual to console.
-                    if ((i + 1) % 100 == 0)
+                    if ((i + 1) % showGap == 0)
                     {
                         int idx = 0;
                         while (idx < popSize && sorted[idx].Is_3_Spanner(false) < 1) idx++;
                         if (idx >= popSize) idx = 0;
-
-                        if (paralell) Console.Write("Thread " + number + ": ");
+                        //if (paralell) Console.Write("Thread " + number + ": ");
+                        //if (paralell) Console.Write("Thread " + Environment.CurrentManagedThreadId + ": ");
                         //Console.WriteLine("Generation: " + (i + 1) + " fitness: " + sorted[0].GetFitnessValue());
-                        Console.WriteLine(
-                            "Gen: " + (i + 1)
-                            + " obj: " + sorted[idx].GetObjectiveValue() + " at " + idx
-                            + " fit: " + sorted[0].GetFitnessValue()
-                            + " 3-s: {0:f2} %", (float)(localDetourSpanners * 100.0 / popSize));
+                        Console.Write("Gen: " + (i + 1));
+                        Console.Write(" obj: " + sorted[idx].GetObjectiveValue() + " at " + idx);
+                        Console.Write(" fit: {0:f0}", sorted[0].GetFitnessValue());
+                        Console.Write(" 3-s: {0:f2} %", (float)(localDetourSpanners * 100.0 / popSize));
+                        Console.Write(" med: {0:f0}", sorted[popSize / 2].GetFitnessValue());
+                        Console.WriteLine();
                         //if (sorted[0].GetFitnessValue() == edgeCount) i = maxGen; // stopka pro tvoreni plne krychle
                     }
 

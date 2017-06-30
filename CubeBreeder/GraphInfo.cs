@@ -60,6 +60,7 @@ namespace CubeBreeder
 
         public void ComputeDetours()
         {
+            Console.WriteLine("Detours are being computed");
             foreach (var edge in edges)
             {
                 var edgesFromV1 = graph[edge.Vertex1];

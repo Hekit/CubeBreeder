@@ -18,14 +18,14 @@ namespace CubeBreeder
         private RandomNumberGenerator()
         {
             rnd = new Random();
-            int dim = Properties.Settings.Default._Dimension;
-            randoms = new Random[dim];
-            for (int i = 0; i < dim; i++)
+            int processorCount = Environment.ProcessorCount;
+            randoms = new Random[processorCount];
+            for (int i = 0; i < processorCount; i++)
             {
                 randoms[i] = new Random();
             }
         }
-
+        
         /**
          * Returns the only instance of random number generator.
          *

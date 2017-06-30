@@ -141,6 +141,7 @@ namespace CubeBreeder
                 throw new Exception("No fitness function defined");
 
             generationNo++;
+            if ((generationNo + 1) % (Program.showGap / 5) == 0) Console.Write("|");
 
             fitness.Evaluate(pop, false);
 

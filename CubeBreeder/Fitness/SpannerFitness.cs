@@ -43,9 +43,9 @@ namespace CubeBreeder.Fitness
 
             // pro pocitani 3 spanneru verze 0 1
             //return fitness - fitness * ((CubeIndividual)ind).Is_3_Spanner(count);
-
+            
             // pro pocitani 3 spanneru
-            return fitness * ind.spanner;
+            return fitness * (ind.spanner * ind.spanner);
         }
     }
 }

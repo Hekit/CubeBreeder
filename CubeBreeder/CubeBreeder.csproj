@@ -55,6 +55,7 @@
     <Compile Include="Operators\Mutations\FlipEdgeMutation.cs" />
     <Compile Include="Operators\Mutations\SimpleRepairEdgeMutation.cs" />
     <Compile Include="Operators\Mutations\SubcubeRotationMutation.cs" />
+    <Compile Include="Operators\Mutations\SubcubeTranslationMutation.cs" />
     <Compile Include="Operators\Operator.cs" />
     <Compile Include="Population.cs" />
     <Compile Include="RandomNumberGenerator.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Selectors\RouletteWheelSelector.cs" />
     <Compile Include="Selectors\Selector.cs" />
     <Compile Include="Selectors\TournamentSelector.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="Tools.cs" />
   </ItemGroup>
   <ItemGroup>
