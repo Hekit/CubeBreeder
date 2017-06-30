@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace CubeBreeder.Operators.Mutations
 {
-    class SubcubeRotationMutation : Operator
+    class SubcubeTranslationMutation : Operator
     {
         double mutationProbability;
         int subCubeSize = 3;
 
         RandomNumberGenerator rng = RandomNumberGenerator.GetInstance();
 
-        public SubcubeRotationMutation(double mutationProbability, int subCube)
+        public SubcubeTranslationMutation(double mutationProbability, int subCube)
         {
             this.mutationProbability = mutationProbability;
             this.subCubeSize = subCube;
@@ -49,11 +49,8 @@ namespace CubeBreeder.Operators.Mutations
                         vals[val] = rng.NextByte(2); // 0 or 1
                     }
 
-                    int perm1 = rng.NextInt(fix.Length);
-                    while (fix[perm1] == true) perm1 = rng.NextInt(fix.Length);
-                    int perm2 = rng.NextInt(fix.Length);
-                    while (fix[perm2] == true || perm1 == perm2) perm2 = rng.NextInt(fix.Length);
-
+                    int direction = rng.NextInt(fix.Length);
+                    while (fix[direction] == true) direction = rng.NextInt(fix.Length);
 
                     // vymena podkrychle
                     int length = p1.Length();
@@ -66,13 +63,11 @@ namespace CubeBreeder.Operators.Mutations
                         int test = Tools.TestSubcube(fix, vals, v1, v2);
 
                         if (test == 1)
-                        {
+                        { 
                             byte[] sonV1 = v1;
                             byte[] sonV2 = v2;
-                            sonV1[perm1] = v1[perm2];
-                            sonV1[perm2] = v1[perm1];
-                            sonV2[perm1] = v2[perm2];
-                            sonV2[perm2] = v2[perm1];
+                            sonV1[direction] = v1[direction].IsTrue() ? (byte)0 : (byte)1;
+                            sonV2[direction] = v2[direction].IsTrue() ? (byte)0 : (byte)1;
 
                             int son1 = Tools.FromBinary(sonV1);
                             int son2 = Tools.FromBinary(sonV2);
