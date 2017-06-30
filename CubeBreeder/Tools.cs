@@ -47,6 +47,16 @@ namespace CubeBreeder
             return ret;
         }
 
+        public static int FromBinary(byte[] num)
+        {
+            int dec = 0;
+            for (int i = dimension - 1; i >= 0; i--)
+            {
+                dec += powers[i] * num[dimension-i-1];
+            }
+            return dec;
+        }
+
         public static bool[] ToBinaryNew(int num)
         {
             //ret = new bool[dimension];
@@ -118,14 +128,14 @@ namespace CubeBreeder
             return TestSubcube(fix, vals, v1, v2);
         }
 
-        private static int TestSubcube(bool[] fix, byte[] vals, int x, int y)
+        public static int TestSubcube(bool[] fix, byte[] vals, int x, int y)
         {
             byte[] v1 = Tools.ToBinary(x);
             byte[] v2 = Tools.ToBinary(y);
             return TestSubcube(fix, vals, v1, v2);
         }
 
-        private static int TestSubcube(bool[] fix, byte[] vals, byte[] v1, byte[] v2)
+        public static int TestSubcube(bool[] fix, byte[] vals, byte[] v1, byte[] v2)
         {
             string status = "bothIn";
 
