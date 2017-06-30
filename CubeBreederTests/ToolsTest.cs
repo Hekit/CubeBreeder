@@ -96,6 +96,20 @@ namespace CubeBreederTests
         }
 
         [TestMethod]
+        public void FromBinary()
+        {
+            Tools tools = Tools.GetInstance(3);
+
+            byte[] b1 = { 0, 0, 1 };
+            byte[] b2 = { 1, 0, 1 };
+            byte[] b3 = { 0, 1, 1 };
+
+            Assert.AreEqual(1, Tools.FromBinary(b1), "1");
+            Assert.AreEqual(5, Tools.FromBinary(b2), "5");
+            Assert.AreEqual(3, Tools.FromBinary(b3), "3");
+        }
+
+        [TestMethod]
         public void DifferenceIndex()
         {
             Assert.AreEqual(0, Tools.DifferenceIndex(0, 1));
