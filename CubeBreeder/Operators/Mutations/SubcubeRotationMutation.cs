@@ -49,29 +49,33 @@ namespace CubeBreeder.Operators.Mutations
                         vals[val] = rng.NextByte(2); // 0 or 1
                     }
 
+                    int direction = rng.NextInt(fix.Length);
+                    while (fix[direction] == true) direction = rng.NextInt(fix.Length);
+
                     // vymena podkrychle
-                    int testValue;
                     int length = p1.Length();
 
                     foreach (var e in Program.graph.GetEdges())
                     {
                         //testValue = TestSubcube(fix, vals, j, k);
-                        byte parent1Value = p1.IsActiveOnEdge(e.ID);
+                        byte[] v1 = Tools.ToBinary(e.Vertex1);
+                        byte[] v2 = Tools.ToBinary(e.Vertex2);
 
-                        testValue = Tools.TestSubcube(fix, vals, e); // snad to funguje :))
-
-                        if (testValue == -1) // vne
+                        for (int j = 0; j < fix.Length; j++)
                         {
-                        }
-                        else if (testValue == 0) // je na hrane
-                        {
-                        }
-                        else // je uvnitr
-                        {
+                            if (fix[j] && v1[j] == vals[j] && v2[j] == vals[j])
+                            {
+                                byte parent1Value = p1.IsActiveOnEdge(e.ID);
+                                if (parent1Value.IsTrue())
+                                    o1.SetActivityOnEdge(e.ID, 0);
+                                else
+                                    o1.SetActivityOnEdge(e.ID, 1);
+                            }
                         }
                     }
                     o1.changed = true;
                 }
+                offspring.Add(o1);
             }
         }
     }
