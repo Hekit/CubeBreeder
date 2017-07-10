@@ -121,30 +121,35 @@ namespace CubeBreeder
 
         public void FileInitialization()
         {
-            //if (file == null) 
-            file = new System.IO.StreamReader(
-                "D:\\Development\\hypercubes\\initialization\\" + cubeDimension + "_init.txt");
-            file.ReadLine();
-            string s = file.ReadLine();
-            int v1 = -1;
-            int v2 = -1;
-            while (s != null && s.Length > 0)
+            try
             {
-                v1 = Int32.Parse(s.Substring(0, s.IndexOf("\t")));
-                s = s.Substring(s.IndexOf("\t") + 1);
-                v2 = Int32.Parse(s.Substring(0, s.IndexOf("\t")));
-                for (int i = 0; i < edgeActivity.Length; i++)
+                file = new System.IO.StreamReader(Settings.inputFolderPath + cubeDimension + "_init.txt");
+                file.ReadLine();
+                string s = file.ReadLine();
+                int v1 = -1;
+                int v2 = -1;
+                while (s != null && s.Length > 0)
                 {
-                    SetActivityBetweenVertices(v1, v2, 1);
+                    v1 = Int32.Parse(s.Substring(0, s.IndexOf("\t")));
+                    s = s.Substring(s.IndexOf("\t") + 1);
+                    v2 = Int32.Parse(s.Substring(0, s.IndexOf("\t")));
+                    for (int i = 0; i < edgeActivity.Length; i++)
+                    {
+                        SetActivityBetweenVertices(v1, v2, 1);
+                    }
+                    s = file.ReadLine();
                 }
-                s = file.ReadLine();
+                file.Close();
             }
-            file.Close();
+            catch
+            {
+                RandomInitialization(1);
+            }
         }
 
         public void RandomInitialization(int maxColours)
         {
-            int probability = Properties.Settings.Default.P_ActiveProbability - 1;
+            int probability = Settings.activeProbability - 1;
 
             for (int i = 0; i < edgeActivity.Length; i++)
             {
@@ -200,7 +205,7 @@ namespace CubeBreeder
             int detouredCount = 0;
             int nonDetouredCount = 0;
             int activeCount = 0;
-            if (IsSpanner(1) == 1) return 0;
+            //if (IsSpanner(1) == 1) return 0;
 
             for (int i = 0; i < edgeActivity.Length; i++)
             {
@@ -347,9 +352,9 @@ namespace CubeBreeder
             for (int i = 0; i < vertexCount; i++)
             {
                 int count = 0;
-                for (int j = 0; j < cubeDimension; j++)
+                foreach (var edge in graph.GetEdgesInVertex(i))
                 {
-                    if (edgeActivity[graph.GetEdge(i,j).ID].IsTrue()) count++;
+                    if (edgeActivity[edge.ID].IsTrue()) count++;
                 }
                 if (maxDegree < count) maxDegree = count;
             }
@@ -364,9 +369,9 @@ namespace CubeBreeder
             for (int i = 0; i < vertexCount; i++)
             {
                 count = 0;
-                for (int j = 0; j < cubeDimension; j++)
+                foreach (var edge in graph.GetEdgesInVertex(i))
                 {
-                    if (edgeActivity[graph.GetEdge(i, j).ID].IsTrue()) count++;
+                    if (edgeActivity[edge.ID].IsTrue()) count++;
                 }
                 degrees.Add(count);
             }

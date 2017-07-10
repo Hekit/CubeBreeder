@@ -27,7 +27,7 @@ namespace CubeBreeder
             GraphInfo graph = GraphInfo.GetInstance(s.cubeDimension);
             Tools tools = Tools.GetInstance(s.cubeDimension);
 
-            ea = s.InitializeEVA();
+            ea = Settings.ea;
 
             //Create new population
             Population pop = new Population();

@@ -34,7 +34,7 @@ namespace CubeBreeder
             /////////////////////////////////
 
             Console.WriteLine("Dimension: " + s.cubeDimension);
-            Console.WriteLine("Population: " + (s.edgeCount * 10));
+            //Console.WriteLine("Population: " + (s.edgeCount * 10));
             Console.WriteLine();
 
             List<Individual> bestInds = new List<Individual>();

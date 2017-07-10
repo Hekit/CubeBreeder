@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="_Dimension" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">5</Value>
+      <Value Profile="(Default)">7</Value>
     </Setting>
     <Setting Name="_MaxGenerations" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">100</Value>
+      <Value Profile="(Default)">500</Value>
     </Setting>
     <Setting Name="_PopulationSize" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1000</Value>
@@ -21,19 +21,19 @@
       <Value Profile="(Default)">0.02</Value>
     </Setting>
     <Setting Name="_SubcubeSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">3</Value>
+      <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="Repeats" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">3</Value>
+      <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="P_ActiveProbability" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">80</Value>
+      <Value Profile="(Default)">70</Value>
     </Setting>
     <Setting Name="File_Initialization" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Task" Type="System.String" Scope="User">
-      <Value Profile="(Default)">spanner</Value>
+      <Value Profile="(Default)">degree</Value>
     </Setting>
     <Setting Name="P_MutationRepairProbability" Type="System.Single" Scope="User">
       <Value Profile="(Default)">0.05</Value>
@@ -49,6 +49,12 @@
     </Setting>
     <Setting Name="Paralell" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ShowGap" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">25</Value>
+    </Setting>
+    <Setting Name="NPoints" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
     </Setting>
   </Settings>
 </SettingsFile>

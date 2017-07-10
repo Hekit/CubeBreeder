@@ -141,7 +141,7 @@ namespace CubeBreeder
                 throw new Exception("No fitness function defined");
 
             generationNo++;
-            if ((generationNo + 1) % (Settings.showGap / 5) == 0)
+            if (Settings.showGap >= 5 && (generationNo + 1) % (Settings.showGap / 5) == 0)
             {
                 Console.Write("|");
             }
@@ -178,14 +178,14 @@ namespace CubeBreeder
             }
             
             Population offspring = null;
-            foreach (Operator o in operators) o.Update();
             foreach (Operator o in operators)
             {
                 offspring = new Population();
                 o.Operate(matingPool, offspring);
                 matingPool = offspring;
             }
-            
+            foreach (Operator o in operators) o.Update();
+
             fitness.Evaluate(offspring, false);
 
             Population selected = new Population();

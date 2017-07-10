@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -159,6 +160,37 @@ namespace CubeBreeder
     public static class Extensions
     {
         public static bool IsTrue(this byte val) => val != 0;
+
+        public static TItem GetOrElse<TItem>(this IList<TItem> list, int index, TItem defaultValue)
+        {
+            // other checks omitted
+            if (index < 0 || index >= list.Count)
+            {
+                return defaultValue;
+            }
+            else return list[index];
+        }
+
+        public static int ParseIntOrElse(this IList<string> list, int index, int defaultValue)
+        {
+            int val;
+            if (index < 0 || index >= list.Count || !Int32.TryParse((string)list[index], out val))
+            {
+                return defaultValue;
+            }
+            else return val;
+        }
+
+        public static double ParseDoubleOrElse(this IList<string> list, int index, double defaultValue)
+        {
+            double val;
+            if (index < 0 || index >= list.Count || 
+                !Double.TryParse((string)list[index], NumberStyles.Number, CultureInfo.InvariantCulture, out val))
+            {
+                return defaultValue;
+            }
+            else return val;
+        }
 
         /*
         public static int NextInt(this Random rnd, int max)

@@ -30,7 +30,8 @@ namespace CubeBreeder.Operators.Mutations
                 Individual p1 = parents.Get(i);
                 Individual o1 = (Individual)p1.Clone();
 
-                if (rng.NextDouble() < mutationProbability)
+                if (subCubeSize <= o1.GetCubeDimension() &&
+                    rng.NextDouble() < mutationProbability)
                 {
                     // vypocet indexu k fixaci a hodnot pro ne
                     bool[] fix = new bool[o1.GetCubeDimension()];

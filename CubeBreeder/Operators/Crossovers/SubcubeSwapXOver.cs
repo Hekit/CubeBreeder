@@ -46,7 +46,8 @@ namespace CubeBreeder.Operators.Crossovers
                 Individual o1 = (Individual)p1.Clone();
                 Individual o2 = (Individual)p2.Clone();
 
-                if (rng.NextDouble() < xOverProb)
+                if (subCubeSize <= p1.GetCubeDimension() && 
+                    rng.NextDouble() < xOverProb)
                 {
                     // vypocet indexu k fixaci a hodnot pro ne
                     bool[] fix = new bool[p1.GetCubeDimension()];
@@ -59,17 +60,16 @@ namespace CubeBreeder.Operators.Crossovers
 
                     for (int j = 0; j < p1.GetCubeDimension() - subCubeSize; j++)
                     {
-                        int val = rng.NextInt(fix.Length); //rng.NextInt(fix.Length);
+                        int val = rng.NextInt(fix.Length);
                         while (fix[val] == true)
                         {
                             val = rng.NextInt(fix.Length);
-                            //val = r.Next(fix.Length);//rng.NextInt(fix.Length);
                         }
                         fix[val] = true;
                         vals[val] = rng.NextByte(2); // 0 or 1
                     }
                     
-                    // vymena podkrychle
+                    // swapping subcube
                     int testValue;
                     int length = p1.Length();
                     foreach (var e in Program.graph.GetEdges())

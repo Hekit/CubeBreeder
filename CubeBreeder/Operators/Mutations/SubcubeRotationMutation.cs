@@ -30,9 +30,12 @@ namespace CubeBreeder.Operators.Mutations
                 Individual p1 = parents.Get(i);
                 Individual o1 = (Individual)p1.Clone();
 
-                if (rng.NextDouble() < mutationProbability)
+
+
+                if (subCubeSize + 2 <= o1.GetCubeDimension()
+                    && rng.NextDouble() < mutationProbability)
                 {
-                    // vypocet indexu k fixaci a hodnot pro ne
+                    // calculating indices to be fixed and the fixed values
                     bool[] fix = new bool[o1.GetCubeDimension()];
                     byte[] vals = new byte[fix.Length];
 
@@ -54,8 +57,7 @@ namespace CubeBreeder.Operators.Mutations
                     int perm2 = rng.NextInt(fix.Length);
                     while (fix[perm2] == true || perm1 == perm2) perm2 = rng.NextInt(fix.Length);
 
-
-                    // vymena podkrychle
+                    // subcube swap
                     int length = p1.Length();
 
                     foreach (var e in Program.graph.GetEdges())
@@ -67,8 +69,8 @@ namespace CubeBreeder.Operators.Mutations
 
                         if (test == 1)
                         {
-                            byte[] sonV1 = v1;
-                            byte[] sonV2 = v2;
+                            byte[] sonV1 = v1.ToArray();
+                            byte[] sonV2 = v2.ToArray();
                             sonV1[perm1] = v1[perm2];
                             sonV1[perm2] = v1[perm1];
                             sonV2[perm1] = v2[perm2];

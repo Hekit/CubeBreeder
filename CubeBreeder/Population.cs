@@ -124,7 +124,7 @@ namespace CubeBreeder
                 //{
                 Individual n = new Individual(sampleIndividual);
 
-                if (Properties.Settings.Default.File_Initialization && i < size * Properties.Settings.Default.FileInitRatio)
+                if (Properties.Settings.Default.File_Initialization && i < size * Settings.fileUsage)
                     n.FileInitialization();
                 else
                 {
