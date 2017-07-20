@@ -34,7 +34,6 @@ namespace CubeBreeder
             /////////////////////////////////
 
             Console.WriteLine("Dimension: " + s.cubeDimension);
-            //Console.WriteLine("Population: " + (s.edgeCount * 10));
             Console.WriteLine();
 
             List<Individual> bestInds = new List<Individual>();
@@ -45,8 +44,6 @@ namespace CubeBreeder
                 runs[i] = new Run(i);
             }
             var bests = new List<Individual>();
-
-            //List<Task<Individual>> tasks = new List<Task<Individual>>();
 
             if (Settings.paralell)
             {
@@ -59,26 +56,6 @@ namespace CubeBreeder
                         bestInds.Add(best);
                     }
                 });
-
-                /*
-                for (int i = 0; i < s.repeats; i++)
-                {
-                    Task<Individual> task = new Task<Individual>(() => runs[i].RunIt());
-                    tasks.Add(task);
-                    task.RunSynchronously();
-                }                
-                Task.WaitAll(tasks.ToArray());*/
-                /*
-                foreach (var task in tasks)
-                {
-                    bests.Add(task.Result);
-                }
-                */
-                /*
-                Parallel.For(0, s.repeats, i =>
-                {
-                    bests[i] = runs[i].RunIt();
-                });*/
             }
             else
             {
