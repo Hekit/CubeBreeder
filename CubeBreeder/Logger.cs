@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace CubeBreeder
 {
+    /// <summary>
+    /// Logger class
+    /// </summary>
     class Logger
     {
         string path;
@@ -16,6 +19,9 @@ namespace CubeBreeder
         string dateTimeFormat;
         string fileName;
 
+        /// <summary>
+        /// Logging levels
+        /// </summary>
         public enum Level
         {
             NONE,
@@ -26,6 +32,11 @@ namespace CubeBreeder
             INFO
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="id">run id</param>
+        /// <param name="dim">dimension</param>
         public Logger(int id, int dim)
         {
             this.id = id;
@@ -41,6 +52,12 @@ namespace CubeBreeder
             }
         }
 
+        /// <summary>
+        /// Logs information about current generation
+        /// </summary>
+        /// <param name="pop">population in the generation</param>
+        /// <param name="sorted">sorted individuals</param>
+        /// <param name="gen">number of generation</param>
         public void Log(Population pop, List<Individual> sorted, int gen)
         {
             int idx = 0;
@@ -57,6 +74,10 @@ namespace CubeBreeder
                 sorted[pop.GetPopulationSize() / 2].GetFitnessValue()));
         }
 
+        /// <summary>
+        /// Logs settings of the program
+        /// </summary>
+        /// <param name="s"></param>
         public void Log(Settings s)
         {
             Log(Level.SETTINGS, "Hypercube Dimension:\t" + s.cubeDimension);
@@ -72,11 +93,20 @@ namespace CubeBreeder
             //Log(Level.SETTINGS, "\t" + s);
         }
 
+        /// <summary>
+        /// Logs individual ind
+        /// </summary>
+        /// <param name="ind">individual to be logged</param>
         public void Log(Individual ind)
         {
             Log(Level.INFO, "Best individual has objective " + ind.GetFitnessValue());
         }
 
+        /// <summary>
+        /// Logs a string text at level level
+        /// </summary>
+        /// <param name="level">logging level</param>
+        /// <param name="text">string to be logged</param>
         public void Log(Level level, string text)
         {
             string pretext = DateTime.Now.ToString(dateTimeFormat) + " [";
@@ -93,6 +123,10 @@ namespace CubeBreeder
             WriteLine(pretext + text);
         }
 
+        /// <summary>
+        /// Writes text to the logfile
+        /// </summary>
+        /// <param name="text">text to be logged</param>
         private void WriteLine(string text)
         {
             try

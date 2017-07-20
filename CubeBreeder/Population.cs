@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CubeBreeder
 {
+    /// <summary>
+    /// Population class
+    /// </summary>
     class Population
     {
         int size = 0;
@@ -15,171 +18,72 @@ namespace CubeBreeder
 
         Random rnd = new Random();
 
-        /**
-         * Creates new empty population.
-         */
+        /// <summary>
+        /// Creates new empty population
+        /// </summary>
         public Population()
         {
             individuals = new List<Individual>();
         }
 
-        /**
-        * Makes a deep copy of the population.
-        *
-        * @return A deep copy of the population. All individuals are cloned using
-        * their clone methods.
-        */
+        /// <summary>
+        /// Clones the population
+        /// </summary>
+        /// <returns></returns>
         public Object Clone()
         {
             return this.MemberwiseClone();
         }
 
-        /**
-         * Shuffles the order of the individuals in the population randomly.
-         */
+        /// <summary>
+        /// Randomly shuffles the order of individuals in the population
+        /// </summary>
         public void Shuffle()
         {
             individuals = (List<Individual>)individuals.OrderBy(item => rnd.Next());
         }
 
-        /**
-         * Sets the individual which is cloned to create the random initial population.
-         *
-         * @param sample The sample individual.
-         */
+        #region Get-Set
+        /// <summary>
+        /// Sets the structure of the individuals (i.e. the hypercube graph)
+        /// </summary>
+        /// <param name="example">hypercube graph</param>
         public void SetSampleIndividual(GraphInfo example)
         {
             this.sampleIndividual = example;
         }
 
-        /**
-         * Sets the population size, used only during the random initialization.
-         *
-         * @param size The population size.
-         */
+        /// <summary>
+        /// Sets the population size
+        /// </summary>
+        /// <param name="size"></param>
         public void SetPopulationSize(int size)
         {
             this.size = size;
         }
 
-        /**
-         * Returns the actual size of the population.
-         *
-         * @return The number of individuals in the population.
-         */
+        /// <summary>
+        /// Returns the size of the population
+        /// </summary>
+        /// <returns>size of the population</returns>
         public int GetPopulationSize()
         {
             return individuals.Count();
         }
 
+        /// <summary>
+        /// Method to get all the individuals from the population
+        /// </summary>
+        /// <returns>list of individuals</returns>
         public List<Individual> GetIndividuals()
         {
             return individuals;
         }
 
-        public void SetAverage(double average)
-        {
-            this.average = average;
-        }
-
-        public double GetAverage()
-        {
-            return average;
-        }
-
-        /**
-         * Gets the ith individual in the population.
-         *
-         * @param i The index of the individual which shall be returned.
-         * @return The indivudal at index i.
-         */
-        public Individual Get(int i)
-        {
-            return individuals[i];
-        }
-
-        /**
-         * Adds an individual to the population.
-         *
-         * @param ind The individual which shall be addded.
-         */
-        public void Add(Individual ind)
-        {
-            individuals.Add(ind);
-        }
-
-        /**
-         * Adds all the individuals fromt he population p to the population. Does not
-         * clone them.
-         *
-         * @param p The population from which the individuals shall be added.
-         */
-        public void AddAll(Population p)
-        {
-            individuals.AddRange(p.individuals);
-        }
-
-        /**
-         * Creates random initial population of the specified size. Calls the clone
-         * method on the sample individual and the randomInitialization method
-         * on the clones created from it.
-         */
-        public void CreateRandomInitialPopulation()
-        {
-            if (!Settings.paralell) Console.Write("Population Initialization ");
-            individuals = new List<Individual>(size);
-
-            for (int i = 0; i < size; i++)
-            {
-                //Parallel.For(0, size, i =>
-                //{
-                Individual n = new Individual(sampleIndividual);
-
-                if (Properties.Settings.Default.File_Initialization && i < size * Settings.fileUsage)
-                    n.FileInitialization();
-                else
-                {
-                    n.RandomInitialization(Settings.maxColours);
-                }
-                n.changed = true;
-                n.spanner = n.Is_3_Spanner(true);
-                individuals.Add(n);
-                if (i % (size / 5) == 0)
-                    if (!Settings.paralell) Console.Write("|");
-                    //Console.WriteLine((i * 20 / (size / 5)) + " %");
-                //});
-            }
-            if (!Settings.paralell) Console.WriteLine(" Done");
-            //Console.WriteLine("100 %");
-        }
-
-        public void CreateRandomInitialPopulation2()
-        {
-            individuals = new List<Individual>(size);
-
-            Parallel.For(0, size, i =>
-            {
-                Individual n = new Individual(sampleIndividual);
-                n.RandomInitialization(Settings.maxColours);
-                individuals.Add(n);
-            });
-
-        }
-
-        /**
-         * Removes all the individuals from the population.
-         */
-        public void Clear()
-        {
-            individuals.Clear();
-        }
-
-        /**
-         * Returns all the individuals in the population as a list sorted in descending
-         * order og their fitness.
-         *
-         * @return The sorted list of individuals.
-         */
+        /// <summary>
+        /// Gets the individuals sorted descendingly according to their fitness
+        /// </summary>
+        /// <returns>sorted list of individuals</returns>
         public List<Individual> GetSortedIndividuals()
         {
 
@@ -192,6 +96,93 @@ namespace CubeBreeder
 
         }
 
+        /// <summary>
+        /// Sets the population average
+        /// </summary>
+        /// <param name="average">population average</param>
+        public void SetAverage(double average)
+        {
+            this.average = average;
+        }
+
+        /// <summary>
+        /// Gets the population average
+        /// </summary>
+        /// <returns>population average</returns>
+        public double GetAverage()
+        {
+            return average;
+        }
+
+        /// <summary>
+        /// Gets the individual at index i
+        /// </summary>
+        /// <param name="i">the index of the individual that is returned</param>
+        /// <returns>the individual at index i</returns>
+        public Individual Get(int i)
+        {
+            return individuals[i];
+        }
+        #endregion Get-Set
+
+        /// <summary>
+        /// Adds an individual to the population
+        /// </summary>
+        /// <param name="ind">the individual to be added</param>
+        public void Add(Individual ind)
+        {
+            individuals.Add(ind);
+        }
+
+        /// <summary>
+        /// Adds the individuals from the population p to this population (not cloning)
+        /// </summary>
+        /// <param name="p">population whose individuals are added</param>
+        public void AddAll(Population p)
+        {
+            individuals.AddRange(p.individuals);
+        }
+
+        /// <summary>
+        /// Creates random initial population
+        /// </summary>
+        public void CreateRandomInitialPopulation()
+        {
+            if (!Settings.paralell) Console.Write("Population Initialization ");
+            individuals = new List<Individual>(size);
+
+            for (int i = 0; i < size; i++)
+            {
+                Individual n = new Individual(sampleIndividual);
+
+                if (Properties.Settings.Default.File_Initialization && i < size * Settings.fileUsage)
+                    // if we are using file, use it
+                    n.FileInitialization();
+                else
+                {
+                    // else initialize randomly
+                    n.RandomInitialization(Settings.maxColours);
+                }
+                n.changed = true;
+                n.spanner = n.Is_3_Spanner(true);
+                individuals.Add(n);
+                if (i % (size / 5) == 0)
+                    if (!Settings.paralell) Console.Write("|");
+            }
+            if (!Settings.paralell) Console.WriteLine(" Done");
+        }
+
+        /// <summary>
+        /// Removes all the individuals from the population
+        /// </summary>
+        public void Clear()
+        {
+            individuals.Clear();
+        }
+
+        /// <summary>
+        /// Method for comparing two individuals (based on their fitness)
+        /// </summary>
         class FitnessFunctionComparator : IComparer<Individual>
         {
 

@@ -3,29 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CubeBreeder;
-using System.IO;
-using System.Diagnostics;
-using CubeBreeder.Selectors;
-using CubeBreeder.Fitness;
-using CubeBreeder.Operators.Crossovers;
-using CubeBreeder.Operators.Mutations;
-using CubeBreeder.Replacements;
 
 namespace CubeBreeder
 {
+    /// <summary>
+    /// Entry point to the application
+    /// </summary>
     class Program
     {
         public static GraphInfo graph;
         public static int localDetourSpanners = 0;
 
+        /// <summary>
+        /// Main method
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
+            // initialize settings, tools and the hypoercube graph
             Settings s = Settings.GetInstance();
             Tools t = Tools.GetInstance(s.cubeDimension);
             graph = GraphInfo.GetInstance(s.cubeDimension);
-
-            //Console.WriteLine(Environment.ProcessorCount);
 
             /////////////////////////////////
             //                             //
@@ -33,11 +31,13 @@ namespace CubeBreeder
             //                             //
             /////////////////////////////////
 
+            // information output
             Console.WriteLine("Dimension: " + s.cubeDimension);
             Console.WriteLine();
 
             List<Individual> bestInds = new List<Individual>();
 
+            // initialize the array of runs
             Run[] runs = new Run[s.repeats];
             for (int i = 0; i < s.repeats; i++)
             {
@@ -45,9 +45,9 @@ namespace CubeBreeder
             }
             var bests = new List<Individual>();
 
+            // if parallel run it parallely
             if (Settings.paralell)
             {
-                
                 Parallel.ForEach(runs, r =>
                 {
                     Individual best = r.RunIt();
@@ -57,6 +57,7 @@ namespace CubeBreeder
                     }
                 });
             }
+            // else just run it
             else
             {
                 for (int i = 0; i < s.repeats; i++)
@@ -66,6 +67,7 @@ namespace CubeBreeder
                 }
             }
 
+            // output best individuals
             foreach (var best in bests)
             {
                 if (best != null) bestInds.Add(best);

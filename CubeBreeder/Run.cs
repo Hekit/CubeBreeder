@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace CubeBreeder
 {
+    /// <summary>
+    /// Single GA run class
+    /// </summary>
     class Run
     {
         Settings s = Settings.GetInstance();
@@ -14,12 +17,20 @@ namespace CubeBreeder
         EvolutionaryAlgorithm ea;
         Logger logger;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="number">the run identifier; also the random seed</param>
         public Run(int number)
         {
             this.number = number;
             logger = new Logger(number, s.cubeDimension);
         }
 
+        /// <summary>
+        /// GA running method
+        /// </summary>
+        /// <returns>best computed individual</returns>
         public Individual RunIt()
         { 
             Console.WriteLine("Starting run no. " + (number + 1));
@@ -44,9 +55,7 @@ namespace CubeBreeder
                 String.Format("{0:f2}", sw.Elapsed.TotalSeconds) + " seconds");
 
             //Run the algorithm
-
             Console.WriteLine("Running run no. " + (number + 1));
-
             try
             {
                 for (int i = 0; i < s.maxGen; i++)
@@ -79,16 +88,6 @@ namespace CubeBreeder
                         if (j < s.popSize * s.eliteSize) sorted[j].elite = true;
                         else sorted[j].elite = false;
                     }
-
-                    /*if (Properties.Settings.Default.Extendable && i + 1 == s.maxGen)
-                    {
-                        Console.WriteLine("Continue?");
-                        int extra = 0;
-                        if (Int32.TryParse(Console.ReadLine(), out extra))
-                        {
-                            s.maxGen += extra;
-                        }
-                    }*/
                 }
                 Console.WriteLine();
                 Individual bestInd;

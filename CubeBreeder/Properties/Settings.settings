@@ -44,9 +44,6 @@
     <Setting Name="EliteSize" Type="System.Single" Scope="User">
       <Value Profile="(Default)">0.1</Value>
     </Setting>
-    <Setting Name="Extendable" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="Paralell" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>

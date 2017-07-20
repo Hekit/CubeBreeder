@@ -194,18 +194,6 @@ namespace CubeBreeder.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool Extendable {
-            get {
-                return ((bool)(this["Extendable"]));
-            }
-            set {
-                this["Extendable"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool Paralell {
             get {
                 return ((bool)(this["Paralell"]));

@@ -12,6 +12,9 @@ using System.Globalization;
 
 namespace CubeBreeder
 {
+    /// <summary>
+    /// Settings of the program
+    /// </summary>
     class Settings
     {
         public int maxGen;
@@ -40,7 +43,7 @@ namespace CubeBreeder
         public static double tourWeakerProb = 0.2;
         public static string task;
         public static double changingSubcube;
-
+        public static string outputDir = "D:\\Development\\hypercubes\\";
 
         private static Settings theInstance = null;
 

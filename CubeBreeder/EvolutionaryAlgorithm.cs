@@ -10,6 +10,9 @@ using CubeBreeder.Replacements;
 
 namespace CubeBreeder
 {
+    /// <summary>
+    /// Representation of the evolutionary algorithm
+    /// </summary>
     class EvolutionaryAlgorithm
     {
         List<Operator> operators;

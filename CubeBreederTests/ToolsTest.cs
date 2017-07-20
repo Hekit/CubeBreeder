@@ -71,31 +71,6 @@ namespace CubeBreederTests
         }
 
         [TestMethod]
-        public void ToBinaryNew()
-        {
-            Tools tools = Tools.GetInstance(3);
-
-            for (int k = 0; k < 50000; k++)
-            {
-                bool[] e4 = { false, false, true };
-                bool[] a4 = Tools.ToBinaryNew(4);
-
-                for (int i = 0; i < 3; i++)
-                {
-                    Assert.AreEqual(e4[i], a4[i], "Index " + i);
-                }
-
-                bool[] e6 = { false, true, true };
-                bool[] a6 = Tools.ToBinaryNew(6);
-
-                for (int i = 0; i < 3; i++)
-                {
-                    Assert.AreEqual(e6[i], a6[i], "Index " + i);
-                }
-            }
-        }
-
-        [TestMethod]
         public void FromBinary()
         {
             Tools tools = Tools.GetInstance(3);

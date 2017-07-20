@@ -213,7 +213,7 @@ namespace CubeBreeder
 
         public double Is_Good_Enough(byte colour)
         {
-            return IsSpanner(colour);
+            return IsNotSpanner(colour);
         }
 
         public double Is_3_Spanner(bool counting)
@@ -221,7 +221,7 @@ namespace CubeBreeder
             int detouredCount = 0;
             int nonDetouredCount = 0;
             int activeCount = 0;
-            //if (IsSpanner(1) == 1) return 0;
+            //if (IsNotSpanner(1)) return 0;
 
             for (int i = 0; i < edgeActivity.Length; i++)
             {
@@ -281,7 +281,7 @@ namespace CubeBreeder
         {
             List<Edge> list = new List<Edge>();
 
-            if (IsSpanner(colour) == 1) return list;
+            if (IsNotSpanner(colour) == 1) return list;
 
             for (int i = 0; i < edgeActivity.Length; i++)
             {
@@ -296,7 +296,7 @@ namespace CubeBreeder
 
         // returns 1 when the graph is not connected
         // it is then used in the fitness function as a multiplier
-        public double IsSpanner(byte colour)
+        public double IsNotSpanner(byte colour)
         {
             return 1.0 / CountComponents(colour);
             if (CountComponents(colour) > 1) return 1;
