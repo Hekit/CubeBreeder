@@ -12,20 +12,34 @@ namespace CubeBreeder.Selectors
         int competitors;
         int maxGenerations;
         int currentGeneration;
+        double temperature;
+
+        // temperature settings
         int t0 = 15; // [5, 100]
         double alpha = 0.1; // [0,1]
-        double temperature;
 
         RandomNumberGenerator rng = RandomNumberGenerator.GetInstance();
 
-        public BoltzmannTournamentSelector(int max)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="max">maximal number of generations</param>
+        /// <param name="weakerProb">probability that the weaker individual will be selected</param>
+        /// <param name="competitors">number of competitors in the tournament</param>
+        public BoltzmannTournamentSelector(int max, double weakerProb, int competitors)
         {
-            weakerProb = Settings.tourWeakerProb;
-            competitors = Settings.competitors;
+            this.weakerProb = weakerProb;
+            this.competitors = competitors;
             maxGenerations = max;
             currentGeneration = 0;
         }
 
+        /// <summary>
+        /// Selecting howMany individuals from from to to
+        /// </summary>
+        /// <param name="howMany">number of individuals to select</param>
+        /// <param name="from">old population</param>
+        /// <param name="to">new population</param>
         public void Select(int howMany, Population from, Population to)
         {
             // update temperature

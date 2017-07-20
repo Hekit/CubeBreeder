@@ -6,22 +6,36 @@ using System.Threading.Tasks;
 
 namespace CubeBreeder.Selectors
 {
+    /// <summary>
+    /// Boltzmann Roulette Wheel Selector
+    /// </summary>
     class BoltzmannRouletteWheelSelector : Selector
     {
         int maxGenerations;
         int currentGeneration;
+        double temperature;
+        // temperature settings
         int t0 = 100; // [5, 100]
         double alpha = 0.05; // [0,1]
-        double temperature;
 
         RandomNumberGenerator rng = RandomNumberGenerator.GetInstance();
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="max">maximal number of generations</param>
         public BoltzmannRouletteWheelSelector(int max)
         {
             maxGenerations = max;
             currentGeneration = 0;
         }
 
+        /// <summary>
+        /// Selecting howMany individuals from from to to
+        /// </summary>
+        /// <param name="howMany">number of individuals to select</param>
+        /// <param name="from">old population</param>
+        /// <param name="to">new population</param>
         public void Select(int howMany, Population from, Population to)
         {
             // update temperature

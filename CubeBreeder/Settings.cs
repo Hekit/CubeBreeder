@@ -161,7 +161,7 @@ namespace CubeBreeder
             }
             // Selectors
             //ea.AddMatingSelector(new RouletteWheelSelector());
-            ea.AddMatingSelector(new TournamentSelector());
+            ea.AddMatingSelector(new TournamentSelector(tourWeakerProb, competitors));
             //ea.AddMatingSelector(new BoltzmannTournamentSelector(maxGen));
             //ea.AddMatingSelector(new BoltzmannRouletteWheelSelector(maxGen));
             // Operators
@@ -173,7 +173,7 @@ namespace CubeBreeder
             ea.AddOperator(new SubcubeTranslationMutation(mutProb, 2));
             ea.AddOperator(new SubcubeRotationMutation(mutProb, 2));
             //ea.AddEnvironmentalSelector(new RouletteWheelSelector());
-            ea.AddEnvironmentalSelector(new TournamentSelector());
+            ea.AddEnvironmentalSelector(new TournamentSelector(tourWeakerProb, competitors));
             //ea.AddEnvironmentalSelector(new BoltzmannTournamentSelector(maxGen));
             //ea.AddEnvironmentalSelector(new BoltzmannRouletteWheelSelector(maxGen));
 
@@ -227,15 +227,15 @@ namespace CubeBreeder
                         // competitors = Properties.Settings.Default.TournamentCompetitors;
                         if (line.GetOrElse(1, "") == "ENV" || line.GetOrElse(2, "") == "ENV")
                         {
-                            ea.AddEnvironmentalSelector(new TournamentSelector());
+                            //ea.AddEnvironmentalSelector(new TournamentSelector());
                             logger.Log(Logger.Level.SETTINGS, "Tournament");
                         }
                         if (line.GetOrElse(1, "") == "MAT" || line.GetOrElse(2, "") == "MAT")
-                            ea.AddMatingSelector(new TournamentSelector());
+                            //ea.AddMatingSelector(new TournamentSelector());
                         if (line.Length < 2)
                         {
-                            ea.AddEnvironmentalSelector(new TournamentSelector());
-                            ea.AddMatingSelector(new TournamentSelector());
+                            //ea.AddEnvironmentalSelector(new TournamentSelector());
+                            //ea.AddMatingSelector(new TournamentSelector());
                         }
                         break;
                     case "BoltzmanTournament":

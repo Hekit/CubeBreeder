@@ -6,19 +6,33 @@ using System.Threading.Tasks;
 
 namespace CubeBreeder.Selectors
 {
+    /// <summary>
+    /// Tournament Selector
+    /// </summary>
     class TournamentSelector : Selector
     {
         double weakerProb;
         int competitors;
 
-        public TournamentSelector()
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="weakerProb">probability that the weaker individual will be selected</param>
+        /// <param name="competitors">number of competitors in the tournament</param>
+        public TournamentSelector(double weakerProb, int competitors)
         {
-            weakerProb = Settings.tourWeakerProb;
-            competitors = Settings.competitors;
+            this.weakerProb = weakerProb;
+            this.competitors = competitors;
         }
 
         RandomNumberGenerator rng = RandomNumberGenerator.GetInstance();
 
+        /// <summary>
+        /// Selecting howMany individuals from from to to
+        /// </summary>
+        /// <param name="howMany">number of individuals to select</param>
+        /// <param name="from">old population</param>
+        /// <param name="to">new population</param>
         public void Select(int howMany, Population from, Population to)
         {
             for (int i = 0; i < howMany; i++)
