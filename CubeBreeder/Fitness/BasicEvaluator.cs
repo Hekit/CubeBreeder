@@ -17,10 +17,14 @@ namespace CubeBreeder.Fitness
 
         public void Evaluate(Population pop, bool count)
         {
+            double average = 0;
             pop.GetIndividuals().ForEach(x =>
             {
-                x.SetFitnessValue(fitness.Evaluate(x, count));
+                double fit = fitness.Evaluate(x, count);
+                x.SetFitnessValue(fit);
+                average += fit;
             });
+            pop.SetAverage(average / pop.GetPopulationSize());
         }
     }
 }

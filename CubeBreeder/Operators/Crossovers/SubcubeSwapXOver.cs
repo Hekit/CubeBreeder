@@ -29,7 +29,14 @@ namespace CubeBreeder.Operators.Crossovers
             //subCubeSize = rng.NextInt(1, Properties.Settings.Default.Dimension);
         }
 
-        public void Update() { }
+        public void Update()
+        {
+            if (Settings.changingSubcube > 0)
+            {
+                if (rng.NextDouble() < Settings.changingSubcube && subCubeSize > 2) subCubeSize--;
+                if (rng.NextDouble() < Settings.changingSubcube && subCubeSize < Settings.subCubeMaxSize) subCubeSize++;
+            }
+        }
 
         public void Operate(Population parents, Population offspring)
         {

@@ -6,10 +6,10 @@
       <Value Profile="(Default)">7</Value>
     </Setting>
     <Setting Name="_MaxGenerations" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">500</Value>
+      <Value Profile="(Default)">1000</Value>
     </Setting>
     <Setting Name="_PopulationSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1000</Value>
+      <Value Profile="(Default)">4480</Value>
     </Setting>
     <Setting Name="P_CrossoverProbability" Type="System.Single" Scope="User">
       <Value Profile="(Default)">0.5</Value>
@@ -18,28 +18,28 @@
       <Value Profile="(Default)">0.8</Value>
     </Setting>
     <Setting Name="P_MutationPerEdgeProbability" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">0.02</Value>
+      <Value Profile="(Default)">0.01</Value>
     </Setting>
     <Setting Name="_SubcubeSize" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="Repeats" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1</Value>
+      <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="P_ActiveProbability" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">70</Value>
+      <Value Profile="(Default)">45</Value>
     </Setting>
     <Setting Name="File_Initialization" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Task" Type="System.String" Scope="User">
-      <Value Profile="(Default)">degree</Value>
+      <Value Profile="(Default)">spanner</Value>
     </Setting>
     <Setting Name="P_MutationRepairProbability" Type="System.Single" Scope="User">
       <Value Profile="(Default)">0.05</Value>
     </Setting>
     <Setting Name="FileInitRatio" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">0.2</Value>
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="EliteSize" Type="System.Single" Scope="User">
       <Value Profile="(Default)">0.1</Value>
@@ -51,10 +51,19 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ShowGap" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">25</Value>
+      <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="NPoints" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="TournamentCompetitors" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="TournamentWeakerChance" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.2</Value>
+    </Setting>
+    <Setting Name="ChangingSubcubeSize" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.5</Value>
     </Setting>
   </Settings>
 </SettingsFile>

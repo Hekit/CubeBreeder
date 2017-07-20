@@ -19,6 +19,7 @@ namespace CubeBreeder
         public bool elite = false;
         public bool changed = false;
         public double spanner = 0;
+        int colours = 0;
 
         GraphInfo graph;
         byte[] edgeActivity;
@@ -88,6 +89,17 @@ namespace CubeBreeder
             return fitnessValue;
         }
 
+        public void SetColourCount(int colours)
+        {
+            this.colours = colours;
+        }
+
+
+        public int GetColourCount()
+        {
+            return colours;
+        }
+
         /**
          * Performs a deep copy of the individual. Resets the fitness value to
          * non-evaluated.
@@ -149,7 +161,7 @@ namespace CubeBreeder
 
         public void RandomInitialization(int maxColours)
         {
-            int probability = Settings.activeProbability - 1;
+            int probability = Settings.activeProbability;
 
             for (int i = 0; i < edgeActivity.Length; i++)
             {
@@ -194,8 +206,14 @@ namespace CubeBreeder
             return edgeActivity.Count(x => x == c);
         }
 
+        public int GetActiveEdgeCountColourblind()
+        {
+            return edgeActivity.Count(x => x > 0);
+        }
+
         public double Is_Good_Enough(byte colour)
         {
+            return IsSpanner(colour);
             if (IsSpanner(colour) == 1) return 0;
             return 1;
         }
@@ -227,11 +245,13 @@ namespace CubeBreeder
             }
             if (nonDetouredCount == 0)
             {
+                /*
+                // output of the so-far best achieved individual
                 if (this.GetObjectiveValue() < best && this.GetObjectiveValue() != 0)
                 {
                     best = (int)this.GetObjectiveValue();
                     Tools.WriteIndividual(this);
-                }
+                }*/
                 if (counting) Program.localDetourSpanners++;
             }
             //return 0;
@@ -278,8 +298,9 @@ namespace CubeBreeder
 
         // returns 1 when the graph is not connected
         // it is then used in the fitness function as a multiplier
-        public int IsSpanner(byte colour)
+        public double IsSpanner(byte colour)
         {
+            return 1.0 / CountComponents(colour);
             if (CountComponents(colour) > 1) return 1;
             else return 0;
         }
@@ -303,6 +324,25 @@ namespace CubeBreeder
             return counter;
         }
 
+        private bool IsSpanningTree(byte colour)
+        {
+            //Stavy jednotlivych uzlu
+            int[] state = new int[vertexCount];
+
+            for (int i = 0; i < vertexCount; i++) state[i] = 0;
+
+            DFS(0, state, colour);
+
+            for (int i = 0; i < vertexCount; i++)
+            {
+                if (state[i] == 0)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         private void DFS(int vertexNr, int[] state, byte colour)
         {
             state[vertexNr] = 1;
@@ -321,7 +361,12 @@ namespace CubeBreeder
 
         public override string ToString()
         {
-            string str = "Total of " + GetActiveEdgeCount() + " edges\n";
+            string str;
+            if (Settings.task != "eds")
+                str = "Total of " + GetActiveEdgeCount() + " edges "
+                + "with max degree " + GetMaxDegree() + "\n";
+            else str = "Total of " + GetActiveEdgeCountColourblind() + " edges in " 
+                    + objectiveValue + " edge-disjoint spanners\n";
             for (int i = 0; i < edgeActivity.Length; i++)
             {
                 if (edgeActivity[i].IsTrue())
@@ -337,6 +382,7 @@ namespace CubeBreeder
                     {
                         str += j;
                     }
+                    if (Settings.task == "eds") str += "\t" + edgeActivity[i];
                     str += "\n";
                 }
             }

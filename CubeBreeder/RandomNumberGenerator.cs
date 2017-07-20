@@ -103,7 +103,7 @@ namespace CubeBreeder
 
         internal byte NextByte(int p)
         {
-            return (byte)rnd.Next(0, Byte.MaxValue + 1);
+            return (byte)rnd.Next(0, p);
         }
     }
 }

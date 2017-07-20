@@ -37,7 +37,7 @@ namespace CubeBreeder.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("500")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
         public int _MaxGenerations {
             get {
                 return ((int)(this["_MaxGenerations"]));
@@ -49,7 +49,7 @@ namespace CubeBreeder.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        [global::System.Configuration.DefaultSettingValueAttribute("4480")]
         public int _PopulationSize {
             get {
                 return ((int)(this["_PopulationSize"]));
@@ -85,7 +85,7 @@ namespace CubeBreeder.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0.02")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.01")]
         public float P_MutationPerEdgeProbability {
             get {
                 return ((float)(this["P_MutationPerEdgeProbability"]));
@@ -109,7 +109,7 @@ namespace CubeBreeder.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
         public int Repeats {
             get {
                 return ((int)(this["Repeats"]));
@@ -121,7 +121,7 @@ namespace CubeBreeder.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("70")]
+        [global::System.Configuration.DefaultSettingValueAttribute("45")]
         public int P_ActiveProbability {
             get {
                 return ((int)(this["P_ActiveProbability"]));
@@ -145,7 +145,7 @@ namespace CubeBreeder.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("degree")]
+        [global::System.Configuration.DefaultSettingValueAttribute("spanner")]
         public string Task {
             get {
                 return ((string)(this["Task"]));
@@ -169,7 +169,7 @@ namespace CubeBreeder.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0.2")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public float FileInitRatio {
             get {
                 return ((float)(this["FileInitRatio"]));
@@ -217,7 +217,7 @@ namespace CubeBreeder.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("25")]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
         public int ShowGap {
             get {
                 return ((int)(this["ShowGap"]));
@@ -236,6 +236,42 @@ namespace CubeBreeder.Properties {
             }
             set {
                 this["NPoints"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int TournamentCompetitors {
+            get {
+                return ((int)(this["TournamentCompetitors"]));
+            }
+            set {
+                this["TournamentCompetitors"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.2")]
+        public double TournamentWeakerChance {
+            get {
+                return ((double)(this["TournamentWeakerChance"]));
+            }
+            set {
+                this["TournamentWeakerChance"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.5")]
+        public double ChangingSubcubeSize {
+            get {
+                return ((double)(this["ChangingSubcubeSize"]));
+            }
+            set {
+                this["ChangingSubcubeSize"] = value;
             }
         }
     }

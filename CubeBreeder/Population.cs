@@ -11,6 +11,7 @@ namespace CubeBreeder
         int size = 0;
         GraphInfo sampleIndividual;
         List<Individual> individuals;
+        double average;
 
         Random rnd = new Random();
 
@@ -74,6 +75,16 @@ namespace CubeBreeder
         public List<Individual> GetIndividuals()
         {
             return individuals;
+        }
+
+        public void SetAverage(double average)
+        {
+            this.average = average;
+        }
+
+        public double GetAverage()
+        {
+            return average;
         }
 
         /**

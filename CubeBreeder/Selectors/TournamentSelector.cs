@@ -8,24 +8,37 @@ namespace CubeBreeder.Selectors
 {
     class TournamentSelector : Selector
     {
+        double weakerProb;
+        int competitors;
+
+        public TournamentSelector()
+        {
+            weakerProb = Settings.tourWeakerProb;
+            competitors = Settings.competitors;
+        }
+
         RandomNumberGenerator rng = RandomNumberGenerator.GetInstance();
 
         public void Select(int howMany, Population from, Population to)
         {
-
             for (int i = 0; i < howMany; i++)
             {
-                int i1 = rng.NextInt(from.GetPopulationSize());
-                int i2 = rng.NextInt(from.GetPopulationSize());
+                List<int> players = new List<int>();
 
-                if ((from.Get(i1).GetFitnessValue() > from.Get(i2).GetFitnessValue()) && rng.NextDouble() < 0.8)
+                for (int j = 0; j < competitors; j++)
                 {
-                    to.Add((Individual)from.Get(i1).Clone());
+                    players.Add(rng.NextInt(from.GetPopulationSize()));
                 }
-                else
+                
+                while (players.Count > 1)
                 {
-                    to.Add((Individual)from.Get(i2).Clone());
+                    if (from.Get(players[0]).GetFitnessValue() > from.Get(players[1]).GetFitnessValue()
+                        && rng.NextDouble() > weakerProb)
+                        players.Remove(players[1]);
+                    else players.Remove(players[0]);                        
                 }
+                
+                to.Add((Individual)from.Get(players[0]).Clone());
             }
         }
     }

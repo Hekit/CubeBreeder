@@ -54,7 +54,8 @@ namespace CubeBreeder.Operators.Mutations
                         {
                             activity = p1.IsActiveOnEdge(edge.ID);
                             // swap values
-                            activity = (byte)(activity > 0 ? 0 : 1);
+                            if (Settings.task != "eds") activity = (byte)(activity > 0 ? 0 : 1);
+                            else activity = rng.NextByte(Settings.maxColours + 1);
                             o1.SetActivityOnEdge(edge.ID, activity);
                             o1.changed = true;
                         }

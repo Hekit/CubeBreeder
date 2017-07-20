@@ -46,6 +46,7 @@ namespace CubeBreeder.Operators.Mutations
                     List<Edge> nondetouredEdges = p1.GetUndetoured();
                     Dictionary<Edge, int> repairs = new Dictionary<Edge, int>();
                     int max = 0;
+                    int counter = 0;
                     if (nondetouredEdges.Count > 0)
                     {
                         foreach (var edge in nondetouredEdges)
@@ -53,13 +54,18 @@ namespace CubeBreeder.Operators.Mutations
                             p1.SetActivityOnEdge(edge.ID, 1);
                             int count = p1.GetUndetoured().Count();
                             repairs.Add(edge, count);
-                            if (count > max) max = count;
+                            if (count > max)
+                            {
+                                max = count;
+                                counter = 1;
+                            }
+                            else if (count == max) counter++;
                             p1.SetActivityOnEdge(edge.ID, 0);
                         }
                         foreach (var edge in nondetouredEdges)
                         {
-                            if (/*rng.NextDouble() < bitFlipProbability 
-                                &&*/ repairs[edge] == max)
+                            if (rng.NextDouble() < 1 / counter 
+                                && repairs[edge] == max)
                             {
                                 o1.SetActivityOnEdge(edge.ID, 1);
                             }

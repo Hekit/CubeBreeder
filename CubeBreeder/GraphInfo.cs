@@ -98,9 +98,6 @@ namespace CubeBreeder
                         if (e2 != null && e1 != e2 && e2 != e3 && e1 != e3)
                         {
                             edge.AddDetourMe(e1.ID, e2.ID, e3.ID);
-                            e1.AddDetour(edge);
-                            e2.AddDetour(edge);
-                            e3.AddDetour(edge);
                         }
                     }
                 }

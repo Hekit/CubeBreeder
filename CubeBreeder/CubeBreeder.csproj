@@ -50,6 +50,7 @@
     <Compile Include="Fitness\FitnessFunction.cs" />
     <Compile Include="Fitness\MaxDegreeFitness.cs" />
     <Compile Include="Fitness\SpannerFitness.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Operators\Crossovers\NPointXOver.cs" />
     <Compile Include="Operators\Crossovers\SubcubeSwapXOver.cs" />
     <Compile Include="Operators\Mutations\CleverRepairEdgeMutation.cs" />
@@ -74,7 +75,8 @@
     <Compile Include="Replacements\PercentageReplacement.cs" />
     <Compile Include="Replacements\Replacement.cs" />
     <Compile Include="Run.cs" />
-    <Compile Include="Selectors\BoltzmannSelector.cs" />
+    <Compile Include="Selectors\BoltzmannRouletteWheelSelector.cs" />
+    <Compile Include="Selectors\BoltzmannTournamentSelector.cs" />
     <Compile Include="Selectors\RouletteWheelSelector.cs" />
     <Compile Include="Selectors\Selector.cs" />
     <Compile Include="Selectors\TournamentSelector.cs" />
