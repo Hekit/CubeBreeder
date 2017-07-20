@@ -148,7 +148,7 @@ namespace CubeBreeder
         /// </summary>
         public void CreateRandomInitialPopulation()
         {
-            if (!Settings.paralell) Console.Write("Population Initialization ");
+            if (!Settings.parallel) Console.Write("Population Initialization ");
             individuals = new List<Individual>(size);
 
             for (int i = 0; i < size; i++)
@@ -167,9 +167,9 @@ namespace CubeBreeder
                 n.spanner = n.Is_3_Spanner(true);
                 individuals.Add(n);
                 if (i % (size / 5) == 0)
-                    if (!Settings.paralell) Console.Write("|");
+                    if (!Settings.parallel) Console.Write("|");
             }
-            if (!Settings.paralell) Console.WriteLine(" Done");
+            if (!Settings.parallel) Console.WriteLine(" Done");
         }
 
         /// <summary>

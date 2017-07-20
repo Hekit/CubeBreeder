@@ -6,15 +6,18 @@ using System.Threading.Tasks;
 
 namespace CubeBreeder
 {
-    /**
-     * Singleton random number generator.
-     */
+    /// <summary>
+    /// Singleton random number generator
+    /// </summary>
     public class RandomNumberGenerator
     {
         private static Random rnd;
         private static Random[] randoms;
         private static RandomNumberGenerator theInstance = null;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         private RandomNumberGenerator()
         {
             rnd = new Random();
@@ -25,12 +28,11 @@ namespace CubeBreeder
                 randoms[i] = new Random();
             }
         }
-        
-        /**
-         * Returns the only instance of random number generator.
-         *
-         * @return The random number generator.
-         */
+
+        /// <summary>
+        /// Get the only instance of RNG
+        /// </summary>
+        /// <returns>returns the instance of RNG</returns>
         public static RandomNumberGenerator GetInstance()
         {
             if (theInstance == null)
@@ -40,67 +42,60 @@ namespace CubeBreeder
             return theInstance;
         }
 
-        /**
-         * Returns a random integer between 0 and n - 1 (inclusive).
-         *
-         * @param n The upper limit
-         * @return Random integer between 0 and n - 1 drawn from a uniform distribution.
-         */
+        /// <summary>
+        /// Get a random integer between 0 and n (exclusive)
+        /// </summary>
+        /// <param name="n">Exclusive upper bound</param>
+        /// <returns>A random integer from [0,n) drawn from uniform distribution</returns>
         public int NextInt(int n)
         {
             return rnd.Next(n);
         }
 
-        /**
-         * Returns a random integer between start (inclusive) and end (exclusive).
-         *
-         * @param start The lower limit (inclusive)
-         * @param end The upper limit (exclusive)
-         * @return Random integer between start and end - 1 drawn from a uniform distribution.
-         */
+        /// <summary>
+        /// Get a random integer between start (inclusive) and end (exclusive)
+        /// </summary>
+        /// <param name="start">Inclusive lower bound</param>
+        /// <param name="end">Exclusive upper bound</param>
+        /// <returns>A random integer from [start,end) drawn from uniform distribution</returns>
         public int NextInt(int start, int end)
         {
             return rnd.Next(start, end);
         }
 
-        /**
-         * @return A random double from the interval [0, 1) drawn from a uniform distribution.
-         */
+        /// <summary>
+        /// Get a random double between 0 and 1 (exclusive)
+        /// </summary>
+        /// <returns>A random double from [0,1) drawn from uniform distribution</returns>
         public double NextDouble()
         {
             return rnd.NextDouble();
         }
 
+        /// <summary>
+        /// Get a random power of 2
+        /// </summary>
+        /// <param name="limit">the upper bound on the exponent</param>
+        /// <returns>A power of 2</returns>
         public int NextPower2(int limit)
         {
             return (int)Math.Pow(rnd.Next(limit), 2);
         }
 
-        /**
-         * Sets a new seed for the random number generator.
-         *
-         * @param seed The seed which shall be set.
-         */
+        /// <summary>
+        /// Sets the new random seed.
+        /// </summary>
+        /// <param name="seed">random seed</param>
         public void ReSeed(int seed)
         {
             rnd = new Random(seed);
         }
 
-        public void ReSeed(int seed, int idx)
-        {
-            randoms[idx] = new Random(seed);
-        }
-
-        public Random getRandom()
-        {
-            return rnd;
-        }
-
-        public Random getRandom(int i)
-        {
-            return randoms[i];
-        }
-
+        /// <summary>
+        /// Get a random byte between 0 and p (exclusive)
+        /// </summary>
+        /// <param name="p">Exclusive upper bound</param>
+        /// <returns>A random byte from [0,p) drawn from uniform distribution</returns>
         internal byte NextByte(int p)
         {
             return (byte)rnd.Next(0, p);

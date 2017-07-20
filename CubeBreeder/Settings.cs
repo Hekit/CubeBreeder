@@ -33,7 +33,7 @@ namespace CubeBreeder
         public double eliteSize;
         public static int localDetourSpanners = 0;
         public static int maxColours = 1;
-        public static bool paralell;
+        public static bool parallel;
         public static int showGap = 1;
         public static int activeProbability;
         public static string inputFolderPath;
@@ -47,27 +47,43 @@ namespace CubeBreeder
 
         private static Settings theInstance = null;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         private Settings()
         {
+            // initialize from Settings
             InitializeSettings();
+            // if a config file is provided, overrun the initialization
             if (System.IO.File.Exists(@"..\..\Resources\config.txt"))
             {
                 LoadSettings();
             }
         }
 
+        /// <summary>
+        /// Setup of the EA
+        /// </summary>
+        /// <param name="logger">Logger to log the configuration</param>
+        /// <returns></returns>
         public EvolutionaryAlgorithm GetEVA(Logger logger)
         {
+            // initialize from file
             if (System.IO.File.Exists(@"..\..\Resources\config.txt"))
             {
                 return LoadEVA(logger);
             }
+            // or from default
             else
             {
                 return InitializeEVA(logger);
             }
         }
 
+        /// <summary>
+        /// Get instance of settings
+        /// </summary>
+        /// <returns>return instence of settings</returns>
         public static Settings GetInstance()
         {
             if (theInstance == null)
@@ -77,6 +93,9 @@ namespace CubeBreeder
             return theInstance;
         }
 
+        /// <summary>
+        /// Initialize all the basic settings
+        /// </summary>
         private void InitializeSettings()
         {
             /////////////////////////////////
@@ -90,8 +109,11 @@ namespace CubeBreeder
             popSize = Properties.Settings.Default._PopulationSize;
             // Dimensions
             cubeDimension = Properties.Settings.Default._Dimension;
+            // Number of edges
             edgeCount = (int)Math.Pow(2, cubeDimension - 1) * cubeDimension;
+            // Number of vertices
             vertexCount = (int)Math.Pow(2, cubeDimension);
+            // Maximu size of a subcube
             subCubeMaxSize = cubeDimension - 1;
             // Initialization probability
             activeProbability = Properties.Settings.Default.P_ActiveProbability;
@@ -113,17 +135,22 @@ namespace CubeBreeder
             eliteSize = Properties.Settings.Default.EliteSize;
             // Count of competitors for tournament
             competitors = Properties.Settings.Default.TournamentCompetitors;
-            // 
+            // Probability of a weaker individual winning a tournament fight
             tourWeakerProb = Properties.Settings.Default.TournamentWeakerChance;
-            //
+            // Probability of changing the size of a subcube
             changingSubcube = Properties.Settings.Default.ChangingSubcubeSize;
-
-            paralell = Properties.Settings.Default.Paralell;
+            // Is program running in parallel?
+            parallel = Properties.Settings.Default.Parallel;
+            // Initialize from file
             fileInitialization = Properties.Settings.Default.File_Initialization;
+            // How much of the population should be initialized from file
             fileUsage = Properties.Settings.Default.FileInitRatio;
+            // Input folder for initialization
             inputFolderPath = @"D:\Development\hypercubes\initialization\";
+            // Gap for displaying info on console during runtime
             showGap = Properties.Settings.Default.ShowGap;
 
+            // Set the task
             if (Properties.Settings.Default.Task == "spanner")
             {
                 maxColours = 1;
@@ -141,6 +168,11 @@ namespace CubeBreeder
             }
         }
 
+        /// <summary>
+        /// Default EA settings
+        /// </summary>
+        /// <param name="logger">logger to log the settings</param>
+        /// <returns>configuration of EA</returns>
         private EvolutionaryAlgorithm InitializeEVA(Logger logger)
         {
             EvolutionaryAlgorithm ea;
@@ -185,6 +217,11 @@ namespace CubeBreeder
             return ea;
         }
 
+        /// <summary>
+        /// Loads EA settings from a config file
+        /// </summary>
+        /// <param name="logger">logger to log the configuration</param>
+        /// <returns>configuration of EA</returns>
         private EvolutionaryAlgorithm LoadEVA(Logger logger)
         {
             EvolutionaryAlgorithm ea = new EvolutionaryAlgorithm();
@@ -308,6 +345,9 @@ namespace CubeBreeder
             return ea;
         }
 
+        /// <summary>
+        /// Load general configuration from a config file
+        /// </summary>
         private void LoadSettings()
         {
             string[] lines = new string[1];

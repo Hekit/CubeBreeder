@@ -50,7 +50,7 @@ namespace CubeBreeder
             pop.SetSampleIndividual(graph);
             pop.CreateRandomInitialPopulation();
 
-            if (!Settings.paralell) Console.WriteLine("Finished in {0:f2} seconds", sw.Elapsed.TotalSeconds);
+            if (!Settings.parallel) Console.WriteLine("Finished in {0:f2} seconds", sw.Elapsed.TotalSeconds);
             logger.Log(Logger.Level.INFO, "Initialization finished in " +
                 String.Format("{0:f2}", sw.Elapsed.TotalSeconds) + " seconds");
 
@@ -66,7 +66,7 @@ namespace CubeBreeder
                     ea.Evolve(pop);
                     List<Individual> sorted = pop.GetSortedIndividuals();
                     //Log the best individual to console.
-                    if ((i + 1) % Settings.showGap == 0 && !Settings.paralell)
+                    if ((i + 1) % Settings.showGap == 0 && !Settings.parallel)
                     {
                         int idx = 0;
                         while (idx < s.popSize && sorted[idx].Is_3_Spanner(false) < 1) idx++;

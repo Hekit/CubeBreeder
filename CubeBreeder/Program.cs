@@ -46,7 +46,7 @@ namespace CubeBreeder
             var bests = new List<Individual>();
 
             // if parallel run it parallely
-            if (Settings.paralell)
+            if (Settings.parallel)
             {
                 Parallel.ForEach(runs, r =>
                 {

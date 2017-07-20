@@ -12,7 +12,6 @@ namespace CubeBreeder
         double fitnessValue;
         double objectiveValue;
 
-        static int best = Int32.MaxValue;
         int cubeDimension = 0;
         int vertexCount;
         public static long knownSize = 0;
@@ -47,41 +46,21 @@ namespace CubeBreeder
             this.vertexCount = (int)Math.Pow(2, this.cubeDimension);
         }
 
-        /**
-         * Sets the objective value
-         *
-         * @param objective The objective value which shall be set.
-         */
         public void SetObjectiveValue(double objective)
         {
             this.objectiveValue = objective;
         }
 
-        /**
-         * Returns the objective value of the individual.
-         *
-         * @return The objective value of the individual.
-         */
         public double GetObjectiveValue()
         {
             return objectiveValue;
         }
 
-        /**
-         * Sets the fitness value of the individual.
-         *
-         * @param fitness The fitness value of the individual which shall be set.
-         */
         public void SetFitnessValue(double fitness)
         {
             fitnessValue = fitness;
         }
 
-        /**
-         * Returns the fitness value of the individual.
-         *
-         * @return The fitness value of the individual.
-         */
         public double GetFitnessValue()
         {
             if (fitnessValue == -Double.MaxValue)
@@ -100,12 +79,7 @@ namespace CubeBreeder
             return colours;
         }
 
-        /**
-         * Performs a deep copy of the individual. Resets the fitness value to
-         * non-evaluated.
-         *
-         * @return The deep copy of the individual.
-         */
+
         public Object Clone()
         {
             Individual n = new Individual(this);
@@ -113,9 +87,7 @@ namespace CubeBreeder
             {
                 n.edgeActivity[i] = this.edgeActivity[i];
             }
-            //changed = true;
             return n;
-            //return MemberwiseClone();
         }
 
 
@@ -177,13 +149,11 @@ namespace CubeBreeder
         public void SetActivityBetweenVertices(int i1, int i2, byte value)
         {
             edgeActivity[graph.GetID(i1, i2)] = value;
-            //changed = true;
         }
 
         public void SetActivityOnEdge(int edgeID, byte value)
         {
             edgeActivity[edgeID] = value;
-            //changed = true;
         }
 
         public bool IsActiveBetweenVertices(int i1, int i2)
@@ -221,6 +191,7 @@ namespace CubeBreeder
             int detouredCount = 0;
             int nonDetouredCount = 0;
             int activeCount = 0;
+            // if really strict, uncomment next line
             //if (IsNotSpanner(1)) return 0;
 
             for (int i = 0; i < edgeActivity.Length; i++)
@@ -238,23 +209,20 @@ namespace CubeBreeder
                 else
                 {
                     nonDetouredCount++;
-                    //return 1;
                 }
             }
             if (nonDetouredCount == 0)
             {
-                /*
-                // output of the so-far best achieved individual
-                if (this.GetObjectiveValue() < best && this.GetObjectiveValue() != 0)
+                // uncomment the following to
+                // output each so-far best achieved individual
+                /*if (this.GetObjectiveValue() < best && this.GetObjectiveValue() != 0)
                 {
                     best = (int)this.GetObjectiveValue();
                     Tools.WriteIndividual(this);
                 }*/
                 if (counting) Program.localDetourSpanners++;
             }
-            //return 0;
             if (detouredCount + nonDetouredCount == 0) return 1.0;
-            //else return (double)detouredCount / (detouredCount + nonDetouredCount + activeCount);
             else return (double)detouredCount / (detouredCount + nonDetouredCount);
         }
 
