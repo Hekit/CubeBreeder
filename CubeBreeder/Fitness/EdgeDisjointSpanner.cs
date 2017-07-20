@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CubeBreeder.Fitness
 {
+    /// <summary>
+    /// The fitness for edge-disjoint spanning trees
+    /// </summary>
     class EdgeDisjointSpanner : FitnessFunction
     {
         int edgeCount = Int32.MaxValue;
@@ -30,9 +33,6 @@ namespace CubeBreeder.Fitness
             {
                 fitness[i] = Math.Abs(vertexCount - ind.GetActiveEdgeCount((byte)(i + 1)));
                 spanner[i] = ind.Is_Good_Enough((byte)(i+1));
-                //this sets the objective value, can be different from the fitness function
-                /*if (spanner[i] == 1.0) objective[i] = edgeCount - fitness[i];
-                else objective[i] = 0;*/
             }
 
             int obj = 0;
@@ -55,8 +55,7 @@ namespace CubeBreeder.Fitness
                 }
             }
             ind.SetColourCount(colours);
-            // proved magickou operaci
-            // a ne, ta operace neni prumer
+            // perform some magic
             return (fit ) * (obj + 1);
             //return (fit / colours) * (obj + 1);
         }

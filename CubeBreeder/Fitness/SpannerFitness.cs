@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CubeBreeder.Fitness
 {
+    /// <summary>
+    /// The fitness for 3-spanner search.
+    /// </summary>
     class SpannerFitness : FitnessFunction
     {
         int edgeCount = Int32.MaxValue;
@@ -32,19 +35,6 @@ namespace CubeBreeder.Fitness
             if (ind.spanner == 1.0) ind.SetObjectiveValue(edgeCount - fitness);
             else ind.SetObjectiveValue(0);
 
-            // pro pocitani co nejmene hran
-            //return fitness;
-
-            // pro pocitani co nejvice hran
-            //return edgeCount - fitness;
-
-            // pro pocitani minimalni kostry
-            //return fitness - fitness*((CubeIndividual)ind).IsSpanner();
-
-            // pro pocitani 3 spanneru verze 0 1
-            //return fitness - fitness * ((CubeIndividual)ind).Is_3_Spanner(count);
-            
-            // pro pocitani 3 spanneru
             return fitness * (ind.spanner * ind.spanner);
         }
     }
