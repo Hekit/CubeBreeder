@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CubeBreeder.Operators.Crossovers
 {
+    /// <summary>
+    /// N-point Crossover Operator.
+    /// </summary>
     class NPointXOver : Operator
     {
         double xOverProb = 0;
@@ -13,24 +16,36 @@ namespace CubeBreeder.Operators.Crossovers
 
         RandomNumberGenerator rng = RandomNumberGenerator.GetInstance();
 
-        /**
-            * Constructor, sets the probability of crossover
-            * 
-            * @param prob the probability of crossover
-            */
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="prob">probability of crossover</param>
         public NPointXOver(double prob)
         {
             xOverProb = prob;
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="prob">probability of crossover</param>
+        /// <param name="points">number of crossover points</param>
         public NPointXOver(double prob, int points)
         {
             xOverProb = prob;
             numberOfPoints = points;
         }
 
+        /// <summary>
+        /// Each generation update method.
+        /// </summary>
         public void Update() { }
 
+        /// <summary>
+        /// Operator's operate method.
+        /// </summary>
+        /// <param name="parents">parents</param>
+        /// <param name="offspring">offspring</param>
         public void Operate(Population parents, Population offspring)
         {
             int size = parents.GetPopulationSize();
@@ -48,9 +63,11 @@ namespace CubeBreeder.Operators.Crossovers
                     HashSet<int> indices = new HashSet<int>();
                     bool flipper = true;
 
+                    // select crossover points
                     while (indices.Count < numberOfPoints)
                         indices.Add(rng.NextInt(p1.Length()));
 
+                    // perform the crossover
                     for (int j = 0; j < p1.Length(); j++)
                     {
                         if (indices.Contains(j)) flipper = flipper == true ? false : true;

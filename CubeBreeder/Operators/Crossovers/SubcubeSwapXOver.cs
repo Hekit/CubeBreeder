@@ -6,46 +6,58 @@ using System.Threading.Tasks;
 
 namespace CubeBreeder.Operators.Crossovers
 {
+    /// <summary>
+    /// Subcube Swap Crossover Operator
+    /// </summary>
     class SubcubeSwapXOver : Operator
     {
         double xOverProb = 0;
         int subCubeSize = 3;
         RandomNumberGenerator rng = RandomNumberGenerator.GetInstance();
 
-        /**
-         * Constructor, sets the probability of crossover
-         * 
-         * @param prob the probability of crossover
-         */
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="prob">probability of crossover</param>
         public SubcubeSwapXOver(double prob)
         {
             xOverProb = prob;
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="prob">probability of crossover</param>
+        /// <param name="subcube">size of subcube</param>
         public SubcubeSwapXOver(double prob, int subcube)
         {
             xOverProb = prob;
             subCubeSize = subcube;
-            //subCubeSize = rng.NextInt(1, Properties.Settings.Default.Dimension);
         }
 
+        /// <summary>
+        /// Each generation update method.
+        /// </summary>
         public void Update()
         {
             if (Settings.changingSubcube > 0)
             {
+                // note that the size might change up and down (=not at all) in the same generation
                 if (rng.NextDouble() < Settings.changingSubcube && subCubeSize > 2) subCubeSize--;
                 if (rng.NextDouble() < Settings.changingSubcube && subCubeSize < Settings.subCubeMaxSize) subCubeSize++;
             }
         }
 
+        /// <summary>
+        /// The operator operate method.
+        /// </summary>
+        /// <param name="parents">parents</param>
+        /// <param name="offspring">offspring</param>
         public void Operate(Population parents, Population offspring)
         {
             int size = parents.GetPopulationSize();
 
-            //subCubeSize = rng.NextInt(1, ((CubeIndividual)parents.Get(0)).GetCubeDimension());
-
             for (int i = 0; i < size / 2; i++)
-            //Parallel.For(0, size / 2, i =>
             {
                 Individual p1 = parents.Get(2 * i);
                 Individual p2 = parents.Get(2 * i + 1);
@@ -56,7 +68,7 @@ namespace CubeBreeder.Operators.Crossovers
                 if (subCubeSize <= p1.GetCubeDimension() && 
                     rng.NextDouble() < xOverProb)
                 {
-                    // vypocet indexu k fixaci a hodnot pro ne
+                    // choosing the indices to be fixed and the respective values
                     bool[] fix = new bool[p1.GetCubeDimension()];
                     byte[] vals = new byte[fix.Length];
 
@@ -76,7 +88,7 @@ namespace CubeBreeder.Operators.Crossovers
                         vals[val] = rng.NextByte(2); // 0 or 1
                     }
                     
-                    // swapping subcube
+                    // swapping subcubes
                     int testValue;
                     int length = p1.Length();
                     foreach (var e in Program.graph.GetEdges())
@@ -86,26 +98,22 @@ namespace CubeBreeder.Operators.Crossovers
 
                         if (parent1Value != parent2Value)
                         {
-                            testValue = Tools.TestSubcube(fix, vals, e); // snad to funguje :))
+                            testValue = Tools.TestSubcube(fix, vals, e);
 
-                            if (testValue == -1) // vne, proto nechavame
+                            if (testValue == -1)
                             {
-                                //o1.SetActivityBetweenVertices(j, k, parent1Value);
-                                //o2.SetActivityBetweenVertices(j, k, parent2Value);
+                                // both outside, therefore nothing happens
                             }
-                            else if (testValue == 0) // je na hrane, nic
+                            else if (testValue == 0) 
                             {
+                                // on the edge
                                 byte value = parent1Value >= 1 ? parent1Value : parent2Value;
                                 o1.SetActivityOnEdge(e.ID, value);
                                 o2.SetActivityOnEdge(e.ID, value);
                             }
-                            else // je uvnitr, proto prohazujem
+                            else 
                             {
-                                /*if (subCubeSize == 1)
-                                {
-                                    e1.Active = e1.Active == true ? false : true;
-                                    e2.Active = e2.Active == true ? false : true;
-                                }*/
+                                // inside, therefore we swap
                                 o1.SetActivityOnEdge(e.ID, parent2Value);
                                 o2.SetActivityOnEdge(e.ID, parent1Value);
                             }
@@ -116,7 +124,6 @@ namespace CubeBreeder.Operators.Crossovers
                 }
                 offspring.Add(o1);
                 offspring.Add(o2);
-            //});
             }
         }
 
