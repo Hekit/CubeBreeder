@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace CubeBreeder
 {
+    /// <summary>
+    /// Representation of an individual
+    /// </summary>
     public class Individual : ICloneable
     {
         double fitnessValue;
@@ -25,6 +28,12 @@ namespace CubeBreeder
 
         RandomNumberGenerator rnd = RandomNumberGenerator.GetInstance();
 
+        public static StreamReader file = null;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="daddy">individual whose properties but not edgeActivity i taken</param>
         public Individual(Individual daddy)
         {
             this.cubeDimension = daddy.cubeDimension;
@@ -37,6 +46,10 @@ namespace CubeBreeder
             this.edgeActivity = new byte[daddy.edgeActivity.Length];
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="graph">graph to indicate dimension of the individual</param>
         public Individual(GraphInfo graph)
         {
             this.cubeDimension = graph.GetDimension();
@@ -46,21 +59,37 @@ namespace CubeBreeder
             this.vertexCount = (int)Math.Pow(2, this.cubeDimension);
         }
 
+        /// <summary>
+        /// Set the objective value of the individual
+        /// </summary>
+        /// <param name="objective">objective value to be set</param>
         public void SetObjectiveValue(double objective)
         {
             this.objectiveValue = objective;
         }
 
+        /// <summary>
+        /// Get the objective value of the individual
+        /// </summary>
+        /// <returns>objective value</returns>
         public double GetObjectiveValue()
         {
             return objectiveValue;
         }
 
+        /// <summary>
+        /// Set the fitness value of the individual
+        /// </summary>
+        /// <param name="fitness">fitness value to be set</param>
         public void SetFitnessValue(double fitness)
         {
             fitnessValue = fitness;
         }
 
+        /// <summary>
+        /// Get the fitness value of the individual
+        /// </summary>
+        /// <returns>fitness value</returns>
         public double GetFitnessValue()
         {
             if (fitnessValue == -Double.MaxValue)
@@ -68,18 +97,28 @@ namespace CubeBreeder
             return fitnessValue;
         }
 
+        /// <summary>
+        /// Set the number of colours
+        /// </summary>
+        /// <param name="colours">number of colours</param>
         public void SetColourCount(int colours)
         {
             this.colours = colours;
         }
 
-
+        /// <summary>
+        /// Count the colours used
+        /// </summary>
+        /// <returns>colours used</returns>
         public int GetColourCount()
         {
             return colours;
         }
 
-
+        /// <summary>
+        /// Clone the individual (deep copy)
+        /// </summary>
+        /// <returns>new individual</returns>
         public Object Clone()
         {
             Individual n = new Individual(this);
@@ -90,19 +129,27 @@ namespace CubeBreeder
             return n;
         }
 
-
+        /// <summary>
+        /// Get the length of the individual (= number of edges)
+        /// </summary>
+        /// <returns>length</returns>
         public int Length()
         {
             return edgeActivity.Length;
         }
 
+        /// <summary>
+        /// Get the dimension of the hypercube
+        /// </summary>
+        /// <returns>dimension</returns>
         public int GetCubeDimension()
         {
             return cubeDimension;
         }
 
-        public static System.IO.StreamReader file = null;
-
+        /// <summary>
+        /// Initialize the individual according to a file 
+        /// </summary>
         public void FileInitialization()
         {
             try
@@ -131,6 +178,10 @@ namespace CubeBreeder
             }
         }
 
+        /// <summary>
+        /// Initialize the individual randomly
+        /// </summary>
+        /// <param name="maxColours">maximal number of colours to be used</param>
         public void RandomInitialization(int maxColours)
         {
             int probability = Settings.activeProbability;
@@ -146,46 +197,91 @@ namespace CubeBreeder
             }
         }
 
+        /// <summary>
+        /// Set activity of edge i1i2
+        /// </summary>
+        /// <param name="i1">vertex i1</param>
+        /// <param name="i2">vertex i2</param>
+        /// <param name="value">value to be set</param>
         public void SetActivityBetweenVertices(int i1, int i2, byte value)
         {
             edgeActivity[graph.GetID(i1, i2)] = value;
         }
 
+        /// <summary>
+        /// Set the activity of edge edgeID
+        /// </summary>
+        /// <param name="edgeID">ID</param>
+        /// <param name="value">value to be set</param>
         public void SetActivityOnEdge(int edgeID, byte value)
         {
             edgeActivity[edgeID] = value;
         }
 
+        /// <summary>
+        /// Chech if edge i1i2 is active
+        /// </summary>
+        /// <param name="i1">vertex i1</param>
+        /// <param name="i2">vertex i2</param>
+        /// <returns>true if active</returns>
         public bool IsActiveBetweenVertices(int i1, int i2)
         {
             return edgeActivity[graph.GetID(i1, i2)].IsTrue();
         }
 
+        /// <summary>
+        /// Check if edge with edgeID is active
+        /// </summary>
+        /// <param name="edgeID">ID</param>
+        /// <returns>non-zero if active</returns>
         public byte IsActiveOnEdge(int edgeID)
         {
             return edgeActivity[edgeID];
         }
 
+        /// <summary>
+        /// Get active edge count for colour 1 only
+        /// </summary>
+        /// <returns>number of edges with colour 1</returns>
         public int GetActiveEdgeCount()
         {
             return GetActiveEdgeCount(1);
         }
 
+        /// <summary>
+        /// Get count of active edges with colour c
+        /// </summary>
+        /// <param name="c">colour</param>
+        /// <returns>count of active edges with colour c</returns>
         public int GetActiveEdgeCount(byte c)
         {
             return edgeActivity.Count(x => x == c);
         }
 
+        /// <summary>
+        /// Get count of active edges regardless colour
+        /// </summary>
+        /// <returns>count of active edges</returns>
         public int GetActiveEdgeCountColourblind()
         {
             return edgeActivity.Count(x => x > 0);
         }
 
+        /// <summary>
+        /// Check for some property; part of EDS fitness
+        /// </summary>
+        /// <param name="colour">colour checked</param>
+        /// <returns>double representing percentage of quality</returns>
         public double Is_Good_Enough(byte colour)
         {
-            return IsNotSpanner(colour);
+            return IsSpanner(colour);
         }
 
+        /// <summary>
+        /// Check whether the individual is a 3-spanner
+        /// </summary>
+        /// <param name="counting">counting spanners for output</param>
+        /// <returns>ratio of detoured to (detoured and nondetoured)</returns>
         public double Is_3_Spanner(bool counting)
         {
             int detouredCount = 0;
@@ -226,6 +322,12 @@ namespace CubeBreeder
             else return (double)detouredCount / (detouredCount + nonDetouredCount);
         }
 
+        /// <summary>
+        /// Checks if edge e is detoured using colour
+        /// </summary>
+        /// <param name="e">edge to check</param>
+        /// <param name="colour">checked colour</param>
+        /// <returns>true if detoured</returns>
         private bool IsDetoured(Edge e, byte colour)
         {
             foreach (var tuple in e.GetDetours())
@@ -240,16 +342,25 @@ namespace CubeBreeder
             return false;
         }
 
+        /// <summary>
+        /// Gets all undetoured edges
+        /// </summary>
+        /// <returns>list of Edges</returns>
         public List<Edge> GetUndetoured()
         {
             return GetUndetoured(1);
         }
 
+        /// <summary>
+        /// Gets all undetoured edges of colour
+        /// </summary>
+        /// <param name="colour">colour checked</param>
+        /// <returns>list of Edges</returns>
         public List<Edge> GetUndetoured(byte colour)
         {
             List<Edge> list = new List<Edge>();
 
-            if (IsNotSpanner(colour) == 1) return list;
+            if (IsSpanner(colour) == 1) return list;
 
             for (int i = 0; i < edgeActivity.Length; i++)
             {
@@ -262,15 +373,24 @@ namespace CubeBreeder
             return list;
         }
 
-        // returns 1 when the graph is not connected
-        // it is then used in the fitness function as a multiplier
-        public double IsNotSpanner(byte colour)
+        /// <summary>
+        /// Checks if the individual is a spanner
+        /// </summary>
+        /// <param name="colour">colour checked</param>
+        /// <returns>1 if a spanner</returns>
+        public double IsSpanner(byte colour)
         {
             return 1.0 / CountComponents(colour);
-            if (CountComponents(colour) > 1) return 1;
-            else return 0;
+            // for other option uncomment
+            /*if (CountComponents(colour) > 1) return 1;
+            else return 0;*/
         }
 
+        /// <summary>
+        /// Count the components of edges with colour
+        /// </summary>
+        /// <param name="colour">colour being used</param>
+        /// <returns>number of components</returns>
         private int CountComponents(byte colour)
         {
             //Stavy jednotlivych uzlu
@@ -290,6 +410,11 @@ namespace CubeBreeder
             return counter;
         }
 
+        /// <summary>
+        /// Check if the individual represents a spanning tree
+        /// </summary>
+        /// <param name="colour">colour being checked</param>
+        /// <returns>true if a spanning tree</returns>
         private bool IsSpanningTree(byte colour)
         {
             //Stavy jednotlivych uzlu
@@ -309,6 +434,12 @@ namespace CubeBreeder
             return true;
         }
 
+        /// <summary>
+        /// Depth First Search for colouring components
+        /// </summary>
+        /// <param name="vertexNr">starting vertex</param>
+        /// <param name="state">current states of vertices</param>
+        /// <param name="colour">colour used</param>
         private void DFS(int vertexNr, int[] state, byte colour)
         {
             state[vertexNr] = 1;
@@ -324,7 +455,10 @@ namespace CubeBreeder
             state[vertexNr] = 2;
         }
 
-
+        /// <summary>
+        /// Convert the individual to string
+        /// </summary>
+        /// <returns>String representation of the individual</returns>
         public override string ToString()
         {
             string str;
@@ -355,7 +489,10 @@ namespace CubeBreeder
             return str;
         }
 
-
+        /// <summary>
+        /// Get the maximal degree in the individual
+        /// </summary>
+        /// <returns>maximal degree</returns>
         public int GetMaxDegree()
         {
             int maxDegree = Int32.MinValue;
@@ -373,6 +510,10 @@ namespace CubeBreeder
             return maxDegree;
         }
 
+        /// <summary>
+        /// Get the list of all degrees of vertices in the individual
+        /// </summary>
+        /// <returns>list of degrees</returns>
         public List<int> GetDegrees()
         {
             int vertexCount = (int)Math.Pow(2, cubeDimension);
