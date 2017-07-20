@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CubeBreeder.Operators.Mutations
 {
+    /// <summary>
+    /// Subcube Rotation Mutation
+    /// </summary>
     class SubcubeRotationMutation : Operator
     {
         double mutationProbability;
@@ -13,21 +16,35 @@ namespace CubeBreeder.Operators.Mutations
 
         RandomNumberGenerator rng = RandomNumberGenerator.GetInstance();
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="mutationProbability">probability of mutation</param>
+        /// <param name="subCube">size of subcube</param>
         public SubcubeRotationMutation(double mutationProbability, int subCube)
         {
             this.mutationProbability = mutationProbability;
             this.subCubeSize = subCube;
         }
 
+        /// <summary>
+        /// Each generation update method
+        /// </summary>
         public void Update()
         {
+            // note that the size might change up and down (=not at all) in the same generation
             if (Settings.changingSubcube > 0)
             {
                 if (rng.NextDouble() < Settings.changingSubcube && subCubeSize > 2) subCubeSize--;
-                if (rng.NextDouble() < Settings.changingSubcube && subCubeSize < Settings.subCubeMaxSize) subCubeSize++;
+                if (rng.NextDouble() < Settings.changingSubcube && subCubeSize < Settings.subCubeMaxSize-2) subCubeSize++;
             }
         }
 
+        /// <summary>
+        /// Operator operate method
+        /// </summary>
+        /// <param name="parents">parents</param>
+        /// <param name="offspring">offspring</param>
         public void Operate(Population parents, Population offspring)
         {
             int size = parents.GetPopulationSize();
@@ -37,8 +54,7 @@ namespace CubeBreeder.Operators.Mutations
                 Individual p1 = parents.Get(i);
                 Individual o1 = (Individual)p1.Clone();
 
-
-
+                // we need to choose two extra indices so there must be space for that
                 if (subCubeSize + 2 <= o1.GetCubeDimension()
                     && rng.NextDouble() < mutationProbability)
                 {

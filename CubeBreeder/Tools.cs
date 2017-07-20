@@ -173,8 +173,7 @@ namespace CubeBreeder
 
         public static int ParseIntOrElse(this IList<string> list, int index, int defaultValue)
         {
-            int val;
-            if (index < 0 || index >= list.Count || !Int32.TryParse((string)list[index], out val))
+            if (index < 0 || index >= list.Count || !Int32.TryParse((string)list[index], out int val))
             {
                 return defaultValue;
             }
@@ -183,9 +182,8 @@ namespace CubeBreeder
 
         public static double ParseDoubleOrElse(this IList<string> list, int index, double defaultValue)
         {
-            double val;
             if (index < 0 || index >= list.Count || 
-                !Double.TryParse((string)list[index], NumberStyles.Number, CultureInfo.InvariantCulture, out val))
+                !Double.TryParse((string)list[index], NumberStyles.Number, CultureInfo.InvariantCulture, out double val))
             {
                 return defaultValue;
             }

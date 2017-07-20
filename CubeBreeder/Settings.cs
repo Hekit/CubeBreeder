@@ -261,8 +261,7 @@ namespace CubeBreeder
                     case "CleverRepair":
                         ea.AddOperator(
                             new CleverRepairEdgeMutation(
-                                line.ParseDoubleOrElse(1, Properties.Settings.Default.P_MutationProbability),
-                                line.ParseDoubleOrElse(2, Properties.Settings.Default.P_MutationPerEdgeProbability)));
+                                line.ParseDoubleOrElse(1, Properties.Settings.Default.P_MutationProbability)));
                         break;
                     case "SimpleRepair":
                         ea.AddOperator(

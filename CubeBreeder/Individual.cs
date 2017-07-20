@@ -214,8 +214,6 @@ namespace CubeBreeder
         public double Is_Good_Enough(byte colour)
         {
             return IsSpanner(colour);
-            if (IsSpanner(colour) == 1) return 0;
-            return 1;
         }
 
         public double Is_3_Spanner(bool counting)

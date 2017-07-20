@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CubeBreeder.Operators.Mutations
 {
+    /// <summary>
+    /// Flip Edge Mutation Operator
+    /// </summary>
     class FlipEdgeMutation : Operator
     {
         double mutationProbability;
@@ -13,31 +16,35 @@ namespace CubeBreeder.Operators.Mutations
 
         RandomNumberGenerator rng = RandomNumberGenerator.GetInstance();
 
-        /**
-         * Constructor, sets the probabilities.
-         * 
-         * @param mutationProbability probability of mutating each individual
-         * @param bitFlipProbability probability of flipping a bit in the mutated individual
-         */
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="mutationProbability">probability of mutation</param>
+        /// <param name="bitFlipProbability">probability of flipping each edge</param>
         public FlipEdgeMutation(double mutationProbability, double bitFlipProbability)
         {
             this.mutationProbability = mutationProbability;
             this.bitFlipProbability = bitFlipProbability;
         }
 
+        /// <summary>
+        /// Each generation update method
+        /// </summary>
         public void Update()
         {
-            //mutationProbability += 0.00001;
         }
 
+        /// <summary>
+        /// Operator operate method
+        /// </summary>
+        /// <param name="parents">parents</param>
+        /// <param name="offspring">offspring</param>
         public void Operate(Population parents, Population offspring)
         {
 
             int size = parents.GetPopulationSize();
 
             for (int i = 0; i < size; i++)
-            //Parallel.For(0, size, i =>
             {
                 Individual p1 = parents.Get(i);
                 Individual o1 = (Individual)p1.Clone();
@@ -52,9 +59,10 @@ namespace CubeBreeder.Operators.Mutations
                     {
                         if (rng.NextDouble() < bitFlipProbability)
                         {
-                            activity = p1.IsActiveOnEdge(edge.ID);
                             // swap values
+                            activity = p1.IsActiveOnEdge(edge.ID);
                             if (Settings.task != "eds") activity = (byte)(activity > 0 ? 0 : 1);
+                            // if doing eds, dont just swap, but choose random colour
                             else activity = rng.NextByte(Settings.maxColours + 1);
                             o1.SetActivityOnEdge(edge.ID, activity);
                             o1.changed = true;

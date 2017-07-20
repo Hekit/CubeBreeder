@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CubeBreeder.Operators.Mutations
 {
+    /// <summary>
+    /// Subcube Translation Mutation
+    /// </summary>
     class SubcubeTranslationMutation : Operator
     {
         double mutationProbability;
@@ -13,14 +16,23 @@ namespace CubeBreeder.Operators.Mutations
 
         RandomNumberGenerator rng = RandomNumberGenerator.GetInstance();
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="mutationProbability">probability of mutation</param>
+        /// <param name="subCube">size of subcube</param>
         public SubcubeTranslationMutation(double mutationProbability, int subCube)
         {
             this.mutationProbability = mutationProbability;
             this.subCubeSize = subCube;
         }
 
+        /// <summary>
+        /// Each generation update method
+        /// </summary>
         public void Update()
         {
+            // note that the size might change up and down (=not at all) in the same generation
             if (Settings.changingSubcube > 0)
             {
                 if (rng.NextDouble() < Settings.changingSubcube && subCubeSize > 2) subCubeSize--;
@@ -28,6 +40,11 @@ namespace CubeBreeder.Operators.Mutations
             }
         }
 
+        /// <summary>
+        /// Operator operate method
+        /// </summary>
+        /// <param name="parents">parents</param>
+        /// <param name="offspring">offsrping</param>
         public void Operate(Population parents, Population offspring)
         {
             int size = parents.GetPopulationSize();
@@ -40,7 +57,7 @@ namespace CubeBreeder.Operators.Mutations
                 if (subCubeSize <= o1.GetCubeDimension() &&
                     rng.NextDouble() < mutationProbability)
                 {
-                    // vypocet indexu k fixaci a hodnot pro ne
+                    // find indices to be fixed and their values
                     bool[] fix = new bool[o1.GetCubeDimension()];
                     byte[] vals = new byte[fix.Length];
 
@@ -60,7 +77,7 @@ namespace CubeBreeder.Operators.Mutations
                     int direction = rng.NextInt(fix.Length);
                     while (fix[direction] == true) direction = rng.NextInt(fix.Length);
 
-                    // vymena podkrychle
+                    // subcube swap
                     int length = p1.Length();
 
                     foreach (var e in Program.graph.GetEdges())
