@@ -3,13 +3,13 @@
   <Profiles />
   <Settings>
     <Setting Name="_Dimension" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">7</Value>
+      <Value Profile="(Default)">4</Value>
     </Setting>
     <Setting Name="_MaxGenerations" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1000</Value>
+      <Value Profile="(Default)">500</Value>
     </Setting>
     <Setting Name="_PopulationSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">4480</Value>
+      <Value Profile="(Default)">320</Value>
     </Setting>
     <Setting Name="P_CrossoverProbability" Type="System.Single" Scope="User">
       <Value Profile="(Default)">0.5</Value>
@@ -24,7 +24,7 @@
       <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="Repeats" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">10</Value>
+      <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="P_ActiveProbability" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">45</Value>

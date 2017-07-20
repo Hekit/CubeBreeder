@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CubeBreeder.Replacements
 {
+    /// <summary>
+    /// Replacement that takes some percent of the best offspring and the rest of the best parents for next generation 
+    /// </summary>
     class PercentageReplacement
     {
         int percentage;
@@ -14,6 +17,12 @@ namespace CubeBreeder.Replacements
             this.percentage = percentage;
         }
 
+        /// <summary>
+        /// Replace method
+        /// </summary>
+        /// <param name="parents">parents</param>
+        /// <param name="offspring">offspring</param>
+        /// <returns>new generation</returns>
         public Population Replace(Population parents, Population offspring)
         {
             int size = offspring.GetPopulationSize();
