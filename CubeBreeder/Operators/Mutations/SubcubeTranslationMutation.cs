@@ -14,17 +14,23 @@ namespace CubeBreeder.Operators.Mutations
         double mutationProbability;
         int subCubeSize = 3;
 
-        RandomNumberGenerator rng = RandomNumberGenerator.GetInstance();
+        Random rng;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="mutationProbability">probability of mutation</param>
         /// <param name="subCube">size of subcube</param>
-        public SubcubeTranslationMutation(double mutationProbability, int subCube)
+        public SubcubeTranslationMutation(double mutationProbability, int subCube, Random rnd)
         {
             this.mutationProbability = mutationProbability;
             this.subCubeSize = subCube;
+            rng = rnd;
+        }
+
+        public string ToLog()
+        {
+            return "SubcubeTranslation prob: " + mutationProbability + " subcube: " + subCubeSize;
         }
 
         /// <summary>

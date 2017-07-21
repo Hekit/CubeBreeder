@@ -16,7 +16,7 @@ namespace CubeBreederTests
         public void TestMethod1()
         {
         }
-
+        /*
         [TestMethod]
         public void TestMethod2()
         {
@@ -31,6 +31,6 @@ namespace CubeBreederTests
             ind.SetActivityBetweenVertices(0, 1, 1);
             ind2.SetActivityBetweenVertices(0, 1, 0);
             Assert.AreNotEqual(ind.IsActiveBetweenVertices(0,1), ind2.IsActiveBetweenVertices(0,1), "Two individuals but same object!");
-        }
+        }*/
     }
 }

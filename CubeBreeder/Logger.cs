@@ -12,9 +12,6 @@ namespace CubeBreeder
     /// </summary>
     class Logger
     {
-        string path;
-        FileStream log;
-        DateTime start;
         int id;
         string dateTimeFormat;
         string fileName;
@@ -39,10 +36,10 @@ namespace CubeBreeder
         /// <param name="dim">dimension</param>
         public Logger(int id, int dim)
         {
+            this.fileName = Settings.outputDir;
             this.id = id;
             dateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
-            fileName = "D:\\Development\\hypercubes\\" +
-                DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + "__Dim-" + dim + "_Run-" + id + ".log";
+            fileName = fileName + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + "__Dim-" + dim + "_Run-" + id + ".log";
 
             // Log file header line
             string logHeader = fileName + " is created.";

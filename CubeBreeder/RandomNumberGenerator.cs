@@ -28,7 +28,7 @@ namespace CubeBreeder
                 randoms[i] = new Random();
             }
         }
-
+        /*
         /// <summary>
         /// Get the only instance of RNG
         /// </summary>
@@ -40,7 +40,7 @@ namespace CubeBreeder
                 theInstance = new RandomNumberGenerator();
             }
             return theInstance;
-        }
+        }*/
 
         /// <summary>
         /// Get a random integer between 0 and n (exclusive)

@@ -12,10 +12,11 @@ namespace CubeBreeder
     /// </summary>
     class Run
     {
-        Settings s = Settings.GetInstance();
-        int number;
+        Settings s;
+        public int number;
         EvolutionaryAlgorithm ea;
         Logger logger;
+        Random rng;
 
         /// <summary>
         /// Constructor
@@ -23,6 +24,7 @@ namespace CubeBreeder
         /// <param name="number">the run identifier; also the random seed</param>
         public Run(int number)
         {
+            this.s = Settings.GetInstance();
             this.number = number;
             logger = new Logger(number, s.cubeDimension);
         }
@@ -32,30 +34,46 @@ namespace CubeBreeder
         /// </summary>
         /// <returns>best computed individual</returns>
         public Individual RunIt()
-        { 
-            Console.WriteLine("Starting run no. " + (number + 1));
-            Console.WriteLine("Initializing run no. " + (number + 1));
+        {
+            if (!Settings.parallel)
+            {
+                Console.WriteLine("Starting run no. " + (number + 1));
+                Console.WriteLine("Initializing run no. " + (number + 1));
+            }
 
             Stopwatch sw = Stopwatch.StartNew();
             //Set the rng seed
             GraphInfo graph = GraphInfo.GetInstance(s.cubeDimension);
             Tools tools = Tools.GetInstance(s.cubeDimension);
 
+            rng = new Random(number);
             logger.Log(s);
-            ea = s.GetEVA(logger);            
+            ea = s.GetEVA(logger, rng);
+            foreach (var op in ea.GetOperators())
+            {
+                logger.Log(Logger.Level.SETTINGS, op.ToLog());
+            }
+            foreach (var se in ea.GetMating())
+            {
+                logger.Log(Logger.Level.SETTINGS, se.ToLog() + " MAT");
+            }
+            foreach (var se in ea.GetEnvironmental())
+            {
+                logger.Log(Logger.Level.SETTINGS, se.ToLog() + " ENV");
+            }
 
             //Create new population
             Population pop = new Population();
             pop.SetPopulationSize(s.popSize);
             pop.SetSampleIndividual(graph);
-            pop.CreateRandomInitialPopulation();
+            pop.CreateRandomInitialPopulation(rng);
 
             if (!Settings.parallel) Console.WriteLine("Finished in {0:f2} seconds", sw.Elapsed.TotalSeconds);
             logger.Log(Logger.Level.INFO, "Initialization finished in " +
                 String.Format("{0:f2}", sw.Elapsed.TotalSeconds) + " seconds");
 
             //Run the algorithm
-            Console.WriteLine("Running run no. " + (number + 1));
+            if (!Settings.parallel || number == 0) Console.WriteLine("Running run no. " + (number + 1));
             try
             {
                 for (int i = 0; i < s.maxGen; i++)
@@ -66,7 +84,7 @@ namespace CubeBreeder
                     ea.Evolve(pop);
                     List<Individual> sorted = pop.GetSortedIndividuals();
                     //Log the best individual to console.
-                    if ((i + 1) % Settings.showGap == 0 && !Settings.parallel)
+                    if ((i + 1) % Settings.showGap == 0 && (!Settings.parallel || number == 0))
                     {
                         int idx = 0;
                         while (idx < s.popSize && sorted[idx].Is_3_Spanner(false) < 1) idx++;
@@ -89,9 +107,11 @@ namespace CubeBreeder
                         else sorted[j].elite = false;
                     }
                 }
-                Console.WriteLine();
+                if (!Settings.parallel) Console.WriteLine();
                 Individual bestInd;
-                Console.ReadLine();
+
+                //Console.ReadLine();
+
                 for (int j = 0; j < pop.GetPopulationSize(); j++)
                 {
                     if ((pop.GetSortedIndividuals()[j]).Is_3_Spanner(false) == 1)

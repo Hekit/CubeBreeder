@@ -13,15 +13,17 @@ namespace CubeBreeder.Operators.Crossovers
     {
         double xOverProb = 0;
         int subCubeSize = 3;
-        RandomNumberGenerator rng = RandomNumberGenerator.GetInstance();
+
+        Random rng;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="prob">probability of crossover</param>
-        public SubcubeSwapXOver(double prob)
+        public SubcubeSwapXOver(double prob, Random rnd)
         {
             xOverProb = prob;
+            rng = rnd;
         }
 
         /// <summary>
@@ -29,10 +31,16 @@ namespace CubeBreeder.Operators.Crossovers
         /// </summary>
         /// <param name="prob">probability of crossover</param>
         /// <param name="subcube">size of subcube</param>
-        public SubcubeSwapXOver(double prob, int subcube)
+        public SubcubeSwapXOver(double prob, int subcube, Random rnd)
         {
             xOverProb = prob;
             subCubeSize = subcube;
+            rng = rnd;
+        }
+
+        public string ToLog()
+        {
+            return "SubcubeSwap pc: " + xOverProb + " subcube: " + subCubeSize;
         }
 
         /// <summary>

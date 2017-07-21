@@ -13,19 +13,24 @@ namespace CubeBreeder.Selectors
     {
         double weakerProb;
         int competitors;
+        Random rng;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="weakerProb">probability that the weaker individual will be selected</param>
         /// <param name="competitors">number of competitors in the tournament</param>
-        public TournamentSelector(double weakerProb, int competitors)
+        public TournamentSelector(double weakerProb, int competitors, Random rng)
         {
             this.weakerProb = weakerProb;
             this.competitors = competitors;
+            this.rng = rng;
         }
 
-        RandomNumberGenerator rng = RandomNumberGenerator.GetInstance();
+        public string ToLog()
+        {
+            return "Tournament weaker: " + weakerProb + " competitors: " + competitors;
+        }
 
         /// <summary>
         /// Selecting howMany individuals from from to to

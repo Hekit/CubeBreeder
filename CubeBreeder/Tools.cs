@@ -287,7 +287,7 @@ namespace CubeBreeder
         }
 #endregion Parsing
 
-        /*
+        
         public static int NextInt(this Random rnd, int max)
         {
             return rnd.Next(max);
@@ -306,6 +306,6 @@ namespace CubeBreeder
         public static byte NextByte(this Random rnd, int p)
         {
             return (byte)rnd.Next(0, Byte.MaxValue + 1);
-        }*/
+        }
     }
 }

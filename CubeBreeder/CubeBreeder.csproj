@@ -60,7 +60,6 @@
     <Compile Include="Operators\Mutations\SubcubeTranslationMutation.cs" />
     <Compile Include="Operators\Operator.cs" />
     <Compile Include="Population.cs" />
-    <Compile Include="RandomNumberGenerator.cs" />
     <Compile Include="GraphInfo.cs" />
     <Compile Include="Individual.cs" />
     <Compile Include="Program.cs" />

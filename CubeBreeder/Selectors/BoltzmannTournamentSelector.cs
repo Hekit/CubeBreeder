@@ -18,7 +18,7 @@ namespace CubeBreeder.Selectors
         int t0 = 15; // [5, 100]
         double alpha = 0.1; // [0,1]
 
-        RandomNumberGenerator rng = RandomNumberGenerator.GetInstance();
+        Random rng;
 
         /// <summary>
         /// Constructor
@@ -26,12 +26,18 @@ namespace CubeBreeder.Selectors
         /// <param name="max">maximal number of generations</param>
         /// <param name="weakerProb">probability that the weaker individual will be selected</param>
         /// <param name="competitors">number of competitors in the tournament</param>
-        public BoltzmannTournamentSelector(int max, double weakerProb, int competitors)
+        public BoltzmannTournamentSelector(int max, double weakerProb, int competitors, Random rnd)
         {
             this.weakerProb = weakerProb;
             this.competitors = competitors;
             maxGenerations = max;
             currentGeneration = 0;
+            rng = rnd;
+        }
+
+        public string ToLog()
+        {
+            return "BoltzmannTournament weaker: " + weakerProb + " competitors: " + competitors;
         }
 
         /// <summary>

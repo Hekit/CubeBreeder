@@ -18,16 +18,22 @@ namespace CubeBreeder.Selectors
         int t0 = 100; // [5, 100]
         double alpha = 0.05; // [0,1]
 
-        RandomNumberGenerator rng = RandomNumberGenerator.GetInstance();
+        Random rng;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="max">maximal number of generations</param>
-        public BoltzmannRouletteWheelSelector(int max)
+        public BoltzmannRouletteWheelSelector(int max, Random rnd)
         {
             maxGenerations = max;
             currentGeneration = 0;
+            rng = rnd;
+        }
+
+        public string ToLog()
+        {
+            return "BoltzmannRouletteWheel";
         }
 
         /// <summary>

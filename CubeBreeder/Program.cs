@@ -35,7 +35,7 @@ namespace CubeBreeder
             Console.WriteLine("Dimension: " + s.cubeDimension);
             Console.WriteLine();
 
-            List<Individual> bestInds = new List<Individual>();
+            List<Tuple<Individual, int>> bestInds = new List<Tuple<Individual,int>>();
 
             // initialize the array of runs
             Run[] runs = new Run[s.repeats];
@@ -43,7 +43,7 @@ namespace CubeBreeder
             {
                 runs[i] = new Run(i);
             }
-            var bests = new List<Individual>();
+            var bests = new List<Tuple<Individual,int>>();
 
             // if parallel run it parallely
             if (Settings.parallel)
@@ -53,7 +53,7 @@ namespace CubeBreeder
                     Individual best = r.RunIt();
                     lock (bestInds)
                     { // lock the list to avoid race conditions
-                        bestInds.Add(best);
+                        bestInds.Add(new Tuple<Individual, int>(best, r.number));
                     }
                 });
             }
@@ -62,8 +62,7 @@ namespace CubeBreeder
             {
                 for (int i = 0; i < s.repeats; i++)
                 {
-                    RandomNumberGenerator.GetInstance().ReSeed(i);
-                    bests.Add(runs[i].RunIt());
+                    bests.Add(new Tuple<Individual, int>(runs[i].RunIt(),i));
                 }
             }
 
@@ -73,11 +72,15 @@ namespace CubeBreeder
                 if (best != null) bestInds.Add(best);
             }
 
+            bestInds.Sort((x, y) => x.Item2.CompareTo(y.Item2));
+
+            Console.WriteLine();
             for (int i = 0; i < bestInds.Count; i++)
             {
-                Console.WriteLine("Run " + (i + 1) + ": best objective=" + bestInds[i].GetObjectiveValue());
-                Tools.WriteIndividual(bestInds[i]);
+                Console.WriteLine("Run " + (i + 1) + ": best objective=" + bestInds[i].Item1.GetObjectiveValue());
+                Tools.WriteIndividual(bestInds[i].Item1);
             }
+            Console.ReadLine();
         }
     }
 }

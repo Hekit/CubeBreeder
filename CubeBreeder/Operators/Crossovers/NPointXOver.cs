@@ -14,15 +14,21 @@ namespace CubeBreeder.Operators.Crossovers
         double xOverProb = 0;
         int numberOfPoints = 2;
 
-        RandomNumberGenerator rng = RandomNumberGenerator.GetInstance();
+        Random rng;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="prob">probability of crossover</param>
-        public NPointXOver(double prob)
+        public NPointXOver(double prob, Random rnd)
         {
             xOverProb = prob;
+            rng = rnd;
+        }
+
+        public string ToLog()
+        {
+            return "Npoint prob: " + xOverProb + " points: " + numberOfPoints;
         }
 
         /// <summary>
@@ -30,10 +36,11 @@ namespace CubeBreeder.Operators.Crossovers
         /// </summary>
         /// <param name="prob">probability of crossover</param>
         /// <param name="points">number of crossover points</param>
-        public NPointXOver(double prob, int points)
+        public NPointXOver(double prob, int points, Random rnd)
         {
             xOverProb = prob;
             numberOfPoints = points;
+            rng = rnd;
         }
 
         /// <summary>

@@ -14,17 +14,23 @@ namespace CubeBreeder.Operators.Mutations
         double mutationProbability;
         double bitFlipProbability;
 
-        RandomNumberGenerator rng = RandomNumberGenerator.GetInstance();
+        Random rng;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="mutationProbability">probability of mutation</param>
         /// <param name="bitFlipProbability">probability of mutation per edge</param>
-        public SimpleRepairEdgeMutation(double mutationProbability, double bitFlipProbability)
+        public SimpleRepairEdgeMutation(double mutationProbability, double bitFlipProbability, Random rnd)
         {
             this.mutationProbability = mutationProbability;
             this.bitFlipProbability = bitFlipProbability;
+            rng = rnd;
+        }
+
+        public string ToLog()
+        {
+            return "SimpleRepair prob: " + mutationProbability + " bitProb: " + bitFlipProbability;
         }
 
         /// <summary>

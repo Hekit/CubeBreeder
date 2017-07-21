@@ -11,7 +11,17 @@ namespace CubeBreeder.Selectors
     /// </summary>
     class RouletteWheelSelector : Selector
     {
-        RandomNumberGenerator rng = RandomNumberGenerator.GetInstance();
+        Random rng;
+
+        public RouletteWheelSelector(Random rnd)
+        {
+            rng = rnd;
+        }
+
+        public string ToLog()
+        {
+            return "RouletteWheel";
+        }
 
         /// <summary>
         /// Selecting howMany individuals from from to to

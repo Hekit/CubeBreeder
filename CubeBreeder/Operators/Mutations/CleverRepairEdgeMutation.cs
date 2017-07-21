@@ -13,15 +13,21 @@ namespace CubeBreeder.Operators.Mutations
     {
         double mutationProbability;
 
-        RandomNumberGenerator rng = RandomNumberGenerator.GetInstance();
+        Random rng;
 
         /// <summary>
         /// Construtor
         /// </summary>
         /// <param name="mutationProbability">mutation probability</param>
-        public CleverRepairEdgeMutation(double mutationProbability)
+        public CleverRepairEdgeMutation(double mutationProbability, Random rnd)
         {
             this.mutationProbability = mutationProbability;
+            rng = rnd;
+        }
+
+        public string ToLog()
+        {
+            return "CleverRepair prob: " + mutationProbability;
         }
 
         /// <summary>

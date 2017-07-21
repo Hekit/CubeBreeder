@@ -22,5 +22,7 @@ namespace CubeBreeder.Operators
         ///  Each generation update method
         /// </summary>
         void Update();
+
+        string ToLog();
     }
 }

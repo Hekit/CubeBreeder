@@ -35,6 +35,10 @@ namespace CubeBreeder
             //replacement = new PercentageReplacement(0.9);
         }
 
+        public List<Operator> GetOperators() { return operators; }
+        public List<Selector> GetMating() { return matingSelectors; }
+        public List<Selector> GetEnvironmental() { return environmentalSelectors; }
+
         /// <summary>
         /// Setter for replacement
         /// </summary>
@@ -110,7 +114,7 @@ namespace CubeBreeder
             generationNo++;
             
             // informative output
-            if (Settings.showGap >= 5 && (generationNo + 1) % (Settings.showGap / 5) == 0)
+            if ((!Settings.parallel) && Settings.showGap >= 5 && (generationNo + 1) % (Settings.showGap / 5) == 0)
             {
                 Console.Write("|");
             }

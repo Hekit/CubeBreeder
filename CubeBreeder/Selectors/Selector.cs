@@ -18,5 +18,7 @@ namespace CubeBreeder.Selectors
         /// <param name="from">old population</param>
         /// <param name="to">new population</param>
         void Select(int howMany, Population from, Population to);
+
+        string ToLog();
     }
 }

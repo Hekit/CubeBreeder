@@ -31,6 +31,7 @@ namespace CubeBreeder
         public int subcubeSize;
         public int nPoints;
         public double eliteSize;
+        public string logFolder;
         public static int localDetourSpanners = 0;
         public static int maxColours = 1;
         public static bool parallel;
@@ -43,7 +44,7 @@ namespace CubeBreeder
         public static double tourWeakerProb = 0.2;
         public static string task;
         public static double changingSubcube;
-        public static string outputDir = "D:\\Development\\hypercubes\\";
+        public static string outputDir = ".";
 
         private static Settings theInstance = null;
 
@@ -55,7 +56,7 @@ namespace CubeBreeder
             // initialize from Settings
             InitializeSettings();
             // if a config file is provided, overrun the initialization
-            if (System.IO.File.Exists(@"..\..\Resources\config.txt"))
+            if (System.IO.File.Exists(@".\config.txt"))
             {
                 LoadSettings();
             }
@@ -66,17 +67,17 @@ namespace CubeBreeder
         /// </summary>
         /// <param name="logger">Logger to log the configuration</param>
         /// <returns></returns>
-        public EvolutionaryAlgorithm GetEVA(Logger logger)
+        public EvolutionaryAlgorithm GetEVA(Logger logger, Random rng)
         {
             // initialize from file
-            if (System.IO.File.Exists(@"..\..\Resources\config.txt"))
+            if (System.IO.File.Exists(@".\config.txt"))
             {
-                return LoadEVA(logger);
+                return LoadEVA(logger, rng);
             }
             // or from default
             else
             {
-                return InitializeEVA(logger);
+                return InitializeEVA(logger, rng);
             }
         }
 
@@ -146,9 +147,10 @@ namespace CubeBreeder
             // How much of the population should be initialized from file
             fileUsage = Properties.Settings.Default.FileInitRatio;
             // Input folder for initialization
-            inputFolderPath = @"D:\Development\hypercubes\initialization\";
+            inputFolderPath = @".";
             // Gap for displaying info on console during runtime
             showGap = Properties.Settings.Default.ShowGap;
+
 
             // Set the task
             if (Properties.Settings.Default.Task == "spanner")
@@ -173,7 +175,7 @@ namespace CubeBreeder
         /// </summary>
         /// <param name="logger">logger to log the settings</param>
         /// <returns>configuration of EA</returns>
-        private EvolutionaryAlgorithm InitializeEVA(Logger logger)
+        private EvolutionaryAlgorithm InitializeEVA(Logger logger, Random rng)
         {
             EvolutionaryAlgorithm ea;
             //Set the options for the evolutionary algorithm
@@ -182,33 +184,36 @@ namespace CubeBreeder
             if (Properties.Settings.Default.Task == "spanner")
             {
                 ea.SetFitnessFunction(new SpannerFitness(edgeCount));
+                logger.Log(Logger.Level.SETTINGS, "Spanner");
                 task = "spanner";
             }
             else if (Properties.Settings.Default.Task == "degree")
             {
                 ea.SetFitnessFunction(new MaxDegreeFitness(cubeDimension));
+                logger.Log(Logger.Level.SETTINGS, "MaxDegree");
                 task = "degree";
             }
             else
             {
                 ea.SetFitnessFunction(new EdgeDisjointSpanner(cubeDimension));
+                logger.Log(Logger.Level.SETTINGS, "EDS");
                 task = "eds";
             }
             // Selectors
             //ea.AddMatingSelector(new RouletteWheelSelector());
-            ea.AddMatingSelector(new TournamentSelector(tourWeakerProb, competitors));
+            ea.AddMatingSelector(new TournamentSelector(tourWeakerProb, competitors, rng));
             //ea.AddMatingSelector(new BoltzmannTournamentSelector(maxGen));
             //ea.AddMatingSelector(new BoltzmannRouletteWheelSelector(maxGen));
             // Operators
-            ea.AddOperator(new SubcubeSwapXOver(xoverProb, subcubeSize));
+            ea.AddOperator(new SubcubeSwapXOver(xoverProb, subcubeSize, rng));
             //ea.AddOperator(new NPointXOver(xoverProb, nPoints));
             //ea.AddOperator(new SimpleRepairEdgeMutation(mutProb, mutRepair));
             //ea.AddOperator(new CleverRepairEdgeMutation(mutProb / 100, mutRepair));
-            ea.AddOperator(new FlipEdgeMutation(mutProb, mutProbPerBit));
-            ea.AddOperator(new SubcubeTranslationMutation(mutProb, 2));
-            ea.AddOperator(new SubcubeRotationMutation(mutProb, 2));
+            ea.AddOperator(new FlipEdgeMutation(mutProb, mutProbPerBit, rng));
+            ea.AddOperator(new SubcubeTranslationMutation(mutProb, 2, rng));
+            ea.AddOperator(new SubcubeRotationMutation(mutProb, 2, rng));
             //ea.AddEnvironmentalSelector(new RouletteWheelSelector());
-            ea.AddEnvironmentalSelector(new TournamentSelector(tourWeakerProb, competitors));
+            ea.AddEnvironmentalSelector(new TournamentSelector(tourWeakerProb, competitors, rng));
             //ea.AddEnvironmentalSelector(new BoltzmannTournamentSelector(maxGen));
             //ea.AddEnvironmentalSelector(new BoltzmannRouletteWheelSelector(maxGen));
 
@@ -222,13 +227,13 @@ namespace CubeBreeder
         /// </summary>
         /// <param name="logger">logger to log the configuration</param>
         /// <returns>configuration of EA</returns>
-        private EvolutionaryAlgorithm LoadEVA(Logger logger)
+        private EvolutionaryAlgorithm LoadEVA(Logger logger, Random rnd)
         {
             EvolutionaryAlgorithm ea = new EvolutionaryAlgorithm();
             string[] lines = new string[1];
             try
             {
-                lines = System.IO.File.ReadAllLines(@"..\..\Resources\config.txt");
+                lines = System.IO.File.ReadAllLines(@".\config.txt");
             }
             catch (Exception e)
             {
@@ -248,41 +253,82 @@ namespace CubeBreeder
                     case "RouletteWheel":
                         if (line.GetOrElse(1, "") == "ENV" || line.GetOrElse(2, "") == "ENV")
                         {
-                            ea.AddEnvironmentalSelector(new RouletteWheelSelector());
-                            logger.Log(Logger.Level.SETTINGS, "Roulette ENV");
+                            ea.AddEnvironmentalSelector(new RouletteWheelSelector(rnd));
                         }
                         if (line.GetOrElse(1, "") == "MAT" || line.GetOrElse(2, "") == "MAT")
                         {
-                            ea.AddMatingSelector(new RouletteWheelSelector());
-                            logger.Log(Logger.Level.SETTINGS, "Roulette ENV");
+                            ea.AddMatingSelector(new RouletteWheelSelector(rnd));
                         }
                         if (line.Length < 2)
                         {
-                            ea.AddEnvironmentalSelector(new RouletteWheelSelector());
-                            ea.AddMatingSelector(new RouletteWheelSelector());
-                            logger.Log(Logger.Level.SETTINGS, "Roulette ENV MAT");
+                            ea.AddEnvironmentalSelector(new RouletteWheelSelector(rnd));
+                            ea.AddMatingSelector(new RouletteWheelSelector(rnd));
                         }
                         break;
                     case "Tournament":
-                        // competitors = Properties.Settings.Default.TournamentCompetitors;
+                        if (line.GetOrElse(2, "") == "ENV" || line.GetOrElse(3, "") == "ENV")
+                        {
+                            ea.AddEnvironmentalSelector(new TournamentSelector(
+                                tourWeakerProb,
+                                line.ParseIntOrElse(1, Properties.Settings.Default.TournamentCompetitors),
+                                rnd));
+                        }
+                        if (line.GetOrElse(2, "") == "MAT" || line.GetOrElse(3, "") == "MAT")
+                            ea.AddMatingSelector(new TournamentSelector(
+                                tourWeakerProb,
+                                line.ParseIntOrElse(1, Properties.Settings.Default.TournamentCompetitors),
+                                rnd));
+                        if (line.Length < 3)
+                        {
+                            ea.AddEnvironmentalSelector(new TournamentSelector(
+                                tourWeakerProb,
+                                line.ParseIntOrElse(1, Properties.Settings.Default.TournamentCompetitors),
+                                rnd));
+                            ea.AddMatingSelector(new TournamentSelector(
+                                tourWeakerProb,
+                                line.ParseIntOrElse(1, Properties.Settings.Default.TournamentCompetitors),
+                                rnd));
+                        }
+                        break;
+                    case "BoltzmannTournament":
+                        if (line.GetOrElse(2, "") == "ENV" || line.GetOrElse(3, "") == "ENV")
+                        {
+                            ea.AddEnvironmentalSelector(new BoltzmannTournamentSelector(maxGen,
+                                tourWeakerProb,
+                                line.ParseIntOrElse(1, Properties.Settings.Default.TournamentCompetitors),
+                                rnd));
+                        }
+                        if (line.GetOrElse(2, "") == "MAT" || line.GetOrElse(3, "") == "MAT")
+                            ea.AddMatingSelector(new BoltzmannTournamentSelector(maxGen,
+                                tourWeakerProb,
+                                line.ParseIntOrElse(1, Properties.Settings.Default.TournamentCompetitors),
+                                rnd));
+                        if (line.Length < 3)
+                        {
+                            ea.AddEnvironmentalSelector(new BoltzmannTournamentSelector(maxGen,
+                                tourWeakerProb,
+                                line.ParseIntOrElse(1, Properties.Settings.Default.TournamentCompetitors),
+                                rnd));
+                            ea.AddMatingSelector(new BoltzmannTournamentSelector(maxGen,
+                                tourWeakerProb,
+                                line.ParseIntOrElse(1, Properties.Settings.Default.TournamentCompetitors),
+                                rnd));
+                        }
+                        break;
+                    case "BoltzmannRouletteWheel":
                         if (line.GetOrElse(1, "") == "ENV" || line.GetOrElse(2, "") == "ENV")
                         {
-                            //ea.AddEnvironmentalSelector(new TournamentSelector());
-                            logger.Log(Logger.Level.SETTINGS, "Tournament");
+                            ea.AddEnvironmentalSelector(new BoltzmannRouletteWheelSelector(maxGen, rnd));
                         }
                         if (line.GetOrElse(1, "") == "MAT" || line.GetOrElse(2, "") == "MAT")
-                            //ea.AddMatingSelector(new TournamentSelector());
+                        {
+                            ea.AddMatingSelector(new BoltzmannRouletteWheelSelector(maxGen, rnd));
+                        }
                         if (line.Length < 2)
                         {
-                            //ea.AddEnvironmentalSelector(new TournamentSelector());
-                            //ea.AddMatingSelector(new TournamentSelector());
+                            ea.AddEnvironmentalSelector(new BoltzmannRouletteWheelSelector(maxGen, rnd));
+                            ea.AddMatingSelector(new BoltzmannRouletteWheelSelector(maxGen, rnd));
                         }
-                        break;
-                    case "BoltzmanTournament":
-                        throw new NotImplementedException();
-                        break;
-                    case "BoltzmanRouletteWheel":
-                        throw new NotImplementedException();
                         break;
 
                     // operators
@@ -290,53 +336,63 @@ namespace CubeBreeder
                         ea.AddOperator(
                             new SubcubeSwapXOver(
                                 line.ParseDoubleOrElse(1, Properties.Settings.Default.P_CrossoverProbability),
-                                line.ParseIntOrElse(2, Properties.Settings.Default._SubcubeSize)));
+                                line.ParseIntOrElse(2, Properties.Settings.Default._SubcubeSize),
+                                rnd));
                         break;
                     case "N-Point":
                         ea.AddOperator(
                             new NPointXOver(
                                 line.ParseDoubleOrElse(1, Properties.Settings.Default.P_CrossoverProbability),
-                                line.ParseIntOrElse(2, Properties.Settings.Default.NPoints)));
+                                line.ParseIntOrElse(2, Properties.Settings.Default.NPoints),
+                                rnd));
                         break;
                     case "CleverRepair":
                         ea.AddOperator(
                             new CleverRepairEdgeMutation(
-                                line.ParseDoubleOrElse(1, Properties.Settings.Default.P_MutationProbability)));
+                                line.ParseDoubleOrElse(1, Properties.Settings.Default.P_MutationProbability),
+                                rnd));
                         break;
                     case "SimpleRepair":
                         ea.AddOperator(
                             new SimpleRepairEdgeMutation(
                                 line.ParseDoubleOrElse(1, Properties.Settings.Default.P_MutationProbability),
-                                line.ParseDoubleOrElse(2, Properties.Settings.Default.P_MutationPerEdgeProbability)));
+                                line.ParseDoubleOrElse(2, Properties.Settings.Default.P_MutationPerEdgeProbability),
+                                rnd));
                         break;
                     case "Translation":
                         ea.AddOperator(
                             new SubcubeTranslationMutation(
                                 line.ParseDoubleOrElse(1, Properties.Settings.Default.P_MutationProbability),
-                                line.ParseIntOrElse(2, Properties.Settings.Default._SubcubeSize)));
+                                line.ParseIntOrElse(2, Properties.Settings.Default._SubcubeSize),
+                                rnd));
                         break;
                     case "Rotation":
                         ea.AddOperator(
                             new SubcubeRotationMutation(
                                 line.ParseDoubleOrElse(1, Properties.Settings.Default.P_MutationProbability),
-                                line.ParseIntOrElse(2, Properties.Settings.Default._SubcubeSize)));
+                                line.ParseIntOrElse(2, Properties.Settings.Default._SubcubeSize),
+                                rnd));
                         break;
                     case "FlipEdge":
                         ea.AddOperator(
                             new FlipEdgeMutation(
                                 line.ParseDoubleOrElse(1, Properties.Settings.Default.P_MutationProbability),
-                                line.ParseDoubleOrElse(2, Properties.Settings.Default.P_MutationPerEdgeProbability)));
+                                line.ParseDoubleOrElse(2, Properties.Settings.Default.P_MutationPerEdgeProbability),
+                                rnd));
                         break;
 
                     // fitness
                     case "Spanner":
                         ea.SetFitnessFunction(new SpannerFitness(edgeCount));
+                        logger.Log(Logger.Level.SETTINGS, "Spanner");
                         break;
                     case "Degree":
                         ea.SetFitnessFunction(new MaxDegreeFitness(cubeDimension));
+                        logger.Log(Logger.Level.SETTINGS, "MaxDegree");
                         break;
                     case "EdgeDisjoint":
                         ea.SetFitnessFunction(new EdgeDisjointSpanner(cubeDimension));
+                        logger.Log(Logger.Level.SETTINGS, "EDS");
                         break;
                     default:
                         break;
@@ -353,7 +409,7 @@ namespace CubeBreeder
             string[] lines = new string[1];
             try
             {
-                lines = System.IO.File.ReadAllLines(@"..\..\Resources\config.txt");
+                lines = System.IO.File.ReadAllLines(@".\config.txt");
             }
             catch  (Exception e)
             {
@@ -391,10 +447,16 @@ namespace CubeBreeder
                     case "Repeats":
                         repeats = line.ParseIntOrElse(1, Properties.Settings.Default.Repeats);
                         break;
+                    case "Parallel":
+                        parallel = true;
+                        break;
+                    case "OutputDir":
+                        outputDir = line.GetOrElse(1, ".");
+                        break;
 
                     // initialization
                     case "InputFile":
-                        inputFolderPath = line.GetOrElse(1, "D:\\Development\\hypercubes\\initialization\\");
+                        inputFolderPath = line.GetOrElse(1, ".");
                         if (fileUsage > 0) fileInitialization = true;   
                         break;
                     case "Percentage":
@@ -418,7 +480,9 @@ namespace CubeBreeder
                     case "TournamentWeaker":
                         tourWeakerProb = line.ParseDoubleOrElse(1, Properties.Settings.Default.TournamentWeakerChance);
                         break;
-                        
+                    case "ChangingSubcube":
+                        changingSubcube = line.ParseDoubleOrElse(1, Properties.Settings.Default.ChangingSubcubeSize);
+                        break;
                     default:
                         break;
                 }

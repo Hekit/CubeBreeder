@@ -26,7 +26,7 @@ namespace CubeBreeder
         GraphInfo graph;
         byte[] edgeActivity;
 
-        RandomNumberGenerator rnd = RandomNumberGenerator.GetInstance();
+        //RandomNumberGenerator rnd = RandomNumberGenerator.GetInstance();
 
         public static StreamReader file = null;
 
@@ -150,7 +150,7 @@ namespace CubeBreeder
         /// <summary>
         /// Initialize the individual according to a file 
         /// </summary>
-        public void FileInitialization()
+        public void FileInitialization(Random rnd)
         {
             try
             {
@@ -174,7 +174,7 @@ namespace CubeBreeder
             }
             catch
             {
-                RandomInitialization(1);
+                RandomInitialization(1, rnd);
             }
         }
 
@@ -182,7 +182,7 @@ namespace CubeBreeder
         /// Initialize the individual randomly
         /// </summary>
         /// <param name="maxColours">maximal number of colours to be used</param>
-        public void RandomInitialization(int maxColours)
+        public void RandomInitialization(int maxColours, Random rnd)
         {
             int probability = Settings.activeProbability;
 

@@ -25,7 +25,7 @@ namespace CubeBreeder.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
         public int _Dimension {
             get {
                 return ((int)(this["_Dimension"]));
@@ -37,7 +37,7 @@ namespace CubeBreeder.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("500")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
         public int _MaxGenerations {
             get {
                 return ((int)(this["_MaxGenerations"]));
@@ -49,7 +49,7 @@ namespace CubeBreeder.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("320")]
+        [global::System.Configuration.DefaultSettingValueAttribute("800")]
         public int _PopulationSize {
             get {
                 return ((int)(this["_PopulationSize"]));
@@ -109,7 +109,7 @@ namespace CubeBreeder.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
         public int Repeats {
             get {
                 return ((int)(this["Repeats"]));
@@ -193,7 +193,7 @@ namespace CubeBreeder.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool Parallel {
             get {
                 return ((bool)(this["Parallel"]));
@@ -205,7 +205,7 @@ namespace CubeBreeder.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
         public int ShowGap {
             get {
                 return ((int)(this["ShowGap"]));

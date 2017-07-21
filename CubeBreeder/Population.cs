@@ -146,7 +146,7 @@ namespace CubeBreeder
         /// <summary>
         /// Creates random initial population
         /// </summary>
-        public void CreateRandomInitialPopulation()
+        public void CreateRandomInitialPopulation(Random rnd)
         {
             if (!Settings.parallel) Console.Write("Population Initialization ");
             individuals = new List<Individual>(size);
@@ -157,11 +157,11 @@ namespace CubeBreeder
 
                 if (Properties.Settings.Default.File_Initialization && i < size * Settings.fileUsage)
                     // if we are using file, use it
-                    n.FileInitialization();
+                    n.FileInitialization(rnd);
                 else
                 {
                     // else initialize randomly
-                    n.RandomInitialization(Settings.maxColours);
+                    n.RandomInitialization(Settings.maxColours, rnd);
                 }
                 n.changed = true;
                 n.spanner = n.Is_3_Spanner(true);
