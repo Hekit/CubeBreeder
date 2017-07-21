@@ -28,7 +28,7 @@ namespace CubeBreeder.Operators.Crossovers
 
         public string ToLog()
         {
-            return "Npoint prob: " + xOverProb + " points: " + numberOfPoints;
+            return "Npoint\tprob:\t" + String.Format("{0:f2}", xOverProb) + "\tpoints:\t" + numberOfPoints;
         }
 
         /// <summary>

@@ -63,10 +63,10 @@ namespace CubeBreeder
             Log(Level.GENERATION, "Generation:\t" + (gen + 1).ToString());
             Log(Level.GENERATION, "Objective:\t" + sorted[idx].GetObjectiveValue());
             Log(Level.GENERATION, "Best valid:\t" + idx);
-            Log(Level.GENERATION, "Fitness:\t" + String.Format("{0:f1}", sorted[0].GetFitnessValue()));
+            Log(Level.GENERATION, "Fitness:\t\t" + String.Format("{0:f1}", sorted[0].GetFitnessValue()));
             Log(Level.GENERATION, "3-spanner:\t" + String.Format("{0:f2}", 
                 (float)(Program.localDetourSpanners * 100.0 / pop.GetPopulationSize())) + "%");
-            Log(Level.GENERATION, "Average:\t" + String.Format("{0:f0}", pop.GetAverage()));
+            Log(Level.GENERATION, "Average:\t\t" + String.Format("{0:f0}", pop.GetAverage()));
             Log(Level.GENERATION, "Median:\t\t" + String.Format("{0:f0}", 
                 sorted[pop.GetPopulationSize() / 2].GetFitnessValue()));
         }
@@ -78,15 +78,15 @@ namespace CubeBreeder
         public void Log(Settings s)
         {
             Log(Level.SETTINGS, "Hypercube Dimension:\t" + s.cubeDimension);
-            Log(Level.SETTINGS, "Population size:\t" + s.popSize);
-            Log(Level.SETTINGS, "Elite size:\t\t" + String.Format("{0:f2}", s.eliteSize));
-            Log(Level.SETTINGS, "Maximum generations:\t" + String.Format("{0:f2}", s.maxGen));
+            Log(Level.SETTINGS, "Population size:\t\t" + s.popSize);
+            Log(Level.SETTINGS, "Elite size:\t\t\t" + String.Format("{0:f2}", s.eliteSize));
+            Log(Level.SETTINGS, "Maximum generations:\t" + s.maxGen);
             Log(Level.SETTINGS, "Mutation probability:\t" + String.Format("{0:f2}", s.mutProb));
-            Log(Level.SETTINGS, "Mutation Per Item:\t" + String.Format("{0:f2}", s.mutProbPerBit));
-            Log(Level.SETTINGS, "Repair probability:\t" + String.Format("{0:f2}", s.mutRepair));
+            Log(Level.SETTINGS, "Mutation Per Item:\t\t" + String.Format("{0:f2}", s.mutProbPerBit));
+            Log(Level.SETTINGS, "Repair probability:\t\t" + String.Format("{0:f2}", s.mutRepair));
             Log(Level.SETTINGS, "Crossover probability:\t" + String.Format("{0:f2}", s.xoverProb));
-            Log(Level.SETTINGS, "Subcube size:\t" + s.subcubeSize);
-            Log(Level.SETTINGS, "N in N-points:\t" + s.nPoints);
+            Log(Level.SETTINGS, "Subcube size:\t\t" + s.subcubeSize);
+            Log(Level.SETTINGS, "N in N-points:\t\t" + s.nPoints);
             //Log(Level.SETTINGS, "\t" + s);
         }
 

@@ -30,7 +30,7 @@ namespace CubeBreeder.Operators.Mutations
 
         public string ToLog()
         {
-            return "SubcubeRotation prob: " + mutationProbability + " subcube: " + subCubeSize;
+            return "SubcubeRotation\tprob:\t" + String.Format("{0:f2}", mutationProbability) + "\tsubcube:\t" + subCubeSize;
         }
 
         /// <summary>

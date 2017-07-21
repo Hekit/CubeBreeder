@@ -30,7 +30,7 @@ namespace CubeBreeder.Operators.Mutations
 
         public string ToLog()
         {
-            return "FlipEdge prob: " + mutationProbability + " bitProb: " + bitFlipProbability;
+            return "FlipEdge\tprob:\t" + String.Format("{0:f2}", mutationProbability) + "\tbitProb:\t" + String.Format("{0:f2}", bitFlipProbability);
         }
 
         /// <summary>

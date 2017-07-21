@@ -27,7 +27,7 @@ namespace CubeBreeder.Operators.Mutations
 
         public string ToLog()
         {
-            return "CleverRepair prob: " + mutationProbability;
+            return "CleverRepair\tprob:\t" + String.Format("{0:f2}", mutationProbability);
         }
 
         /// <summary>

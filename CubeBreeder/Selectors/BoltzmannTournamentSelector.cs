@@ -37,7 +37,7 @@ namespace CubeBreeder.Selectors
 
         public string ToLog()
         {
-            return "BoltzmannTournament weaker: " + weakerProb + " competitors: " + competitors;
+            return "BoltzmannTournament\tweaker:\t" + String.Format("{0:f2}", weakerProb) + "\tcompetitors:\r" + competitors;
         }
 
         /// <summary>

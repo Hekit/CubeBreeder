@@ -40,7 +40,7 @@ namespace CubeBreeder.Operators.Crossovers
 
         public string ToLog()
         {
-            return "SubcubeSwap pc: " + xOverProb + " subcube: " + subCubeSize;
+            return "SubcubeSwap\tprob:\t" + String.Format("{0:f2}", xOverProb) + "\tsubcube:\t" + subCubeSize;
         }
 
         /// <summary>

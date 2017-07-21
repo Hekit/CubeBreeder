@@ -29,7 +29,7 @@ namespace CubeBreeder.Selectors
 
         public string ToLog()
         {
-            return "Tournament weaker: " + weakerProb + " competitors: " + competitors;
+            return "Tournament\tweaker:\t" + String.Format("{0:f2}", weakerProb) + "\tcompetitors:\r" + competitors;
         }
 
         /// <summary>
