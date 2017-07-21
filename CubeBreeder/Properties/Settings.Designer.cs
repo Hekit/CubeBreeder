@@ -25,7 +25,7 @@ namespace CubeBreeder.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        [global::System.Configuration.DefaultSettingValueAttribute("6")]
         public int _Dimension {
             get {
                 return ((int)(this["_Dimension"]));
@@ -49,7 +49,7 @@ namespace CubeBreeder.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("800")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1920")]
         public int _PopulationSize {
             get {
                 return ((int)(this["_PopulationSize"]));
@@ -260,6 +260,18 @@ namespace CubeBreeder.Properties {
             }
             set {
                 this["ChangingSubcubeSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int ReplacementPercentage {
+            get {
+                return ((int)(this["ReplacementPercentage"]));
+            }
+            set {
+                this["ReplacementPercentage"] = value;
             }
         }
     }

@@ -9,7 +9,7 @@ namespace CubeBreeder.Replacements
     /// <summary>
     /// Replacement that combines the parents and the offspring into one population
     /// </summary>
-    class MergingReplacement
+    class MergingReplacement : Replacement
     {
         /// <summary>
         /// Replace method

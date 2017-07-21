@@ -9,7 +9,7 @@ namespace CubeBreeder.Replacements
     /// <summary>
     /// Replacement that takes some percent of the best offspring and the rest of the best parents for next generation 
     /// </summary>
-    class PercentageReplacement
+    class PercentageReplacement : Replacement
     {
         int percentage;
         public PercentageReplacement(int percentage)

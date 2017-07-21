@@ -58,6 +58,7 @@ namespace CubeBreeder
             // if a config file is provided, overrun the initialization
             if (System.IO.File.Exists(@".\config.txt"))
             {
+                Console.WriteLine("Using config file configuration");
                 LoadSettings();
             }
         }
@@ -199,6 +200,10 @@ namespace CubeBreeder
                 logger.Log(Logger.Level.SETTINGS, "EDS");
                 task = "eds";
             }
+            // Replacement
+            ea.SetReplacement(new ChildrenOnlyReplacement());
+            //ea.SetReplacement(new MergingReplacement());
+            //ea.SetReplacement(new PercentageReplacement(20));
             // Selectors
             //ea.AddMatingSelector(new RouletteWheelSelector());
             ea.AddMatingSelector(new TournamentSelector(tourWeakerProb, competitors, rng));
@@ -329,6 +334,19 @@ namespace CubeBreeder
                             ea.AddEnvironmentalSelector(new BoltzmannRouletteWheelSelector(maxGen, rnd));
                             ea.AddMatingSelector(new BoltzmannRouletteWheelSelector(maxGen, rnd));
                         }
+                        break;
+                    case "ChildrenOnly":
+                        ea.SetReplacement(new ChildrenOnlyReplacement());
+                        logger.Log(Logger.Level.SETTINGS, "ChildrenOnly Replacement");
+                        break;
+                    case "Merging":
+                        ea.SetReplacement(new MergingReplacement());
+                        logger.Log(Logger.Level.SETTINGS, "Merging Replacement");
+                        break;
+                    case "Percentage":
+                        ea.SetReplacement(new PercentageReplacement(
+                            line.ParseIntOrElse(1, Properties.Settings.Default.ReplacementPercentage)));
+                        logger.Log(Logger.Level.SETTINGS, "Percentage Replacement");
                         break;
 
                     // operators

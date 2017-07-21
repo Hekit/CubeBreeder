@@ -3,13 +3,13 @@
   <Profiles />
   <Settings>
     <Setting Name="_Dimension" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">5</Value>
+      <Value Profile="(Default)">6</Value>
     </Setting>
     <Setting Name="_MaxGenerations" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1000</Value>
     </Setting>
     <Setting Name="_PopulationSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">800</Value>
+      <Value Profile="(Default)">1920</Value>
     </Setting>
     <Setting Name="P_CrossoverProbability" Type="System.Single" Scope="User">
       <Value Profile="(Default)">0.5</Value>
@@ -61,6 +61,9 @@
     </Setting>
     <Setting Name="ChangingSubcubeSize" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0.5</Value>
+    </Setting>
+    <Setting Name="ReplacementPercentage" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">10</Value>
     </Setting>
   </Settings>
 </SettingsFile>

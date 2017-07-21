@@ -32,7 +32,6 @@ namespace CubeBreeder
             matingSelectors = new List<Selector>();
             environmentalSelectors = new List<Selector>();
             replacement = new ChildrenOnlyReplacement();
-            //replacement = new PercentageReplacement(0.9);
         }
 
         public List<Operator> GetOperators() { return operators; }
