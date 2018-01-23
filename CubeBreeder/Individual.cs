@@ -177,6 +177,43 @@ namespace CubeBreeder
                 RandomInitialization(1, rnd);
             }
         }
+        
+        /// <summary>
+        /// Initialize the individual according to a file 
+        /// </summary>
+        public void FileInitializationMono(Random rnd)
+        {
+            try
+            {
+                StreamReader file1 = File.OpenText(Settings.inputFolderPath + cubeDimension + "_init.txt");
+                string whole = file1.ReadToEnd();
+                file1.Close();
+                whole = whole.Substring(whole.IndexOf("\n") + 1);
+                string s = whole.Substring(0, whole.IndexOf("\n"));
+                whole = whole.Substring(whole.IndexOf("\n") + 1);
+                //string s = file.ReadLine();
+                int v1 = -1;
+                int v2 = -1;
+                while (whole != null && whole.Length > 1)
+                {
+                    v1 = Int32.Parse(s.Substring(0, s.IndexOf("\t")));
+                    s = s.Substring(s.IndexOf("\t") + 1);
+                    v2 = Int32.Parse(s.Substring(0, s.IndexOf("\t")));
+                    for (int i = 0; i < edgeActivity.Length; i++)
+                    {
+                        SetActivityBetweenVertices(v1, v2, 1);
+                    }
+                    //s = file.ReadLine();
+                    s = whole.Substring(0, whole.IndexOf("\n"));
+                    whole = whole.Substring(whole.IndexOf("\n") + 1);
+                }
+            }
+            catch
+            {
+                Console.WriteLine("File initialization was unsuccessful");
+                RandomInitialization(1, rnd);
+            }
+        }
 
         /// <summary>
         /// Initialize the individual randomly

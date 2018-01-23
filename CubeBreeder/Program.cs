@@ -77,7 +77,7 @@ namespace CubeBreeder
             Console.WriteLine();
             for (int i = 0; i < bestInds.Count; i++)
             {
-                Console.WriteLine("Run " + (i + 1) + ": best objective=" + bestInds[i].Item1.GetObjectiveValue());
+                Console.WriteLine("Run " + (i + 1) + ": best objective = " + bestInds[i].Item1.GetObjectiveValue());
                 Tools.WriteIndividual(bestInds[i].Item1);
             }
             Console.ReadLine();

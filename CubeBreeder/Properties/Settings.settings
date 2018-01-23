@@ -1,6 +1,8 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CubeBreeder.Properties" GeneratedClassName="Settings">
-  <Profiles />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)"
+              GeneratedClassNamespace="CubeBreeder.Properties" GeneratedClassName="Settings"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profiles/>
   <Settings>
     <Setting Name="_Dimension" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">6</Value>

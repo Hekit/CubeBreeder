@@ -103,9 +103,10 @@ namespace CubeBreeder
 
                     for (int j = 0; j < sorted.Count; j++)
                     {
+                        //Console.WriteLine(sorted[j].ToString());
                         if (j < s.popSize * s.eliteSize) sorted[j].elite = true;
                         else sorted[j].elite = false;
-                    }
+                    }                    
                 }
                 if (!Settings.parallel) Console.WriteLine();
                 Individual bestInd;

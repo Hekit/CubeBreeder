@@ -56,7 +56,7 @@ namespace CubeBreeder
             // initialize from Settings
             InitializeSettings();
             // if a config file is provided, overrun the initialization
-            if (System.IO.File.Exists(@".\config.txt"))
+            if (System.IO.File.Exists(@"./../config.txt"))
             {
                 Console.WriteLine("Using config file configuration");
                 LoadSettings();
@@ -71,7 +71,7 @@ namespace CubeBreeder
         public EvolutionaryAlgorithm GetEVA(Logger logger, Random rng)
         {
             // initialize from file
-            if (System.IO.File.Exists(@".\config.txt"))
+            if (System.IO.File.Exists(@"./../config.txt"))
             {
                 return LoadEVA(logger, rng);
             }
@@ -238,7 +238,7 @@ namespace CubeBreeder
             string[] lines = new string[1];
             try
             {
-                lines = System.IO.File.ReadAllLines(@".\config.txt");
+                lines = System.IO.File.ReadAllLines(@"./../config.txt");
             }
             catch (Exception e)
             {
@@ -403,14 +403,18 @@ namespace CubeBreeder
                     case "Spanner":
                         ea.SetFitnessFunction(new SpannerFitness(edgeCount));
                         logger.Log(Logger.Level.SETTINGS, "Spanner");
+                        task = "spanner";
                         break;
                     case "Degree":
                         ea.SetFitnessFunction(new MaxDegreeFitness(cubeDimension));
                         logger.Log(Logger.Level.SETTINGS, "MaxDegree");
+                        task = "degree";
                         break;
                     case "EdgeDisjoint":
                         ea.SetFitnessFunction(new EdgeDisjointSpanner(cubeDimension));
                         logger.Log(Logger.Level.SETTINGS, "EDS");
+                        maxColours = line.ParseIntOrElse(1, cubeDimension / 2); 
+                        task = "eds";
                         break;
                     default:
                         break;
@@ -427,7 +431,7 @@ namespace CubeBreeder
             string[] lines = new string[1];
             try
             {
-                lines = System.IO.File.ReadAllLines(@".\config.txt");
+                lines = System.IO.File.ReadAllLines(@"./../config.txt");
             }
             catch  (Exception e)
             {

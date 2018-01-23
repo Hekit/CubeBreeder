@@ -96,7 +96,7 @@ namespace CubeBreeder
         /// <param name="ind">individual to be logged</param>
         public void Log(Individual ind)
         {
-            Log(Level.INFO, "Best individual has objective " + ind.GetFitnessValue());
+            Log(Level.INFO, "Best individual has objective " + ind.GetObjectiveValue());
         }
 
         /// <summary>

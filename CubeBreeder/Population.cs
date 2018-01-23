@@ -155,9 +155,10 @@ namespace CubeBreeder
             {
                 Individual n = new Individual(sampleIndividual);
 
-                if (Properties.Settings.Default.File_Initialization && i < size * Settings.fileUsage)
+                if (Settings.fileInitialization && i < size * Settings.fileUsage)
                     // if we are using file, use it
-                    n.FileInitialization(rnd);
+                    //n.FileInitialization(rnd);
+                    n.FileInitializationMono(rnd);
                 else
                 {
                     // else initialize randomly
