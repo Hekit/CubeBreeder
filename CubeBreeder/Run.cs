@@ -92,7 +92,17 @@ namespace CubeBreeder
                         Console.Write("Gen: " + (i + 1));
                         Console.Write(" obj: " + sorted[idx].GetObjectiveValue() + " at " + idx);
                         if (Settings.task == "eds") Console.Write(" tc: " + sorted[idx].GetColourCount());
-                        Console.Write(" fit: {0:f0}", sorted[0].GetFitnessValue());
+                        if (Settings.task != "eds") Console.Write(" fit: {0:f0}", sorted[0].GetFitnessValue());
+                        else
+                        {
+                            Console.Write(" fit: {0:f3}", sorted[0].GetFitnessValue());
+                            Console.Write(" comps: ");
+                            for (int j = 0; j < Settings.maxColours; j++)
+                            {
+                                Console.Write(sorted[0].CountComponents((byte) (j + 1)));
+                                Console.Write(" ");
+                            }
+                        }
                         Console.Write(" 3-s: {0:f2} %", (float)(Program.localDetourSpanners * 100.0 / s.popSize));
                         Console.Write(" avg: {0:f0}", pop.GetAverage());
                         Console.Write(" med: {0:f0}", sorted[s.popSize / 2].GetFitnessValue());

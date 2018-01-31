@@ -417,10 +417,13 @@ namespace CubeBreeder
         /// <returns>1 if a spanner</returns>
         public double IsSpanner(byte colour)
         {
-            return 1.0 / CountComponents(colour);
+            //return 1.0 / CountComponents(colour);
+            
             // for other option uncomment
             /*if (CountComponents(colour) > 1) return 1;
             else return 0;*/
+
+            return 1.0 / Math.Sqrt(CountComponents(colour));
         }
 
         /// <summary>
@@ -428,7 +431,7 @@ namespace CubeBreeder
         /// </summary>
         /// <param name="colour">colour being used</param>
         /// <returns>number of components</returns>
-        private int CountComponents(byte colour)
+        public int CountComponents(byte colour)
         {
             //Stavy jednotlivych uzlu
             int[] state = new int[vertexCount];
