@@ -36,6 +36,7 @@ namespace CubeBreeder.Fitness
                 spanner[i] = ind.Is_Good_Enough((byte)(i+1));
             }
 
+            // set objective value
             int obj = 0;
             for (int i = 0; i < spanner.Length; i++)
             {
@@ -43,6 +44,7 @@ namespace CubeBreeder.Fitness
             }
             ind.SetObjectiveValue(obj);
 
+            // set fitness
             double fit = 0;
             int colours = 0;
             for (int i = 0; i < spanner.Length; i++)
@@ -54,7 +56,7 @@ namespace CubeBreeder.Fitness
                     else fit += spanner[i];
                     colours++;
                 }*/
-                fit += spanner[i];// * spanner[i];
+                fit += spanner[i] * spanner[i];
             }
             ind.SetColourCount(colours);
             // perform some magic

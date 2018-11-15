@@ -9,7 +9,7 @@ namespace CubeBreeder.Operators.Mutations
     /// <summary>
     /// Clever Repair Edge Mutation Operator
     /// </summary>
-    class CleverRepairEdgeMutation : Operator
+    class CleverDestroyEdgeMutation : Operator
     {
         double mutationProbability;
 
@@ -19,7 +19,7 @@ namespace CubeBreeder.Operators.Mutations
         /// Construtor
         /// </summary>
         /// <param name="mutationProbability">mutation probability</param>
-        public CleverRepairEdgeMutation(double mutationProbability, Random rnd)
+        public CleverDestroyEdgeMutation(double mutationProbability, Random rnd)
         {
             this.mutationProbability = mutationProbability;
             rng = rnd;
@@ -27,7 +27,7 @@ namespace CubeBreeder.Operators.Mutations
 
         public string ToLog()
         {
-            return "CleverRepair\tprob:\t" + String.Format("{0:f2}", mutationProbability);
+            return "CleverDestroy\tprob:\t" + String.Format("{0:f2}", mutationProbability);
         }
 
         /// <summary>
@@ -53,37 +53,37 @@ namespace CubeBreeder.Operators.Mutations
 
                 if (rng.NextDouble() < mutationProbability)
                 {
-                    // get all undetoured edges
-                    List<Edge> nondetouredEdges = p1.GetUndetoured();
-                    // monitoring repairs
-                    Dictionary<Edge, int> repairs = new Dictionary<Edge, int>();
-                    int max = 0;
+                    List<Edge> deleteableEdges = new List<Edge>();
+                    Dictionary<Edge, int> destroyedDetours = new Dictionary<Edge, int>();
+                    int min = Int32.MaxValue;
                     int counter = 0;
                     // if there is any nondetoured edge
-                    if (nondetouredEdges.Count > 0)
+                
+                    foreach (var edge in Program.graph.GetEdges())
                     {
-                        foreach (var edge in nondetouredEdges)
+                        if (p1.IsActiveOnEdge(edge.ID) > 0)
                         {
-                            // set activity, check number of detour then and set activity back
-                            p1.SetActivityOnEdge(edge.ID, 1);
+                            p1.SetActivityOnEdge(edge.ID, 0);
                             int count = p1.GetUndetoured().Count();
-                            repairs.Add(edge, count);
-                            if (count > max)
+                            destroyedDetours.Add(edge, count);
+                            p1.SetActivityOnEdge(edge.ID, 1);
+                            deleteableEdges.Add(edge);
+                            if (count < min)
                             {
-                                max = count;
+                                min = count;
                                 counter = 1;
                             }
-                            else if (count == max) counter++;
-                            p1.SetActivityOnEdge(edge.ID, 0);
+                            else if (count == min) counter++;
                         }
-                        // find the edge that solves most problems
-                        foreach (var edge in nondetouredEdges)
+                    }
+                    
+                    // find the edge that creates least problems
+                    foreach (var edge in deleteableEdges)
+                    {
+                        // with probability activate it (might be multiple)
+                        if (rng.NextDouble() < (1.0 / counter) && destroyedDetours[edge] == min)
                         {
-                            // with probability activate it (might be multiple)
-                            if (rng.NextDouble() < (1.0 / counter) && repairs[edge] == max)
-                            {
-                                o1.SetActivityOnEdge(edge.ID, 1);
-                            }
+                            o1.SetActivityOnEdge(edge.ID, 0);
                         }
                     }
                     o1.changed = true;

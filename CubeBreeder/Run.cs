@@ -92,8 +92,8 @@ namespace CubeBreeder
                         Console.Write("Gen: " + (i + 1));
                         Console.Write(" obj: " + sorted[idx].GetObjectiveValue() + " at " + idx);
                         if (Settings.task == "eds") Console.Write(" tc: " + sorted[idx].GetColourCount());
-                        if (Settings.task != "eds") Console.Write(" fit: {0:f0}", sorted[0].GetFitnessValue());
-                        else
+                        if (Settings.task == "spanner") Console.Write(" fit: {0:f0}", sorted[0].GetFitnessValue());
+                        if (Settings.task == "eds")
                         {
                             Console.Write(" fit: {0:f3}", sorted[0].GetFitnessValue());
                             Console.Write(" comps: ");
@@ -103,7 +103,25 @@ namespace CubeBreeder
                                 Console.Write(" ");
                             }
                         }
-                        Console.Write(" 3-s: {0:f2} %", (float)(Program.localDetourSpanners * 100.0 / s.popSize));
+                        if (Settings.task == "degree")
+                        {
+                            Console.Write(" fit: {0:f3}", sorted[0].GetFitnessValue());
+                            Console.Write(" degs: ");
+                            
+                            List<int> degrees = sorted[0].GetDegrees();
+                            int[] count = new int[sorted[0].GetCubeDimension()+1];
+                            foreach (var deg in degrees)
+                            {
+                                count[deg]++;
+                            }
+
+                            for (int j = 0; j < count.Length; j++)
+                            {
+                                Console.Write(/*(j+1) + ":" + */count[j] + " ");
+                            }
+                            Console.Write(" ");
+                        }
+                        Console.Write(" 3-s: {0:f2} %", (float)(Program.localDetourSpanners * 100.0 / (s.popSize)));
                         Console.Write(" avg: {0:f0}", pop.GetAverage());
                         Console.Write(" med: {0:f0}", sorted[s.popSize / 2].GetFitnessValue());
                         Console.WriteLine();

@@ -53,7 +53,9 @@
     <Compile Include="Logger.cs" />
     <Compile Include="Operators\Crossovers\NPointXOver.cs" />
     <Compile Include="Operators\Crossovers\SubcubeSwapXOver.cs" />
+    <Compile Include="Operators\Mutations\CleverDestroyEdgeMutation.cs" />
     <Compile Include="Operators\Mutations\CleverRepairEdgeMutation.cs" />
+    <Compile Include="Operators\Mutations\DestroyEdgeMutation.cs" />
     <Compile Include="Operators\Mutations\FlipEdgeMutation.cs" />
     <Compile Include="Operators\Mutations\SimpleRepairEdgeMutation.cs" />
     <Compile Include="Operators\Mutations\SubcubeRotationMutation.cs" />

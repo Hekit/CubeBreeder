@@ -80,7 +80,7 @@ namespace CubeBreeder
                 Console.WriteLine("Run " + (i + 1) + ": best objective = " + bestInds[i].Item1.GetObjectiveValue());
                 Tools.WriteIndividual(bestInds[i].Item1);
             }
-            Console.ReadLine();
+            //Console.ReadLine();
         }
     }
 }

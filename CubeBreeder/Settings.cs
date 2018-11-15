@@ -58,7 +58,7 @@ namespace CubeBreeder
             // if a config file is provided, overrun the initialization
             if (System.IO.File.Exists(@"./../config.txt"))
             {
-                Console.WriteLine("Using config file configuration");
+                Console.WriteLine("Using config file configuration from " + (System.IO.Path.GetFullPath(@"./../config.txt")));
                 LoadSettings();
             }
         }
@@ -190,7 +190,7 @@ namespace CubeBreeder
             }
             else if (Properties.Settings.Default.Task == "degree")
             {
-                ea.SetFitnessFunction(new MaxDegreeFitness(cubeDimension));
+                ea.SetFitnessFunction(new MaxDegreeFitness(cubeDimension, edgeCount));
                 logger.Log(Logger.Level.SETTINGS, "MaxDegree");
                 task = "degree";
             }
@@ -214,6 +214,8 @@ namespace CubeBreeder
             //ea.AddOperator(new NPointXOver(xoverProb, nPoints));
             //ea.AddOperator(new SimpleRepairEdgeMutation(mutProb, mutRepair));
             //ea.AddOperator(new CleverRepairEdgeMutation(mutProb / 100, mutRepair));
+            //ea.AddOperator(new DestroyEdgeMutation(mutProb, mutDestroy, rng));
+            //ea.AddOperator(new CleverDestroyEdgeMutation(mutProb / 100, mutRepair));
             ea.AddOperator(new FlipEdgeMutation(mutProb, mutProbPerBit, rng));
             ea.AddOperator(new SubcubeTranslationMutation(mutProb, 2, rng));
             ea.AddOperator(new SubcubeRotationMutation(mutProb, 2, rng));
@@ -254,6 +256,12 @@ namespace CubeBreeder
                 var line = thisLine.Split(new char[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
                 switch (line[0])
                 {
+                    // settings
+                    case "EliteSize":
+                        eliteSize = line.ParseDoubleOrElse(1, Properties.Settings.Default.EliteSize);
+                        ea.SetElite(eliteSize);
+                        break;
+                        
                     // selection
                     case "RouletteWheel":
                         if (line.GetOrElse(1, "") == "ENV" || line.GetOrElse(2, "") == "ENV")
@@ -343,7 +351,7 @@ namespace CubeBreeder
                         ea.SetReplacement(new MergingReplacement());
                         logger.Log(Logger.Level.SETTINGS, "Merging Replacement");
                         break;
-                    case "Percentage":
+                    case "PercentageReplacement":
                         ea.SetReplacement(new PercentageReplacement(
                             line.ParseIntOrElse(1, Properties.Settings.Default.ReplacementPercentage)));
                         logger.Log(Logger.Level.SETTINGS, "Percentage Replacement");
@@ -398,6 +406,19 @@ namespace CubeBreeder
                                 line.ParseDoubleOrElse(2, Properties.Settings.Default.P_MutationPerEdgeProbability),
                                 rnd));
                         break;
+                    case "DestroyEdge":
+                        ea.AddOperator(
+                            new DestroyEdgeMutation(
+                                line.ParseDoubleOrElse(1, Properties.Settings.Default.P_MutationProbability),
+                                line.ParseDoubleOrElse(2, Properties.Settings.Default.P_MutationPerEdgeProbability),
+                                rnd));
+                        break;
+                    case "CleverDestroy":
+                        ea.AddOperator(
+                            new CleverRepairEdgeMutation(
+                                line.ParseDoubleOrElse(1, Properties.Settings.Default.P_MutationProbability),
+                                rnd));
+                        break;
 
                     // fitness
                     case "Spanner":
@@ -406,7 +427,7 @@ namespace CubeBreeder
                         task = "spanner";
                         break;
                     case "Degree":
-                        ea.SetFitnessFunction(new MaxDegreeFitness(cubeDimension));
+                        ea.SetFitnessFunction(new MaxDegreeFitness(cubeDimension, edgeCount));
                         logger.Log(Logger.Level.SETTINGS, "MaxDegree");
                         task = "degree";
                         break;
@@ -459,9 +480,6 @@ namespace CubeBreeder
                         break;
                     case "Generations":
                         maxGen = line.ParseIntOrElse(1, Properties.Settings.Default._MaxGenerations);
-                        break;
-                    case "EliteSize":
-                        eliteSize = line.ParseDoubleOrElse(1, Properties.Settings.Default.EliteSize);
                         break;
                     case "OutputRate":
                         showGap = line.ParseIntOrElse(1, Properties.Settings.Default.ShowGap);
