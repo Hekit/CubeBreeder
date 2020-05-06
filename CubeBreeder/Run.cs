@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CubeBreeder.Fitness;
 
 namespace CubeBreeder
 {
@@ -140,7 +141,32 @@ namespace CubeBreeder
                 Individual bestInd;
 
                 //Console.ReadLine();
-
+                
+// #### POSTPROCESSING ####
+                bool[] reRun = new bool[pop.GetPopulationSize()];
+                for (int j = 0; j < pop.GetPopulationSize(); j++)
+                {
+                    reRun[j] = true;
+                }
+                int maxDegree = (int) Math.Floor(1.5 * Math.Sqrt(2 * s.cubeDimension) - 1);
+                while (CheckReRun(reRun))
+                {
+                    var result = Postprocess(pop, maxDegree);
+                    pop = result.Item1;
+                    reRun = result.Item2;
+                }
+                for (int j = 0; j < pop.GetPopulationSize(); j++)
+                {
+                    reRun[j] = true;
+                }
+                while (CheckReRun(reRun))
+                {
+                    var result = Postprocess(pop, maxDegree + 1);
+                    pop = result.Item1;
+                    reRun = result.Item2;
+                }
+// #### POSTPROCESSING ####
+                
                 for (int j = 0; j < pop.GetPopulationSize(); j++)
                 {
                     if ((pop.GetSortedIndividuals()[j]).Is_3_Spanner(false) == 1)
@@ -160,6 +186,75 @@ namespace CubeBreeder
             }
             return null;
 
+        }
+
+        bool CheckReRun(bool[] reRun)
+        {
+            for (int i = 0; i < reRun.Length; i++)
+            {
+                if (reRun[i]) return true;
+            }
+            return false;
+        }
+        
+        Tuple<Population, bool[]> Postprocess(Population pop, int maxdegree)
+        {
+            //Console.WriteLine("Preprocessing with max degree " + maxdegree);
+            int size = pop.GetPopulationSize();
+            Population offspring = new Population();
+            bool[] found = new bool[size];
+            
+            for (int i = 0; i < size; i++)
+            {
+                Individual p = pop.Get(i);
+                Individual o = (Individual) p.Clone();
+                found[i] = false;
+
+                // get all undetoured edges
+                List<Edge> nondetouredEdges = p.GetUndetoured();
+                // monitoring repairs
+                Dictionary<Edge, int> repairs = new Dictionary<Edge, int>();
+                // getting degrees
+                List<int> degrees = p.GetDegrees();
+                int max = 0;
+                int counter = 0;
+                // if there is any nondetoured edge
+                if (nondetouredEdges.Count > 0)
+                {
+                    foreach (var edge in nondetouredEdges)
+                    {
+                        // set activity, check number of detour then and set activity back
+                        p.SetActivityOnEdge(edge.ID, 1);
+                        if (p.GetMaxDegree() < maxdegree)
+                        {
+                            int count = p.GetUndetoured().Count();
+                            repairs.Add(edge, count);
+                            if (count > max)
+                            {
+                                max = count;
+                                counter = 1;
+                            }
+                            else if (count == max) counter++;
+                        }
+
+                        p.SetActivityOnEdge(edge.ID, 0);
+                    }
+                    if (repairs.Count > 0) found[i] = true;
+                    //Console.WriteLine("Repairs " + repairs.Count);
+                    // find the edge that solves most problems
+                    foreach (var edge in repairs.Keys)
+                    {
+                        //Console.WriteLine(edge + " " + repairs[edge] + " " + max);
+                        if (repairs[edge] == max)
+                        {
+                            o.SetActivityOnEdge(edge.ID, 1);
+                        }
+                    }
+                }
+                o.changed = true;
+                offspring.Add(o);
+            }
+            return new Tuple<Population, bool[]>(offspring, found);
         }
     }
 }

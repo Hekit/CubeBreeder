@@ -31,12 +31,12 @@ namespace CubeBreeder.Fitness
         {
             int maxDegree = ind.GetMaxDegree();
             double fitness = 1;
-            int threshold = 2;
+            int threshold = 4;
             
             double spanner = ind.Is_3_Spanner(count);
             //if (spanner == 1.0) ind.SetObjectiveValue(maxDegree);
             if (ind.spanner == 1.0) ind.SetObjectiveValue(ind.GetActiveEdgeCount());
-            else ind.SetObjectiveValue(0);
+            else ind.SetObjectiveValue(ind.GetMaxDegree());
 
             foreach (var degree in ind.GetDegrees())
             {
@@ -51,9 +51,12 @@ namespace CubeBreeder.Fitness
             //return fitness * Math.Pow(spanner,2);
             //return ((Math.Pow(2, dimension) * edgeCount) / fitness) * Math.Pow(spanner,3);//(Math.Pow(2, dimension) / fitness); //* (spanner * spanner);
             //double xyz =  (1 / fitness) * Math.Pow(spanner,2) * missing;
-            return (1 / fitness) * Math.Pow(spanner, 2);
+            //return (1 / fitness) * spanner; //*
+            //return (1 / fitnessMath.Pow(spanner, 2);
             //Console.WriteLine(xyz);
             //return xyz;
+            //return ((Math.Pow(2, dimension) * dimension) / fitness) * Math.Pow(spanner, 1);
+            return (missing*missing) / fitness;
         }
     }
 }

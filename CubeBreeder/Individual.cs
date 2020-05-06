@@ -504,9 +504,11 @@ namespace CubeBreeder
             string str;
             if (Settings.task != "eds")
                 str = "Total of " + GetActiveEdgeCount() + " edges "
-                + "with max degree " + GetMaxDegree() + "\n";
+                + "with max degree " + GetMaxDegree();
             else str = "Total of " + GetActiveEdgeCountColourblind() + " edges in " 
-                    + objectiveValue + " edge-disjoint spanners\n";
+                    + objectiveValue + " edge-disjoint spanners";
+            if (Is_3_Spanner(false) == 1) str += "and it is a 3-spanner";
+            str += "\n";
             for (int i = 0; i < edgeActivity.Length; i++)
             {
                 if (edgeActivity[i].IsTrue())
